@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thần Số Học</title>
+  <meta name="description" content="Tra cứu số chủ đạo, số ngày sinh, năm cá nhân và biểu đồ ngày sinh theo thần số học Pythagoras.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">✦ Huyền Bí</a>
+    <nav>
+      <a href="numerology.html" aria-current="page">Thần số học</a>
+      <a href="tarot.html">Tarot</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>🔢 Đọc bài Thần Số Học</h1>
+    <p class="lead">Nhập họ tên và ngày sinh để khám phá con số chủ đạo cùng những năng lượng đồng hành cùng bạn.</p>
+
+    <form id="numerology-form" class="panel" novalidate>
+      <label for="full-name">Họ và tên khai sinh <span class="muted">(không bắt buộc)</span></label>
+      <input id="full-name" name="fullName" type="text" maxlength="100" autocomplete="name" placeholder="Ví dụ: Nguyễn Thị Hoa">
+
+      <label for="birth-date">Ngày sinh (dương lịch)</label>
+      <input id="birth-date" name="birthDate" type="date" min="1900-01-01" required>
+
+      <button type="submit" class="btn">Xem luận giải</button>
+    </form>
+
+    <section id="numerology-result" class="results" aria-live="polite"></section>
+
+    <p class="disclaimer">Nội dung mang tính tham khảo, giúp bạn chiêm nghiệm về bản thân — không thay thế cho các quyết định chuyên môn.</p>
+  </main>
+
+  <script type="module" src="js/numerology/page.js"></script>
+</body>
+</html>

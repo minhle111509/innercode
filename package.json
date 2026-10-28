@@ -1,0 +1,15 @@
+{
+  "name": "than-so-hoc-tarot",
+  "version": "1.0.0",
+  "description": "Static website with two independent features: numerology reading and tarot reading",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bói Bài Tarot</title>
+  <meta name="description" content="Rút bài Tarot online với bộ 78 lá, nhiều kiểu trải bài và luận giải tiếng Việt.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">✦ Huyền Bí</a>
+    <nav>
+      <a href="numerology.html">Thần số học</a>
+      <a href="tarot.html" aria-current="page">Tarot</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>🃏 Đọc bài Tarot</h1>
+    <p class="lead">Hít thở sâu, nghĩ về điều bạn đang băn khoăn, rồi rút bài từ bộ 78 lá Rider–Waite.</p>
+
+    <form id="tarot-form" class="panel">
+      <label for="question">Câu hỏi của bạn <span class="muted">(không bắt buộc)</span></label>
+      <input id="question" name="question" type="text" maxlength="200" placeholder="Ví dụ: Công việc của tôi tháng tới thế nào?">
+
+      <label for="spread">Kiểu trải bài</label>
+      <select id="spread" name="spread"></select>
+
+      <label class="checkbox">
+        <input type="checkbox" name="allowReversed" checked>
+        Bao gồm lá ngược
+      </label>
+
+      <button type="submit" class="btn">Xáo &amp; rút bài</button>
+    </form>
+
+    <section id="tarot-result" class="results" aria-live="polite"></section>
+
+    <p class="disclaimer">Tarot là công cụ để chiêm nghiệm và gợi mở góc nhìn — quyết định cuối cùng luôn thuộc về bạn.</p>
+  </main>
+
+  <script type="module" src="js/tarot/page.js"></script>
+</body>
+</html>
