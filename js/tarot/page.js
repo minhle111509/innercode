@@ -1,4 +1,4 @@
-import { el, showError } from '../shared/dom.js';
+import { el, setChildren, showError } from '../shared/dom.js';
 import { DECK } from './deck.js';
 import { SPREADS, readSpread, summarizeReading } from './tarot.js';
 
@@ -65,7 +65,7 @@ function render(reading, question) {
     ...summarizeReading(reading).map((note) => el('p', { text: note })),
   ]);
 
-  result.replaceChildren(
+  setChildren(result,
     question ? el('p', { class: 'question' }, [el('strong', { text: 'Câu hỏi: ' }), question]) : null,
     el('p', { class: 'muted', text: 'Hãy tập trung vào câu hỏi và chạm vào từng lá bài để lật.' }),
     el('div', { class: 'tarot-spread' }, reading.map(cardView)),

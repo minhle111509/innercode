@@ -1,7 +1,7 @@
 {
   "name": "than-so-hoc-tarot",
   "version": "1.0.0",
-  "description": "Static website with three independent features: numerology, tarot and matrix destiny readings",
+  "description": "Static website with four independent features: numerology, tarot, matrix destiny and Mai Hoa I Ching readings",
   "type": "module",
   "private": true,
   "scripts": {

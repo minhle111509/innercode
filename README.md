@@ -1,12 +1,13 @@
-# ✦ Huyền Bí – Thần Số Học, Tarot & Matrix Destiny
+# ✦ INNER CODE – Mật mã nội tâm
 
-Website tĩnh (HTML/CSS/JavaScript thuần, không cần build) với **3 tính năng độc lập**, giao diện phong cách trang sản phẩm: nền tối, tiêu đề lớn, minh họa dạng đồng hồ thông minh vẽ bằng CSS, thanh điều hướng con dính trên cùng.
+Website tĩnh (HTML/CSS/JavaScript thuần, không cần build) với **4 tính năng độc lập**: Thần số học, Tarot, Matrix Destiny và Kinh Dịch Mai Hoa. Giao diện phong cách trang sản phẩm: nền tối, tiêu đề lớn, mỗi tính năng là một "mặt đồng hồ" vẽ bằng CSS, thanh điều hướng con dính trên cùng.
 
 | Tính năng | Trang | Mã nguồn |
 |---|---|---|
 | 🔢 Đọc bài Thần số học | `numerology.html` | `js/numerology/` |
 | 🃏 Đọc bài Tarot | `tarot.html` | `js/tarot/` |
 | ✴️ Matrix Destiny | `matrix.html` | `js/matrix/` |
+| ☯️ Kinh Dịch Mai Hoa | `meihua.html` | `js/meihua/` |
 
 Các tính năng không phụ thuộc nhau; chỉ dùng chung `css/style.css` và các helper nhỏ trong `js/shared/` (dựng DOM, đọc ngày sinh, cộng chữ số).
 
@@ -30,6 +31,11 @@ Các tính năng không phụ thuộc nhau; chỉ dùng chung `css/style.css` v�
 - Sơ đồ ma trận vẽ bằng SVG.
 
 > Lưu ý: có nhiều trường phái Matrix Destiny với khác biệt nhỏ về công thức điểm phụ; dự án dùng một cách tính phổ biến, có test kiểm chứng bằng ví dụ tính tay.
+
+## Kinh Dịch Mai Hoa (Mai Hoa Dịch Số)
+- **Theo thời điểm:** tự đổi dương lịch sang âm lịch (thuật toán thiên văn của Hồ Ngọc Đức, múi giờ Việt Nam). Quẻ trên = (số năm địa chi + tháng âm + ngày âm) mod 8; quẻ dưới và hào động cộng thêm số giờ địa chi (mod 8 / mod 6, dư 0 tính là 8 / 6). Từ 23h tính là giờ Tý ngày hôm sau.
+- **Theo số:** quẻ trên từ số thứ nhất, quẻ dưới từ số thứ hai, hào động từ tổng (tùy chọn cộng giờ hiện tại).
+- Kết quả: quẻ chủ, quẻ hỗ, quẻ biến (đủ 64 quẻ), phân tích Thể – Dụng theo ngũ hành sinh khắc và kết cục sau biến.
 
 ## Chạy thử
 Trang dùng ES modules nên **cần chạy qua web server** (mở trực tiếp file `index.html` bằng `file://` sẽ không chạy JavaScript):

@@ -34,6 +34,11 @@ export function svgEl(tag, attrs = {}, children = []) {
   return node;
 }
 
+/** replaceChildren() that skips null/false, which the DOM would otherwise render as text. */
+export function setChildren(container, ...children) {
+  container.replaceChildren(...children.filter((child) => child !== null && child !== undefined && child !== false));
+}
+
 export function showError(container, message) {
   container.replaceChildren(el('p', { class: 'error', role: 'alert', text: message }));
 }

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kinh Dịch Mai Hoa · Inner Code</title>
+  <meta name="description" content="Lập quẻ Mai Hoa Dịch Số theo giờ âm lịch hoặc theo số, xem quẻ chủ, quẻ hỗ, quẻ biến và Thể – Dụng.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">✦ INNER CODE</p>
+        <h1>Kinh Dịch Mai Hoa</h1>
+        <p class="tagline">Mai Hoa Dịch Số</p>
+        <p class="hero-desc">Phép lập quẻ của Thiệu Khang Tiết: từ một khoảnh khắc hay vài con số, đọc ra thế cục của sự việc.</p>
+        <a class="cta" href="#start">Lập quẻ ngay <svg class="cta-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8.3 6.6 13.3 10l-5 3.4z" fill="currentColor"/></svg></a>
+      </div>
+      <div class="faces single">
+        <figure class="face-item"><div class="face" aria-hidden="true"><span class="face-label">MAI HOA</span><span class="face-time">10:09</span><div class="s-hex" aria-hidden="true"><i class="yin"></i><i class="yin"></i><i class="yin"></i><i></i><i class="moving"></i><i></i></div><span class="face-foot">Địa Thiên Thái</span></div></figure>
+      </div>
+    </div>
+  </header>
+
+  <nav class="subnav" aria-label="Điều hướng">
+    <div class="subnav-inner">
+      <a href="index.html">Tổng quan</a>
+      <a href="numerology.html">Thần số học</a>
+      <a href="tarot.html">Tarot</a>
+      <a href="matrix.html">Matrix Destiny</a>
+      <a href="meihua.html" aria-current="page">Mai Hoa</a>
+    </div>
+  </nav>
+
+  <main class="section" id="start">
+    <div class="container">
+      <h2 class="section-title">Gieo một quẻ.</h2>
+      <p class="section-lead">Tĩnh tâm nghĩ về việc cần hỏi, rồi chọn cách lập quẻ.</p>
+
+      <form id="meihua-form" class="panel" novalidate>
+        <label for="question">Việc cần hỏi <span class="muted">(không bắt buộc)</span></label>
+        <input id="question" name="question" type="text" maxlength="200" placeholder="Ví dụ: Có nên nhận công việc mới không?">
+
+        <fieldset>
+          <legend>Cách lập quẻ</legend>
+          <div class="segmented">
+            <label><input id="mode-time" type="radio" name="mode" value="time" checked> Theo thời điểm</label>
+            <label><input id="mode-numbers" type="radio" name="mode" value="numbers"> Theo số</label>
+          </div>
+        </fieldset>
+
+        <fieldset id="time-fields">
+          <label for="cast-time">Thời điểm lập quẻ (giờ Việt Nam)</label>
+          <div class="inline-row">
+            <input id="cast-time" name="castTime" type="datetime-local" min="1900-01-01T00:00" max="2199-12-31T23:59">
+            <button id="use-now" type="button" class="btn secondary">Bây giờ</button>
+          </div>
+          <p class="hint">Tự đổi sang âm lịch. Quẻ trên = năm + tháng + ngày âm; quẻ dưới và hào động cộng thêm giờ địa chi. Từ 23h tính là giờ Tý của ngày hôm sau.</p>
+        </fieldset>
+
+        <fieldset id="number-fields" hidden>
+          <div class="field-row">
+            <div>
+              <label for="first">Số thứ nhất (quẻ trên)</label>
+              <input id="first" name="first" type="number" min="1" max="999999" step="1" inputmode="numeric" placeholder="Ví dụ: 5">
+            </div>
+            <div>
+              <label for="second">Số thứ hai (quẻ dưới)</label>
+              <input id="second" name="second" type="number" min="1" max="999999" step="1" inputmode="numeric" placeholder="Ví dụ: 3">
+            </div>
+          </div>
+          <label class="checkbox">
+            <input id="add-hour" type="checkbox" name="addHour">
+            Cộng giờ hiện tại (địa chi) vào hào động
+          </label>
+          <p class="hint">Lấy số dư khi chia cho 8 để ra quẻ (dư 0 tính là 8), tổng hai số chia cho 6 để ra hào động.</p>
+        </fieldset>
+
+        <button type="submit" class="btn">Lập quẻ</button>
+      </form>
+
+      <section id="meihua-result" class="results" aria-live="polite"></section>
+    </div>
+  </main>
+
+  <footer class="site-footer">INNER CODE – Mật mã nội tâm. Kinh Dịch là công cụ suy ngẫm, giúp bạn nhìn sự việc từ nhiều phía.</footer>
+  <script type="module" src="js/meihua/page.js"></script>
+</body>
+</html>
