@@ -3,6 +3,7 @@ import { formatDate } from '../shared/date.js';
 import { buildProfile } from './profile.js';
 import { NUMBER_MEANINGS } from '../numerology/meanings.js';
 import { ARCANA } from '../matrix/meanings.js';
+import { mountReportOffers } from '../report/offers.js';
 
 const form = document.getElementById('profile-form');
 const result = document.getElementById('profile-result');
@@ -88,6 +89,12 @@ form.addEventListener('submit', (event) => {
       birthDate: birthInput.value,
       birthTime: form.elements.birthTime.value,
     }), fullName);
+    mountReportOffers(document.getElementById('report-offers'), () => ({
+      fullName: form.elements.fullName.value.trim(),
+      birthDate: birthInput.value,
+      birthTime: form.elements.birthTime.value,
+      gender: form.elements.gender.value,
+    }));
   } catch (error) {
     showError(result, error.message);
   }

@@ -1,6 +1,7 @@
 import { el, setChildren, showError } from '../shared/dom.js';
 import { calculateBazi, parseBirthDateTime, ELEMENT_ORDER } from './bazi.js';
 import { analyzeAdvanced } from './advanced.js';
+import { mountReportOffers } from '../report/offers.js';
 
 const form = document.getElementById('bazi-form');
 const result = document.getElementById('bazi-result');
@@ -197,6 +198,7 @@ form.addEventListener('submit', (event) => {
     }
     const report = calculateBazi(input);
     render(report, analyzeAdvanced(input, genderInput.value, report.pillars, today));
+    mountReportOffers(document.getElementById('report-offers'), () => ({ birthDate: birthInput.value, birthTime: timeInput.value, gender: genderInput.value }), { single: 'bazi' });
   } catch (error) {
     showError(result, error.message);
   }

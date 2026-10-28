@@ -43,6 +43,8 @@
       <a href="meihua.html">Mai Hoa</a>
       <a href="bazi.html">Bát Tự</a>
       <a href="self.html">Bản thân</a>
+      <a href="healing.html">Chữa lành</a>
+      <a href="shop.html">Cửa hàng</a>
       <a href="index.html#lien-he">Liên hệ</a>
     </div>
   </nav>
@@ -67,17 +69,25 @@
           </div>
         </div>
 
+        <label for="gender">Giới tính <span class="muted">(để tính đại vận trong báo cáo trọn bộ)</span></label>
+        <select id="gender" name="gender">
+          <option value="">Không chọn</option>
+          <option value="female">Nữ</option>
+          <option value="male">Nam</option>
+        </select>
+
         <button type="submit" class="btn">Lập hồ sơ nội tâm</button>
       </form>
 
       <section id="profile-result" class="results" aria-live="polite"></section>
+      <div id="report-offers" class="report-offers"></div>
 
       <aside class="cta-panel">
         <div>
-          <h3>Muốn được luận giải trực tiếp?</h3>
-          <p class="muted">Sarah Nguyen đọc hồ sơ của bạn và tư vấn 1:1 dựa trên các hệ thống ở trên.</p>
+          <h3>Đặt lịch tư vấn & chữa lành trực tiếp 1-1</h3>
+          <p class="muted">Sarah Nguyen đọc hồ sơ của bạn, lắng nghe và đồng hành cùng bạn qua điện thoại, Zalo hoặc gặp trực tiếp.</p>
         </div>
-        <a class="btn" href="index.html#lien-he">Liên hệ Sarah Nguyen</a>
+        <button class="btn" type="button" data-open-consult="">Kết nối chuyên gia</button>
       </aside>
     </div>
   </main>
@@ -87,6 +97,7 @@
     <p class="footer-contact">Điện thoại / Zalo: <a href="tel:+84909799695">0909 799 695</a> · <a href="index.html#lien-he">Liên hệ &amp; thanh toán</a></p>
     <p>Nội dung mang tính tham khảo, giúp bạn chiêm nghiệm về bản thân, không thay thế cho tư vấn y tế, tâm lý, tài chính hay pháp lý.</p>
   </footer>
+  <script type="module" src="js/shop/ui.js"></script>
   <script type="module" src="js/profile/page.js"></script>
 </body>
 </html>

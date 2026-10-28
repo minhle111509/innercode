@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Góc Chữa Lành · Inner Code</title>
+  <meta name="description" content="Chọn tần số đồng hành theo cảm xúc và nghe chuông xoay 432Hz, 528Hz miễn phí ngay trên web.">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <meta name="theme-color" content="#1d1d1f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="INNER CODE – Mật mã nội tâm">
+  <meta property="og:title" content="Góc Chữa Lành · Inner Code">
+  <meta property="og:description" content="Chọn tần số đồng hành theo cảm xúc và nghe chuông xoay 432Hz, 528Hz miễn phí ngay trên web.">
+  <meta property="og:image" content="https://minhle111509.github.io/innercode/assets/og-image.jpg">
+  <meta property="og:url" content="https://minhle111509.github.io/innercode/healing.html">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow"><img class="brand-mark" src="assets/emblem-160.webp" alt="" width="32" height="32">INNER CODE</p>
+        <h1>Góc Chữa Lành</h1>
+        <p class="tagline">Âm thanh · Tần số</p>
+        <p class="hero-desc">Lắng lại vài phút với âm thanh. Chọn tần số đồng hành theo cảm xúc của bạn, rồi để tiếng chuông xoay dẫn bạn về hơi thở.</p>
+        <a class="cta" href="#start">Chọn tần số <svg class="cta-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8.3 6.6 13.3 10l-5 3.4z" fill="currentColor"/></svg></a>
+      </div>
+      <div class="faces single">
+        <figure class="face-item"><div class="face" aria-hidden="true"><span class="face-label">CHỮA LÀNH</span><span class="face-time">10:09</span><div class="s-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="face-foot">432Hz · 528Hz</span></div></figure>
+      </div>
+    </div>
+  </header>
+
+  <nav class="subnav" aria-label="Điều hướng">
+    <div class="subnav-inner">
+      <a href="index.html">Tổng quan</a>
+      <a href="profile.html">Hồ sơ nội tâm</a>
+      <a href="numerology.html">Thần số học</a>
+      <a href="tarot.html">Tarot</a>
+      <a href="matrix.html">Matrix</a>
+      <a href="meihua.html">Mai Hoa</a>
+      <a href="bazi.html">Bát Tự</a>
+      <a href="self.html">Bản thân</a>
+      <a href="healing.html" aria-current="page">Chữa lành</a>
+      <a href="shop.html">Cửa hàng</a>
+      <a href="index.html#lien-he">Liên hệ</a>
+    </div>
+  </nav>
+
+  <main class="section" id="start">
+    <div class="container">
+      <h2 class="section-title">Chọn tần số đồng hành.</h2>
+      <p class="section-lead">Miễn phí. Chọn cảm xúc, màu sắc rồi chạm giữ 3 giây để tĩnh tâm và nhận tần số dành cho bạn lúc này.</p>
+
+      <div class="panel">
+        <fieldset>
+          <legend>Bạn đang cảm thấy thế nào?</legend>
+          <div id="emotion-options" class="chip-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Màu sắc bạn thấy cuốn hút lúc này</legend>
+          <div id="color-options" class="swatch-options"></div>
+        </fieldset>
+        <div class="hold-wrap">
+          <button id="hold-button" type="button" class="hold-button" aria-describedby="hold-label"><span class="hold-core">Chạm</span></button>
+          <p id="hold-label" class="hold-label" aria-live="polite">Chạm và giữ 3 giây</p>
+        </div>
+        <p class="hint">Trải nghiệm chiêm nghiệm dựa trên lựa chọn của bạn, không phải thiết bị đo hay chẩn đoán y khoa.</p>
+      </div>
+      <section id="frequency-result" class="results" aria-live="polite"></section>
+
+      <section id="sound" class="tool" aria-labelledby="sound-title">
+        <h2 id="sound-title">Góc chữa lành âm thanh</h2>
+        <p>Đeo tai nghe, ngồi thoải mái, chọn âm thanh và tần số rồi thở chậm theo tiếng chuông.</p>
+        <div class="field-row">
+          <div>
+            <label for="sound-mode">Âm thanh</label>
+            <select id="sound-mode"><option value="bowl">Chuông xoay</option><option value="tone">Âm thuần</option></select>
+          </div>
+          <div>
+            <label for="sound-hz">Tần số</label>
+            <select id="sound-hz"><option value="432">432Hz – Hài hòa</option><option value="528">528Hz – Yêu thương</option></select>
+          </div>
+          <div>
+            <label for="sound-minutes">Hẹn giờ</label>
+            <select id="sound-minutes"><option value="5">5 phút</option><option value="10" selected>10 phút</option><option value="15">15 phút</option></select>
+          </div>
+        </div>
+        <label for="sound-volume">Âm lượng</label>
+        <input id="sound-volume" type="range" min="0" max="1" step="0.05" value="0.5">
+        <div id="sound-stage" class="sound-stage" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="row-actions">
+          <button id="sound-toggle" type="button" class="btn">Phát</button>
+          <span id="sound-now" class="hint" aria-live="polite">Để âm lượng vừa phải, dừng lại nếu thấy khó chịu.</span>
+        </div>
+      </section>
+
+      <aside class="cta-panel">
+        <div>
+          <h3>Đặt lịch tư vấn & chữa lành trực tiếp 1-1</h3>
+          <p class="muted">Sarah Nguyen đọc hồ sơ của bạn, lắng nghe và đồng hành cùng bạn qua điện thoại, Zalo hoặc gặp trực tiếp.</p>
+        </div>
+        <button class="btn" type="button" data-open-consult="">Kết nối chuyên gia</button>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><img src="assets/emblem-160.webp" alt="" width="44" height="44"><div><strong>INNER CODE – Mật mã nội tâm</strong><span>Sarah Nguyen</span></div></div>
+    <p class="footer-contact">Điện thoại / Zalo: <a href="tel:+84909799695">0909 799 695</a> · <a href="index.html#lien-he">Liên hệ &amp; thanh toán</a></p>
+    <p>Âm thanh và tần số hỗ trợ thư giãn, chiêm nghiệm; không thay thế cho chẩn đoán hay điều trị y khoa.</p>
+  </footer>
+  <script type="module" src="js/shop/ui.js"></script>
+  <script type="module" src="js/healing/page.js"></script>
+</body>
+</html>

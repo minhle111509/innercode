@@ -3,6 +3,7 @@ import { formatDate } from '../shared/date.js';
 import { calculateMatrixReport } from './matrix.js';
 import { ARCANA, ARCANA_DETAILS, POSITIONS, PURPOSES } from './meanings.js';
 import { healthChart, ageForecast, currentPeriod, ancestralLines, karmicTail } from './advanced.js';
+import { mountReportOffers } from '../report/offers.js';
 
 const ageText = (n) => String(Math.round(n * 100) / 100).replace('.', ',');
 
@@ -214,6 +215,7 @@ form.addEventListener('submit', (event) => {
   const fullName = form.elements.fullName.value.trim();
   try {
     render(calculateMatrixReport({ birthDate: birthInput.value }), fullName);
+    mountReportOffers(document.getElementById('report-offers'), () => ({ fullName: form.elements.fullName.value.trim(), birthDate: birthInput.value }), { single: 'matrix' });
   } catch (error) {
     showError(result, error.message);
   }

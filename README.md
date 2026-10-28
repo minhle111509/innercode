@@ -11,6 +11,8 @@ Website tĩnh (HTML/CSS/JavaScript thuần, không cần build, không cần má
 | `meihua.html` | **Kinh Dịch Mai Hoa** | `js/meihua/` |
 | `tarot.html` | **Tarot** 78 lá | `js/tarot/` |
 | `self.html` | **Khám phá bản thân**: trắc nghiệm tính cách, bánh xe cuộc sống, bài thở, nhật ký | `js/self/` |
+| `healing.html` | **Góc chữa lành**: chọn tần số đồng hành (miễn phí: cảm xúc + màu sắc + giữ 3 giây) và trình phát chuông xoay/âm thuần 174–963Hz | `js/healing/` |
+| `shop.html` | **Cửa hàng**: combo sách in, chuông xoay, con lắc, vòng tay cá nhân hóa; bảng gói nạp xu | `js/shop/` |
 
 Mỗi tính năng có module logic thuần (không đụng DOM, có unit test) và một file `page.js` cho giao diện. Phần dùng chung nằm trong `js/shared/` (DOM an toàn XSS, đọc ngày sinh, cộng chữ số, lịch âm).
 
@@ -35,6 +37,17 @@ Mỗi tính năng có module logic thuần (không đụng DOM, có unit test) v
 - Logo và ảnh thương hiệu nằm trong `assets/`: biểu tượng IC (`emblem-*.webp`, `favicon-*.png`, `apple-touch-icon.png`), poster (`poster-innercode.webp`), tranh nền đầu trang chủ (`hero-art.webp`) và ảnh chia sẻ mạng xã hội (`og-image.jpg`).
 - Mục **Liên hệ & thanh toán** ở cuối trang chủ (`index.html#lien-he`): điện thoại/Zalo 0909 799 695, chuyển khoản Vietcombank 0071001151943 kèm mã VietQR (`assets/vietqr-vietcombank.jpg`). Muốn đổi thông tin, sửa trong `index.html` và chân trang của từng file `*.html`.
 
+## Ví xu, báo cáo PDF, đơn hàng, đặt lịch 1-1
+- **Ví xu** (chip "N Xu" góc phải mọi trang): số điện thoại là định danh, mã PIN 4–6 số bảo vệ ví. Gói 50/100/200 Xu (1 Xu = 1.000đ). Chuyển khoản Vietcombank bằng **mã VietQR tạo động** (đã điền sẵn số tiền và nội dung `NAP <SĐT>`) hoặc mã MoMo tĩnh.
+- **Mở khóa báo cáo PDF** dưới kết quả Thần số học, Matrix, Bát Tự và Hồ sơ nội tâm: bài lẻ 25 Xu, **trọn bộ Hồ sơ nội tâm 99 Xu** (khuyên dùng), combo sách in 249 Xu. Báo cáo dàn trang A4, khách chọn "Lưu thành PDF" trong hộp thoại in.
+- **Đặt hàng vật phẩm** và **"Kết nối chuyên gia"** (nút nổi góc phải dưới): gọi/Zalo trực tiếp hoặc để lại form, chuyên gia gọi lại.
+- **Máy chủ = Google Sheets + Apps Script** (`apps-script/Code.gs`): lưu ví, yêu cầu nạp, giao dịch, đơn hàng, lịch tư vấn. Giá xu nằm ở máy chủ; xu chỉ được cộng khi chủ shop đổi trạng thái dòng nạp thành "Đã nhận". Cài đặt: **[docs/HUONG-DAN-GOOGLE-SHEETS.md](docs/HUONG-DAN-GOOGLE-SHEETS.md)**.
+- Cấu hình công khai nằm ở `js/shop/config.js` (URL Apps Script, ngân hàng, Zalo). Khi `APPS_SCRIPT_URL` còn trống, các nút trả phí hướng khách liên hệ Zalo.
+
+**Bảo mật khóa API:** dự án hiện **không dùng AI và không có khóa API nào**. `config.js` là file công khai, tuyệt đối không đặt khóa Gemini/Claude vào đó. Nếu thêm AI, gọi qua hàm máy chủ (ví dụ Vercel `api/*.js` đọc `process.env.GEMINI_API_KEY`, hoặc Apps Script `PropertiesService`).
+
+**Giới hạn đã biết:** PDF được tạo trên trình duyệt nên người rành kỹ thuật có thể tự in trang luận giải; mã MoMo là mã tĩnh nên khách tự nhập số tiền và nội dung; số trang PDF phụ thuộc nội dung (trọn bộ khoảng 12 trang, bài lẻ khoảng 5 trang); giá chuông, con lắc, vòng tay đang để "Liên hệ báo giá".
+
 ## Chạy thử
 Trang dùng ES modules nên **cần chạy qua web server** (mở trực tiếp file bằng `file://` sẽ không chạy JavaScript):
 
@@ -54,5 +67,5 @@ npm test
 ## Triển khai GitHub Pages
 Repo → **Settings → Pages** → Source: *Deploy from a branch* → nhánh `main`, thư mục `/ (root)` → Save.
 
-## Hướng phát triển (giai đoạn 2)
-Tài khoản thành viên, lưu hồ sơ, báo cáo AI và thanh toán cần thêm máy chủ (backend) để giữ khóa API và dữ liệu người dùng an toàn; không thể làm an toàn trên web tĩnh.
+## Hướng phát triển
+Đối soát chuyển khoản tự động (webhook ngân hàng/cổng thanh toán), tạo PDF phía máy chủ để chống sao chép, và luận giải AI đều cần một hàm máy chủ giữ khóa bí mật trong biến môi trường; không làm an toàn được trên web tĩnh.

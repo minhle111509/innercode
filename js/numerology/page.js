@@ -5,6 +5,7 @@ import {
   NUMBER_MEANINGS, NUMBER_DETAILS, PERSONAL_YEAR_MEANINGS, CHART_DIGIT_MEANINGS,
   CHALLENGE_MEANINGS, ARROW_MEANINGS, KARMIC_DEBT_MEANINGS, LESSON_MEANINGS, POSITION_TEXTS,
 } from './meanings.js';
+import { mountReportOffers } from '../report/offers.js';
 
 const form = document.getElementById('numerology-form');
 const result = document.getElementById('numerology-result');
@@ -188,6 +189,7 @@ form.addEventListener('submit', (event) => {
   const fullName = form.elements.fullName.value.trim();
   try {
     render(calculateReport({ fullName, birthDate: birthInput.value }), fullName);
+    mountReportOffers(document.getElementById('report-offers'), () => ({ fullName: form.elements.fullName.value.trim(), birthDate: birthInput.value }), { single: 'numerology' });
   } catch (error) {
     showError(result, error.message);
   }
