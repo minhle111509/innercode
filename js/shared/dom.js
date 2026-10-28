@@ -18,6 +18,22 @@ export function el(tag, props = {}, children = []) {
   return node;
 }
 
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/** SVG counterpart of el(); attributes only, text via the `text` key. */
+export function svgEl(tag, attrs = {}, children = []) {
+  const node = document.createElementNS(SVG_NS, tag);
+  for (const [key, value] of Object.entries(attrs)) {
+    if (value === undefined || value === null) continue;
+    if (key === 'text') node.textContent = value;
+    else node.setAttribute(key, String(value));
+  }
+  for (const child of [].concat(children)) {
+    if (child) node.append(child);
+  }
+  return node;
+}
+
 export function showError(container, message) {
   container.replaceChildren(el('p', { class: 'error', role: 'alert', text: message }));
 }

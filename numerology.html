@@ -8,33 +8,50 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html">✦ Huyền Bí</a>
-    <nav>
-      <a href="numerology.html" aria-current="page">Thần số học</a>
-      <a href="tarot.html">Tarot</a>
-    </nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">✦ HUYỀN BÍ</p>
+        <h1>Thần Số Học</h1>
+        <p class="tagline">Pythagoras</p>
+        <p class="hero-desc">Khám phá con số chủ đạo cùng những năng lượng đồng hành cùng bạn từ ngày sinh và họ tên.</p>
+        <a class="cta" href="#start">Đọc bài ngay <svg class="cta-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8.3 6.6 13.3 10l-5 3.4z" fill="currentColor"/></svg></a>
+      </div>
+      <div class="watches single" aria-hidden="true">
+        <div class="watch watch--graphite"><div class="strap"></div><div class="case"><div class="screen"><span class="s-label">SỐ CHỦ ĐẠO</span><span class="s-big">11</span><div class="s-grid"><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i></div></div><span class="crown"></span></div></div>
+      </div>
+    </div>
   </header>
 
-  <main class="container">
-    <h1>🔢 Đọc bài Thần Số Học</h1>
-    <p class="lead">Nhập họ tên và ngày sinh để khám phá con số chủ đạo cùng những năng lượng đồng hành cùng bạn.</p>
+  <nav class="subnav" aria-label="Điều hướng">
+    <div class="subnav-inner">
+      <a href="index.html">Tổng quan</a>
+      <a href="numerology.html" aria-current="page">Thần số học</a>
+      <a href="tarot.html">Tarot</a>
+      <a href="matrix.html">Matrix Destiny</a>
+    </div>
+  </nav>
 
-    <form id="numerology-form" class="panel" novalidate>
-      <label for="full-name">Họ và tên khai sinh <span class="muted">(không bắt buộc)</span></label>
-      <input id="full-name" name="fullName" type="text" maxlength="100" autocomplete="name" placeholder="Ví dụ: Nguyễn Thị Hoa">
+  <main class="section" id="start">
+    <div class="container">
+      <h2 class="section-title">Con số của bạn.</h2>
+      <p class="section-lead">Nhập họ tên và ngày sinh dương lịch.</p>
 
-      <label for="birth-date">Ngày sinh (dương lịch)</label>
-      <input id="birth-date" name="birthDate" type="date" min="1900-01-01" required>
+      <form id="numerology-form" class="panel" novalidate>
+        <label for="full-name">Họ và tên khai sinh <span class="muted">(không bắt buộc)</span></label>
+        <input id="full-name" name="fullName" type="text" maxlength="100" autocomplete="name" placeholder="Ví dụ: Nguyễn Thị Hoa">
 
-      <button type="submit" class="btn">Xem luận giải</button>
-    </form>
+        <label for="birth-date">Ngày sinh (dương lịch)</label>
+        <input id="birth-date" name="birthDate" type="date" min="1900-01-01" required>
 
-    <section id="numerology-result" class="results" aria-live="polite"></section>
+        <button type="submit" class="btn">Xem luận giải</button>
+      </form>
 
-    <p class="disclaimer">Nội dung mang tính tham khảo, giúp bạn chiêm nghiệm về bản thân — không thay thế cho các quyết định chuyên môn.</p>
+      <section id="numerology-result" class="results" aria-live="polite"></section>
+    </div>
   </main>
 
+  <footer class="site-footer">Nội dung mang tính tham khảo, giúp bạn chiêm nghiệm về bản thân — không thay thế cho các quyết định chuyên môn.</footer>
   <script type="module" src="js/numerology/page.js"></script>
 </body>
 </html>

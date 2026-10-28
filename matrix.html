@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matrix Destiny</title>
+  <meta name="description" content="Tính Ma trận vận mệnh (Matrix of Destiny) từ ngày sinh với luận giải 22 năng lượng bằng tiếng Việt.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">✦ HUYỀN BÍ</p>
+        <h1>Matrix Destiny</h1>
+        <p class="tagline">Ma trận vận mệnh</p>
+        <p class="hero-desc">Sơ đồ 22 năng lượng Arcana từ ngày sinh — bản đồ tài năng, tiền bạc, tình yêu và bài học cuộc đời bạn.</p>
+        <a class="cta" href="#start">Xem ma trận <svg class="cta-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8.3 6.6 13.3 10l-5 3.4z" fill="currentColor"/></svg></a>
+      </div>
+      <div class="watches single" aria-hidden="true">
+        <div class="watch watch--sand"><div class="strap"></div><div class="case"><div class="screen"><svg class="s-matrix" viewBox="0 0 100 100"><g fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.4"><rect x="22" y="22" width="56" height="56"/><polygon points="50,9 91,50 50,91 9,50"/><path d="M9 50H91M50 9V91M22 22 78 78M78 22 22 78"/></g><circle cx="50" cy="9" r="7" fill="#bf5af2"/><circle cx="9" cy="50" r="7" fill="#bf5af2"/><circle cx="91" cy="50" r="7" fill="#ff453a"/><circle cx="50" cy="91" r="7" fill="#ff453a"/><g fill="#636366"><circle cx="22" cy="22" r="5.5"/><circle cx="78" cy="22" r="5.5"/><circle cx="78" cy="78" r="5.5"/><circle cx="22" cy="78" r="5.5"/></g><circle cx="50" cy="50" r="9" fill="#ffd60a"/></svg></div><span class="crown"></span></div></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="subnav" aria-label="Điều hướng">
+    <div class="subnav-inner">
+      <a href="index.html">Tổng quan</a>
+      <a href="numerology.html">Thần số học</a>
+      <a href="tarot.html">Tarot</a>
+      <a href="matrix.html" aria-current="page">Matrix Destiny</a>
+    </div>
+  </nav>
+
+  <main class="section" id="start">
+    <div class="container">
+      <h2 class="section-title">Bản đồ năng lượng của bạn.</h2>
+      <p class="section-lead">Chỉ cần ngày sinh dương lịch.</p>
+
+      <form id="matrix-form" class="panel" novalidate>
+        <label for="full-name">Họ và tên <span class="muted">(không bắt buộc)</span></label>
+        <input id="full-name" name="fullName" type="text" maxlength="100" autocomplete="name" placeholder="Ví dụ: Trần Minh Anh">
+
+        <label for="birth-date">Ngày sinh (dương lịch)</label>
+        <input id="birth-date" name="birthDate" type="date" min="1900-01-01" required>
+
+        <button type="submit" class="btn">Tính ma trận</button>
+      </form>
+
+      <section id="matrix-result" class="results" aria-live="polite"></section>
+    </div>
+  </main>
+
+  <footer class="site-footer">Nội dung mang tính tham khảo, giúp bạn chiêm nghiệm về bản thân — không thay thế cho các quyết định chuyên môn.</footer>
+  <script type="module" src="js/matrix/page.js"></script>
+</body>
+</html>

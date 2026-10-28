@@ -1,7 +1,7 @@
 {
   "name": "than-so-hoc-tarot",
   "version": "1.0.0",
-  "description": "Static website with two independent features: numerology reading and tarot reading",
+  "description": "Static website with three independent features: numerology, tarot and matrix destiny readings",
   "type": "module",
   "private": true,
   "scripts": {

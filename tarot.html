@@ -8,38 +8,55 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html">✦ Huyền Bí</a>
-    <nav>
-      <a href="numerology.html">Thần số học</a>
-      <a href="tarot.html" aria-current="page">Tarot</a>
-    </nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">✦ HUYỀN BÍ</p>
+        <h1>Tarot</h1>
+        <p class="tagline">78 lá Rider–Waite</p>
+        <p class="hero-desc">Hít thở sâu, nghĩ về điều bạn đang băn khoăn, rồi để những lá bài lên tiếng.</p>
+        <a class="cta" href="#start">Rút bài ngay <svg class="cta-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8.3 6.6 13.3 10l-5 3.4z" fill="currentColor"/></svg></a>
+      </div>
+      <div class="watches single" aria-hidden="true">
+        <div class="watch watch--rose"><div class="strap"></div><div class="case"><div class="screen"><div class="s-card"><span>XVII</span><span class="s-star">✶</span><span>Ngôi Sao</span></div></div><span class="crown"></span></div></div>
+      </div>
+    </div>
   </header>
 
-  <main class="container">
-    <h1>🃏 Đọc bài Tarot</h1>
-    <p class="lead">Hít thở sâu, nghĩ về điều bạn đang băn khoăn, rồi rút bài từ bộ 78 lá Rider–Waite.</p>
+  <nav class="subnav" aria-label="Điều hướng">
+    <div class="subnav-inner">
+      <a href="index.html">Tổng quan</a>
+      <a href="numerology.html">Thần số học</a>
+      <a href="tarot.html" aria-current="page">Tarot</a>
+      <a href="matrix.html">Matrix Destiny</a>
+    </div>
+  </nav>
 
-    <form id="tarot-form" class="panel">
-      <label for="question">Câu hỏi của bạn <span class="muted">(không bắt buộc)</span></label>
-      <input id="question" name="question" type="text" maxlength="200" placeholder="Ví dụ: Công việc của tôi tháng tới thế nào?">
+  <main class="section" id="start">
+    <div class="container">
+      <h2 class="section-title">Hỏi điều bạn muốn biết.</h2>
+      <p class="section-lead">Chọn kiểu trải bài, tập trung vào câu hỏi và rút bài.</p>
 
-      <label for="spread">Kiểu trải bài</label>
-      <select id="spread" name="spread"></select>
+      <form id="tarot-form" class="panel">
+        <label for="question">Câu hỏi của bạn <span class="muted">(không bắt buộc)</span></label>
+        <input id="question" name="question" type="text" maxlength="200" placeholder="Ví dụ: Công việc của tôi tháng tới thế nào?">
 
-      <label class="checkbox">
-        <input type="checkbox" name="allowReversed" checked>
-        Bao gồm lá ngược
-      </label>
+        <label for="spread">Kiểu trải bài</label>
+        <select id="spread" name="spread"></select>
 
-      <button type="submit" class="btn">Xáo &amp; rút bài</button>
-    </form>
+        <label class="checkbox">
+          <input type="checkbox" name="allowReversed" checked>
+          Bao gồm lá ngược
+        </label>
 
-    <section id="tarot-result" class="results" aria-live="polite"></section>
+        <button type="submit" class="btn">Xáo &amp; rút bài</button>
+      </form>
 
-    <p class="disclaimer">Tarot là công cụ để chiêm nghiệm và gợi mở góc nhìn — quyết định cuối cùng luôn thuộc về bạn.</p>
+      <section id="tarot-result" class="results" aria-live="polite"></section>
+    </div>
   </main>
 
+  <footer class="site-footer">Tarot là công cụ để chiêm nghiệm và gợi mở góc nhìn — quyết định cuối cùng luôn thuộc về bạn.</footer>
   <script type="module" src="js/tarot/page.js"></script>
 </body>
 </html>
