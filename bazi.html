@@ -52,7 +52,13 @@
             <input id="birth-time" name="birthTime" type="time">
           </div>
         </div>
-        <p class="hint">Không có giờ sinh thì lá số chỉ có ba trụ, phần cân bằng ngũ hành tính trên sáu chữ.</p>
+        <label for="gender">Giới tính <span class="muted">(để tính chiều đại vận)</span></label>
+        <select id="gender" name="gender">
+          <option value="">Không chọn</option>
+          <option value="female">Nữ</option>
+          <option value="male">Nam</option>
+        </select>
+        <p class="hint">Không có giờ sinh thì lá số chỉ có ba trụ. Không chọn giới tính thì bỏ qua phần đại vận.</p>
 
         <button type="submit" class="btn">Lập lá số</button>
       </form>

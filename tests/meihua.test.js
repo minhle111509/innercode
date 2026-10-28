@@ -113,3 +113,20 @@ test('trigram details, line positions and advice are complete', () => {
   for (let n = 1; n <= 6; n += 1) assert.ok(LINE_POSITIONS[n]);
   for (let n = 1; n <= 64; n += 1) assert.ok(HEXAGRAM_ADVICE[n], `advice ${n}`);
 });
+
+import { LINE_TEXTS } from '../js/meihua/lines.js';
+
+test('384 line texts: 6 per hexagram, non-empty', () => {
+  assert.equal(Object.keys(LINE_TEXTS).length, 64);
+  let count = 0;
+  for (let n = 1; n <= 64; n += 1) {
+    assert.equal(LINE_TEXTS[n].length, 6, `hexagram ${n}`);
+    for (const text of LINE_TEXTS[n]) { assert.ok(text.length > 5); count += 1; }
+  }
+  assert.equal(count, 384);
+});
+
+test('development compares both mutual trigrams with Thể', () => {
+  const r = buildReading(5, 3, 5); // mutual Hỏa Thủy Vị Tế: Ly over Khảm, Thể = Ly (Hỏa)
+  assert.deepEqual(r.development.map((d) => [d.trigram.name, d.key]), [['Ly', 'same'], ['Khảm', 'yongControlsTi']]);
+});

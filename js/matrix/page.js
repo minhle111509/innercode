@@ -2,6 +2,82 @@ import { el, svgEl, setChildren, showError } from '../shared/dom.js';
 import { formatDate } from '../shared/date.js';
 import { calculateMatrixReport } from './matrix.js';
 import { ARCANA, ARCANA_DETAILS, POSITIONS, PURPOSES } from './meanings.js';
+import { healthChart, ageForecast, currentPeriod, ancestralLines, karmicTail } from './advanced.js';
+
+const ageText = (n) => String(Math.round(n * 100) / 100).replace('.', ',');
+
+function healthView(points) {
+  const { rows, total } = healthChart(points);
+  const cell = (n) => el('td', { title: ARCANA[n].name }, [el('strong', { text: n }), el('br'), el('span', { class: 'muted', text: ARCANA[n].name })]);
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: 'Bảng sức khỏe 7 luân xa' }),
+    el('p', { class: 'muted', text: 'Cột Thể chất và Năng lượng lấy từ các điểm trên ma trận; Cảm xúc là tổng của hai cột. Năng lượng ở trạng thái tiêu cực kéo dài có thể phản ánh lên vùng cơ thể tương ứng. Đây là góc nhìn chiêm nghiệm, không thay thế khám chữa bệnh.' }),
+    el('div', { class: 'table-wrap' }, el('table', { class: 'data-table' }, [
+      el('thead', {}, el('tr', {}, ['Luân xa', 'Vùng cơ thể', 'Thể chất', 'Năng lượng', 'Cảm xúc'].map((h) => el('th', { text: h })))),
+      el('tbody', {}, [
+        ...rows.map((row) => el('tr', {}, [
+          el('td', {}, [el('strong', { text: row.name }), el('br'), el('span', { class: 'muted', text: row.theme })]),
+          el('td', { text: row.body }),
+          cell(row.physical), cell(row.energy), cell(row.emotion),
+        ])),
+        el('tr', { class: 'total-row' }, [el('td', { text: 'Tổng' }), el('td'), cell(total.physical), cell(total.energy), cell(total.emotion)]),
+      ]),
+    ])),
+  ]);
+}
+
+function forecastView(points, age) {
+  const periods = ageForecast(points);
+  const now = currentPeriod(periods, age);
+  const arcana = ARCANA[now.value];
+  const decades = Array.from({ length: 8 }, (_, d) => periods.slice(d * 8, d * 8 + 8));
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: 'Vòng dự báo theo tuổi (0–80)' }),
+    el('p', { class: 'muted', text: 'Mỗi chặng 10 năm chia làm 8 giai đoạn khoảng 1 năm 3 tháng. Năng lượng của giai đoạn cho biết chủ đề nổi bật của quãng đời đó.' }),
+    el('article', { class: 'now-card' }, [
+      el('span', { class: 'core-label', text: `Bạn đang ở giai đoạn ${ageText(now.from)}–${ageText(now.to)} tuổi` }),
+      el('strong', { class: 'core-value', text: `${now.value} · ${arcana.name}` }),
+      el('span', { class: 'keywords', text: arcana.keywords }),
+      el('span', {}, [el('strong', { text: 'Tận dụng: ' }), arcana.plus]),
+      el('span', {}, [el('strong', { text: 'Cẩn trọng: ' }), arcana.minus]),
+    ]),
+    el('div', { class: 'decades' }, decades.map((list) => el('div', { class: 'decade' }, [
+      el('span', { class: 'decade-label', text: `${list[0].from}–${list[0].from + 10} tuổi` }),
+      el('div', { class: 'decade-chips' }, list.map((p) => el('span', {
+        class: `age-chip${p === now ? ' current' : ''}${p.anchor ? ' anchor' : ''}`,
+        title: `${ageText(p.from)}–${ageText(p.to)} tuổi: ${ARCANA[p.value].name}`,
+      }, [el('small', { text: ageText(p.from) }), el('strong', { text: p.value })]))),
+    ]))),
+  ]);
+}
+
+function ancestryView(points) {
+  const lines = ancestralLines(points);
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: 'Dòng nghiệp tổ tiên' }),
+    el('p', { class: 'muted', text: 'Hai đường chéo của hình vuông: bên nội (góc trên trái – dưới phải) và bên ngoại (góc trên phải – dưới trái). Đây là những năng lượng, thói quen và bài học truyền qua gia đình.' }),
+    el('div', { class: 'purpose-grid' }, [lines.paternal, lines.maternal].map((line) => el('div', { class: 'purpose' }, [
+      el('strong', { text: line.label }),
+      el('span', { class: 'purpose-number', text: line.points.join(' · ') }),
+      el('span', { class: 'purpose-name', text: line.points.map((n) => ARCANA[n].name).join(' · ') }),
+      el('span', {}, [el('strong', { text: 'Món quà: ' }), ARCANA[line.points[0]].plus]),
+      el('span', { class: 'muted' }, [el('strong', { text: 'Bài học: ' }), ARCANA[line.points[1]].minus]),
+      el('span', { class: 'muted', text: `Năng lượng tổng của dòng: ${line.line} – ${ARCANA[line.line].name}` }),
+    ]))),
+  ]);
+}
+
+function tailView(points) {
+  const steps = karmicTail(points);
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: `Giải mã đuôi nghiệp ${steps.map((s) => s.value).join('-')}` }),
+    el('p', { class: 'muted', text: 'Đọc theo ba bước từ ngoài vào trong: gốc bài học, cách nó hiện ra trong đời sống và chìa khóa để hóa giải.' }),
+    el('ol', { class: 'steps' }, steps.map((step, i) => el('li', {}, [
+      el('strong', { text: `${step.role}: ${step.value} – ${ARCANA[step.value].name}. ` }),
+      i < 2 ? ARCANA[step.value].minus : `${ARCANA[step.value].plus} ${ARCANA_DETAILS[step.value].advice}`,
+    ]))),
+  ]);
+}
 
 const form = document.getElementById('matrix-form');
 const result = document.getElementById('matrix-result');
@@ -125,6 +201,10 @@ function render(report, fullName) {
     matrixChart(report.points),
     ...POSITIONS.map((position) => arcanaCard(position, report.points)),
     purposeGrid(report.purposes),
+    tailView(report.points),
+    healthView(report.points),
+    forecastView(report.points, new Date().getFullYear() - report.date.year),
+    ancestryView(report.points),
   );
   result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }

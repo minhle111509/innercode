@@ -79,6 +79,8 @@ export function buildReading(upperNumber, lowerNumber, movingLine) {
     changedYong,
     relation: elementRelation(ti.element, yong.element),
     outcome: elementRelation(ti.element, changedYong.element),
+    // Quẻ hỗ describes how the matter unfolds: compare both of its trigrams with Thể.
+    development: [mutual.upperTrigram, mutual.lowerTrigram].map((t) => ({ trigram: t, ...elementRelation(ti.element, t.element) })),
   };
 }
 

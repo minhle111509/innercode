@@ -108,3 +108,65 @@ export const DAY_MASTERS = {
   Nhâm: { image: 'Biển lớn, sông dài', text: 'Thông minh, phóng khoáng, nhiều ý tưởng, thích tự do. Cần tập trung và kỷ luật để biến ý tưởng thành thực.' },
   Quý: { image: 'Mưa, sương', text: 'Nhạy cảm, trực giác tốt, kín đáo và giàu trí tưởng tượng. Cần tin vào bản thân, tránh lo âu.' },
 };
+
+/** Tàng can: hidden stems of each branch (stem indices), main qi first. */
+export const HIDDEN_STEMS = [
+  [9], // Tý: Quý
+  [5, 9, 7], // Sửu: Kỷ Quý Tân
+  [0, 2, 4], // Dần: Giáp Bính Mậu
+  [1], // Mão: Ất
+  [4, 1, 9], // Thìn: Mậu Ất Quý
+  [2, 6, 4], // Tỵ: Bính Canh Mậu
+  [3, 5], // Ngọ: Đinh Kỷ
+  [5, 3, 1], // Mùi: Kỷ Đinh Ất
+  [6, 8, 4], // Thân: Canh Nhâm Mậu
+  [7], // Dậu: Tân
+  [4, 7, 3], // Tuất: Mậu Tân Đinh
+  [8, 0], // Hợi: Nhâm Giáp
+];
+
+/** Share of a branch's weight carried by each hidden stem, by number of hidden stems. */
+export const HIDDEN_WEIGHTS = { 1: [1], 2: [0.7, 0.3], 3: [0.6, 0.3, 0.1] };
+
+export const TEN_GODS = {
+  'Tỷ Kiên': { short: 'Tỷ', group: 'Tỷ Kiếp', text: 'Bạn bè, anh em, sự tự lập và tinh thần ngang hàng.' },
+  'Kiếp Tài': { short: 'Kiếp', group: 'Tỷ Kiếp', text: 'Cạnh tranh, liều lĩnh, dám tranh giành cơ hội; dễ hao tài vì người khác.' },
+  'Thực Thần': { short: 'Thực', group: 'Thực Thương', text: 'Hưởng thụ, sáng tạo ôn hòa, tài ăn nói, phúc lộc tự nhiên.' },
+  'Thương Quan': { short: 'Thương', group: 'Thực Thương', text: 'Tài năng nổi bật, phá cách, thích thể hiện; dễ va chạm với quy tắc.' },
+  'Thiên Tài': { short: 'T.Tài', group: 'Tài Tinh', text: 'Tiền bất ngờ, kinh doanh, đầu tư, giao thiệp rộng.' },
+  'Chính Tài': { short: 'C.Tài', group: 'Tài Tinh', text: 'Thu nhập ổn định, quản lý tiền, chăm chỉ, thực tế.' },
+  'Thất Sát': { short: 'Sát', group: 'Quan Sát', text: 'Áp lực, thử thách, quyền uy, dám đối đầu; cần kỷ luật để biến thành sức mạnh.' },
+  'Chính Quan': { short: 'Quan', group: 'Quan Sát', text: 'Danh dự, trách nhiệm, công việc chính quy, tuân thủ nguyên tắc.' },
+  'Thiên Ấn': { short: 'Kiêu', group: 'Ấn Tinh', text: 'Trực giác, học thuật độc đáo, tôn giáo, huyền học; dễ cô độc.' },
+  'Chính Ấn': { short: 'Ấn', group: 'Ấn Tinh', text: 'Học vấn, sự che chở, quý nhân, lòng nhân hậu.' },
+};
+
+/** Seasonal state of an element in the month (nguyệt lệnh). */
+export const SEASON_STATES = {
+  'Vượng': { bonus: 15, text: 'sinh vào mùa của chính mình, được thời rất mạnh' },
+  'Tướng': { bonus: 8, text: 'sinh vào mùa được nâng đỡ, khá mạnh' },
+  'Hưu': { bonus: -5, text: 'sinh vào mùa phải tiết khí, hơi yếu' },
+  'Tù': { bonus: -8, text: 'sinh vào mùa bị hao lực, yếu' },
+  'Tử': { bonus: -12, text: 'sinh vào mùa bị khắc, rất yếu' },
+};
+
+export const BRANCH_RELATIONS = {
+  sixHarmony: [[0, 1], [2, 11], [3, 10], [4, 9], [5, 8], [6, 7]],
+  clash: [[0, 6], [1, 7], [2, 8], [3, 9], [4, 10], [5, 11]],
+  harm: [[0, 7], [1, 6], [2, 5], [3, 4], [8, 11], [9, 10]],
+  threeHarmony: [
+    { branches: [8, 0, 4], element: 'Thủy' },
+    { branches: [11, 3, 7], element: 'Mộc' },
+    { branches: [2, 6, 10], element: 'Hỏa' },
+    { branches: [5, 9, 1], element: 'Kim' },
+  ],
+};
+
+export const STEM_COMBINATIONS = [[0, 5, 'Thổ'], [1, 6, 'Kim'], [2, 7, 'Thủy'], [3, 8, 'Mộc'], [4, 9, 'Hỏa']];
+
+export const SHEN_SHA = {
+  nobleman: { name: 'Thiên Ất Quý Nhân', text: 'Hay gặp người giúp đỡ đúng lúc, dễ được nâng đỡ khi khó khăn.' },
+  peach: { name: 'Đào Hoa', text: 'Duyên dáng, có sức hút, đường tình cảm và giao tế phong phú.' },
+  horse: { name: 'Dịch Mã', text: 'Hay di chuyển, đổi chỗ ở hoặc công việc; hợp nghề đi lại, xuất ngoại.' },
+  scholar: { name: 'Văn Xương', text: 'Thông minh, học giỏi, có khiếu viết lách và thi cử.' },
+};

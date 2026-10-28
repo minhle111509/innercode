@@ -9,6 +9,7 @@ import { NUMBER_MEANINGS, NUMBER_DETAILS, PERSONAL_YEAR_MEANINGS } from '../nume
 import { calculateMatrix } from '../matrix/matrix.js';
 import { ARCANA, ARCANA_DETAILS } from '../matrix/meanings.js';
 import { calculateBazi, parseBirthDateTime, yearPillarOf } from '../bazi/bazi.js';
+import { analyzeStrength } from '../bazi/advanced.js';
 
 export const THEMES = {
   lead: { name: 'Lãnh đạo & tự chủ', practice: 'Mỗi sáng viết ra một quyết định bạn sẽ tự chịu trách nhiệm hôm nay.', meditation: 'Thiền đứng vững như núi 5 phút, cảm nhận trọng tâm cơ thể.' },
@@ -71,6 +72,8 @@ export function buildProfile({ fullName = '', birthDate, birthTime = '', today =
   const numerology = calculateReport({ fullName, birthDate, today });
   const matrix = calculateMatrix(numerology.date);
   const bazi = calculateBazi(input);
+  // Use the same phù–ức strength analysis as the Bát Tự page so both pages agree.
+  bazi.strength = analyzeStrength(bazi.pillars);
   const dm = bazi.dayMaster;
   const { points } = matrix;
 

@@ -3,7 +3,7 @@ import { formatDate } from '../shared/date.js';
 import { calculateReport } from './numerology.js';
 import {
   NUMBER_MEANINGS, NUMBER_DETAILS, PERSONAL_YEAR_MEANINGS, CHART_DIGIT_MEANINGS,
-  CHALLENGE_MEANINGS, ARROW_MEANINGS,
+  CHALLENGE_MEANINGS, ARROW_MEANINGS, KARMIC_DEBT_MEANINGS, LESSON_MEANINGS, POSITION_TEXTS,
 } from './meanings.js';
 
 const form = document.getElementById('numerology-form');
@@ -12,7 +12,7 @@ const birthInput = document.getElementById('birth-date');
 
 birthInput.max = new Date().toISOString().slice(0, 10);
 
-function meaningCard(label, number, { highlight = false, hint = null, details = false } = {}) {
+function meaningCard(label, number, { highlight = false, hint = null, details = false, position = null } = {}) {
   const meaning = NUMBER_MEANINGS[number];
   const extra = details ? NUMBER_DETAILS[number] : null;
   return el('article', { class: `reading-card${highlight ? ' highlight' : ''}` }, [
@@ -20,6 +20,7 @@ function meaningCard(label, number, { highlight = false, hint = null, details = 
     el('div', {}, [
       el('h3', { text: `${label}: ${meaning.title}` }),
       hint ? el('p', { class: 'muted', text: hint }) : null,
+      position ? el('p', { class: 'advice', text: POSITION_TEXTS[position][number] }) : null,
       el('p', { class: 'keywords', text: meaning.keywords }),
       el('p', {}, [el('strong', { text: 'Điểm mạnh: ' }), meaning.strengths]),
       el('p', {}, [el('strong', { text: 'Thử thách: ' }), meaning.challenges]),
@@ -92,6 +93,63 @@ function yearCycleView(cycle) {
   ]);
 }
 
+function karmicView(debts) {
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: 'Số nợ nghiệp' }),
+    debts.length
+      ? el('ul', { class: 'arrow-list' }, debts.map((d) => el('li', {}, [
+        el('span', { class: 'verdict bad', text: d.number }), el('strong', { text: ` ${d.source}. ` }), KARMIC_DEBT_MEANINGS[d.number],
+      ])))
+      : el('p', { class: 'muted', text: 'Không có số nợ nghiệp (13, 14, 16, 19) trong ngày sinh và các số cốt lõi.' }),
+  ]);
+}
+
+function nameView(report) {
+  const { karmicLessons: lessons, hiddenPassion: passion, balance } = report;
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: 'Phân tích họ tên' }),
+    el('p', {}, [
+      el('strong', { text: `Số cân bằng ${balance}: ` }),
+      `Khi gặp khó khăn, hãy dùng năng lượng ${NUMBER_MEANINGS[balance].keywords.toLowerCase()} để lấy lại thăng bằng.`,
+    ]),
+    el('p', {}, [
+      el('strong', { text: `Số đam mê ẩn ${passion.numbers.join(', ')}: ` }),
+      `xuất hiện ${passion.count} lần trong tên; năng lượng ${passion.numbers.map((n) => NUMBER_MEANINGS[n].title.toLowerCase()).join(', ')} là động lực thầm kín thúc đẩy bạn.`,
+    ]),
+    lessons.length
+      ? el('ul', { class: 'arrow-list' }, lessons.map((d) => el('li', {}, [el('span', { class: 'verdict neutral', text: d }), ` ${LESSON_MEANINGS[d]}`])))
+      : el('p', { class: 'muted', text: 'Tên của bạn có đủ các con số từ 1 đến 9, không có bài học nghiệp nào bị thiếu.' }),
+  ]);
+}
+
+function cyclesView(cycles, age) {
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: 'Ba chu kỳ đường đời' }),
+    el('div', { class: 'purpose-grid' }, cycles.map((c) => {
+      const current = age >= c.from && (c.to === null || age < c.to);
+      return el('div', { class: `purpose${current ? ' current' : ''}` }, [
+        el('span', { class: 'purpose-number', text: c.value }),
+        el('strong', { text: `${c.label} · ${c.to === null ? `từ ${c.from} tuổi` : `${c.from}–${c.to} tuổi`}` }),
+        el('span', { class: 'purpose-name', text: NUMBER_MEANINGS[c.value].title }),
+        el('span', { class: 'keywords', text: NUMBER_MEANINGS[c.value].keywords }),
+        current ? el('span', { class: 'tag-now', text: 'Hiện tại' }) : null,
+      ]);
+    })),
+  ]);
+}
+
+function monthsView(months, day) {
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: 'Tháng & ngày cá nhân' }),
+    el('p', {}, [el('strong', { text: `Hôm nay là ngày cá nhân số ${day}. ` }), PERSONAL_YEAR_MEANINGS[day].split(':')[1].trim()]),
+    el('div', { class: 'purpose-grid' }, months.map((m, i) => el('div', { class: `purpose${i === 0 ? ' current' : ''}` }, [
+      el('span', { class: 'purpose-number', text: m.number }),
+      el('strong', { text: `Tháng ${m.month}/${m.year}` }),
+      el('span', { class: 'muted', text: PERSONAL_YEAR_MEANINGS[m.number].replace('Năm', 'Tháng') }),
+    ]))),
+  ]);
+}
+
 function render(report, fullName) {
   const nodes = [
     el('h2', { text: fullName ? `Kết quả của ${fullName}` : 'Kết quả của bạn' }),
@@ -99,22 +157,26 @@ function render(report, fullName) {
     meaningCard('Số chủ đạo', report.lifePath, {
       highlight: true, details: true, hint: 'Con số quan trọng nhất, cho biết bài học và con đường chính của cuộc đời.',
     }),
-    meaningCard('Số ngày sinh', report.birthDay, { hint: 'Năng khiếu tự nhiên bạn mang theo từ khi sinh ra.' }),
+    meaningCard('Số ngày sinh', report.birthDay, { hint: 'Năng khiếu tự nhiên bạn mang theo từ khi sinh ra.', position: 'birthday' }),
     meaningCard('Số thái độ', report.attitude, { hint: 'Ấn tượng đầu tiên và cách bạn phản ứng với hoàn cảnh.' }),
   ];
 
   if (report.name) {
-    nodes.push(meaningCard('Số sứ mệnh', report.name.expression, { hint: 'Từ toàn bộ họ tên: tài năng và hướng bạn được sinh ra để phát triển.', details: true }));
-    if (report.name.soulUrge) nodes.push(meaningCard('Số linh hồn', report.name.soulUrge, { hint: 'Từ các nguyên âm: khao khát sâu thẳm bên trong.' }));
-    if (report.name.personality) nodes.push(meaningCard('Số nhân cách', report.name.personality, { hint: 'Từ các phụ âm: hình ảnh bạn thể hiện ra bên ngoài.' }));
+    nodes.push(meaningCard('Số sứ mệnh', report.name.expression, { hint: 'Từ toàn bộ họ tên: tài năng và hướng bạn được sinh ra để phát triển.', details: true, position: 'expression' }));
+    if (report.name.soulUrge) nodes.push(meaningCard('Số linh hồn', report.name.soulUrge, { hint: 'Từ các nguyên âm: khao khát sâu thẳm bên trong.', position: 'soul' }));
+    if (report.name.personality) nodes.push(meaningCard('Số nhân cách', report.name.personality, { hint: 'Từ các phụ âm: hình ảnh bạn thể hiện ra bên ngoài.', position: 'personality' }));
     nodes.push(meaningCard('Số trưởng thành', report.maturity, { hint: 'Năng lượng phát huy mạnh từ khoảng tuổi 35–40 trở đi.' }));
   } else {
     nodes.push(el('p', { class: 'muted', text: 'Nhập họ tên để xem thêm số sứ mệnh, linh hồn, nhân cách và trưởng thành.' }));
   }
 
   nodes.push(
+    karmicView(report.karmicDebts),
+    report.name ? nameView(report) : null,
+    cyclesView(report.lifeCycles, report.age),
     pinnacleView(report.pinnacles, report.challenges, report.age),
     yearCycleView(report.yearCycle),
+    monthsView(report.personalMonths, report.personalDay),
     birthChartView(report.chart, report.arrows),
   );
   setChildren(result, ...nodes);

@@ -464,6 +464,43 @@ input[type="number"]:focus, input[type="datetime-local"]:focus, input[type="time
 .el-4, .el-bg-4 { --el: var(--el-water); }
 .bar-fill[class*="el-bg-"] { background: var(--el); }
 
+.pillar-god { font-size: 12px !important; font-weight: 600; color: var(--accent); min-height: 1.4em; }
+.hidden-stems { display: grid; gap: 2px; margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+.verdict.neutral { background: rgba(255, 255, 255, 0.1); color: var(--text); }
+.luck-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.luck { display: grid; gap: 4px; align-content: start; padding: 14px; border-radius: 14px; background: #000; font-size: 14px; }
+.luck.current { box-shadow: inset 0 0 0 1px rgba(255, 90, 79, 0.6); }
+.luck-age { font-weight: 600; }
+.luck-name { font-size: 20px; }
+.luck .verdict, .purpose .verdict { justify-self: start; }
+
+.table-wrap { overflow-x: auto; max-width: 100%; }
+.results > *, .reading-card > div, .reading-card.column > * { min-width: 0; }
+.data-table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 14px; }
+.data-table th { text-align: left; padding: 8px 10px; color: var(--accent); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--line); }
+.data-table td { padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); vertical-align: top; font-variant-numeric: tabular-nums; }
+.data-table td strong { font-size: 16px; }
+.total-row td { border-bottom: 0; font-weight: 600; }
+.now-card { display: grid; gap: 4px; padding: 18px; border-radius: 16px; background: #000; box-shadow: inset 0 0 0 1px rgba(255, 90, 79, 0.5); }
+.decades { display: grid; gap: 10px; }
+.decade { display: grid; grid-template-columns: 7.5em 1fr; gap: 10px; align-items: center; }
+.decade-label { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.decade-chips { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; }
+.age-chip { display: grid; justify-items: center; gap: 1px; padding: 6px 0; border-radius: 8px; background: #000; font-variant-numeric: tabular-nums; }
+.age-chip small { font-size: 10px; color: var(--muted); }
+.age-chip strong { font-size: 15px; }
+.age-chip.anchor { background: #1c1c1e; }
+.age-chip.current { background: var(--accent); }
+.age-chip.current small { color: #000; }
+.steps { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+
+.lines-detail { text-align: left; margin-top: 6px; font-size: 14px; }
+.lines-detail summary { cursor: pointer; color: var(--link); }
+.lines-detail ol { margin: 8px 0 0; padding-left: 0; list-style: none; display: grid; gap: 6px; }
+.lines-detail li { padding: 8px 10px; border-radius: 10px; background: #000; }
+.lines-detail li.moving-text { box-shadow: inset 0 0 0 1px rgba(255, 90, 79, 0.6); }
+.line-quote { margin: 0; padding: 14px 16px; border-radius: 14px; background: #000; border-left: 3px solid var(--accent); }
+
 /* ---------- Khám phá bản thân ---------- */
 .tool { display: grid; gap: 16px; padding: 32px; border-radius: 28px; background: var(--surface); scroll-margin-top: 72px; }
 .tool { margin-top: 24px; }
@@ -541,6 +578,8 @@ textarea:focus { outline: none; border-color: var(--button); box-shadow: 0 0 0 3
   .compare-src { display: block; font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; }
 }
 @media (max-width: 480px) {
+  .decade { grid-template-columns: 1fr; gap: 4px; }
+  .age-chip strong { font-size: 13px; }
   .pillars { gap: 6px; }
   .pillar { padding: 12px 4px; }
   .pillar-char { font-size: 20px !important; }

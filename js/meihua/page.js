@@ -1,6 +1,7 @@
 import { el, setChildren, showError } from '../shared/dom.js';
 import { castByTime, castByNumbers, parseDateTime } from './meihua.js';
 import { LINE_POSITIONS, HEXAGRAM_ADVICE } from './data.js';
+import { LINE_TEXTS } from './lines.js';
 
 const form = document.getElementById('meihua-form');
 const result = document.getElementById('meihua-result');
@@ -43,6 +44,12 @@ function hexagramFigure(hexagram, { label, movingLine = null }) {
     el('p', { class: 'muted', text: `Quẻ số ${hexagram.number} · ${up.symbol} ${up.name} trên, ${low.symbol} ${low.name} dưới` }),
     el('p', { text: hexagram.meaning }),
     el('p', { class: 'advice' }, [el('strong', { text: 'Lời khuyên: ' }), HEXAGRAM_ADVICE[hexagram.number]]),
+    el('details', { class: 'lines-detail' }, [
+      el('summary', { text: 'Xem lời 6 hào' }),
+      el('ol', {}, LINE_TEXTS[hexagram.number].map((text, i) => el('li', { class: movingLine === i + 1 ? 'moving-text' : null }, [
+        el('strong', { text: `Hào ${i + 1}: ` }), text,
+      ]))),
+    ]),
   ]);
 }
 
@@ -82,6 +89,10 @@ function render(reading, question) {
     el('section', { class: 'reading-card column' }, [
       el('h3', { text: `Hào ${reading.movingLine} động · Phân tích Thể – Dụng` }),
       el('p', { class: 'muted', text: LINE_POSITIONS[reading.movingLine] }),
+      el('blockquote', { class: 'line-quote' }, [
+        el('strong', { text: `Lời hào ${reading.movingLine} quẻ ${reading.main.name}: ` }),
+        LINE_TEXTS[reading.main.number][reading.movingLine - 1],
+      ]),
       el('div', { class: 'trigram-row' }, [
         trigramChip('Thể (bạn)', reading.ti),
         trigramChip('Dụng (sự việc)', reading.yong),
@@ -92,6 +103,11 @@ function render(reading, question) {
         el('strong', { text: ` ${reading.relation.label}. ` }),
         reading.relation.text,
       ]),
+      ...reading.development.map((d) => el('p', {}, [
+        el('span', { class: `verdict ${verdictClass(d.verdict)}`, text: d.verdict }),
+        el('strong', { text: ` Diễn biến (quẻ hỗ ${d.trigram.name}, ${d.label}). ` }),
+        d.text,
+      ])),
       el('p', {}, [
         el('span', { class: `verdict ${verdictClass(reading.outcome.verdict)}`, text: reading.outcome.verdict }),
         el('strong', { text: ` Kết cục (${reading.outcome.label}). ` }),

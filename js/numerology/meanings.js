@@ -182,3 +182,87 @@ export const ARROW_MEANINGS = {
     empty: ['Mũi tên Hoài nghi', 'Hay nghi ngờ; cần cởi mở đón nhận góc nhìn mới.'],
   },
 };
+
+export const KARMIC_DEBT_MEANINGS = {
+  13: 'Nợ nghiệp 13 (13/4): bài học về sự chăm chỉ. Dễ muốn đi đường tắt hoặc nản khi việc kéo dài; thành công đến khi bạn kiên trì, kỷ luật và làm đến nơi đến chốn.',
+  14: 'Nợ nghiệp 14 (14/5): bài học về tự do có trách nhiệm. Dễ sa vào thái quá (ăn uống, tiêu xài, cảm xúc); cần điều độ và giữ cam kết.',
+  16: 'Nợ nghiệp 16 (16/7): bài học về cái tôi. Có thể trải qua những sụp đổ bất ngờ để buông bỏ kiêu ngạo; khiêm nhường và đời sống tinh thần giúp bạn đứng dậy mạnh hơn.',
+  19: 'Nợ nghiệp 19 (19/1): bài học về sự độc lập đúng cách. Dễ ôm hết một mình hoặc dùng quyền lực ích kỷ; cần học cách nhờ giúp đỡ và nâng đỡ người khác.',
+};
+
+/** Missing letter values in the name (bài học nghiệp). */
+export const LESSON_MEANINGS = {
+  1: 'Thiếu số 1: cần rèn sự tự tin và dám đứng ra quyết định.',
+  2: 'Thiếu số 2: cần học kiên nhẫn, hợp tác và lắng nghe.',
+  3: 'Thiếu số 3: cần mạnh dạn thể hiện bản thân, nói ra cảm xúc.',
+  4: 'Thiếu số 4: cần kỷ luật, nề nếp và làm việc có kế hoạch.',
+  5: 'Thiếu số 5: cần cởi mở với thay đổi và trải nghiệm mới.',
+  6: 'Thiếu số 6: cần học cách nhận trách nhiệm với gia đình, cộng đồng.',
+  7: 'Thiếu số 7: cần dành thời gian chiêm nghiệm, tìm hiểu sâu.',
+  8: 'Thiếu số 8: cần học quản lý tiền bạc và quyền lực cá nhân.',
+  9: 'Thiếu số 9: cần mở lòng bao dung và nghĩ cho người khác.',
+};
+
+/** Meaning of a number by the position it appears in. */
+export const POSITION_TEXTS = {
+  soul: {
+    1: 'Bên trong bạn khao khát được tự chủ, được dẫn đầu và làm điều của riêng mình.',
+    2: 'Bạn khao khát sự hòa hợp, một mối quan hệ gắn bó và cảm giác được thấu hiểu.',
+    3: 'Bạn khao khát được thể hiện, được sáng tạo và mang niềm vui cho người khác.',
+    4: 'Bạn khao khát sự ổn định, an toàn và một nền tảng vững chắc.',
+    5: 'Bạn khao khát tự do, trải nghiệm và không bị ràng buộc.',
+    6: 'Bạn khao khát yêu thương, chăm sóc và một mái ấm trọn vẹn.',
+    7: 'Bạn khao khát hiểu biết sâu sắc, sự tĩnh lặng và chân lý.',
+    8: 'Bạn khao khát thành tựu, sự công nhận và độc lập tài chính.',
+    9: 'Bạn khao khát cống hiến, giúp đỡ và làm điều có ý nghĩa cho đời.',
+    10: 'Bạn khao khát được tự do làm chủ và thích nghi theo cách của mình.',
+    11: 'Bạn khao khát truyền cảm hứng và sống theo tiếng gọi tâm linh.',
+    22: 'Bạn khao khát xây dựng điều lớn lao, để lại di sản lâu dài.',
+    33: 'Bạn khao khát chữa lành và yêu thương vô điều kiện.',
+  },
+  personality: {
+    1: 'Người khác thấy bạn mạnh mẽ, tự tin, có phần cứng cỏi.',
+    2: 'Người khác thấy bạn dịu dàng, dễ gần, biết lắng nghe.',
+    3: 'Người khác thấy bạn vui vẻ, duyên dáng, nói chuyện cuốn hút.',
+    4: 'Người khác thấy bạn đáng tin, nghiêm túc, chỉn chu.',
+    5: 'Người khác thấy bạn năng động, hấp dẫn, khó đoán.',
+    6: 'Người khác thấy bạn ấm áp, chu đáo, có trách nhiệm.',
+    7: 'Người khác thấy bạn bí ẩn, sâu sắc, hơi xa cách.',
+    8: 'Người khác thấy bạn quyền lực, thành đạt, có uy.',
+    9: 'Người khác thấy bạn bao dung, rộng lượng, có lý tưởng.',
+    10: 'Người khác thấy bạn linh hoạt, dễ hòa nhập.',
+    11: 'Người khác thấy bạn có khí chất đặc biệt, truyền cảm hứng.',
+    22: 'Người khác thấy bạn vững chãi, có tầm nhìn lớn.',
+    33: 'Người khác thấy bạn hiền hậu, như chỗ dựa tinh thần.',
+  },
+  expression: {
+    1: 'Bạn được sinh ra để tiên phong, khởi xướng và lãnh đạo.',
+    2: 'Bạn được sinh ra để kết nối, hòa giải và hỗ trợ.',
+    3: 'Bạn được sinh ra để sáng tạo và truyền đạt bằng lời nói, hình ảnh.',
+    4: 'Bạn được sinh ra để xây dựng hệ thống và tạo nền móng.',
+    5: 'Bạn được sinh ra để khám phá, đổi mới và lan tỏa trải nghiệm.',
+    6: 'Bạn được sinh ra để chăm sóc, giáo dục và làm đẹp cuộc sống.',
+    7: 'Bạn được sinh ra để nghiên cứu, phân tích và tìm ra chân lý.',
+    8: 'Bạn được sinh ra để quản lý, kinh doanh và tạo ra của cải.',
+    9: 'Bạn được sinh ra để phụng sự cộng đồng và nâng đỡ người khác.',
+    10: 'Bạn được sinh ra để thích nghi và mở đường trong những hoàn cảnh mới.',
+    11: 'Bạn được sinh ra để truyền cảm hứng và soi đường cho người khác.',
+    22: 'Bạn được sinh ra để biến tầm nhìn lớn thành hiện thực.',
+    33: 'Bạn được sinh ra để chữa lành và dạy dỗ bằng tình thương.',
+  },
+  birthday: {
+    1: 'Năng khiếu tự lập, dám làm và khởi đầu nhanh.',
+    2: 'Năng khiếu cảm nhận tinh tế và làm việc nhóm.',
+    3: 'Năng khiếu ngôn từ, nghệ thuật và trí nhớ.',
+    4: 'Năng khiếu tổ chức, tỉ mỉ và làm việc bền bỉ.',
+    5: 'Năng khiếu thích nghi, giao tiếp và bán hàng.',
+    6: 'Năng khiếu chăm sóc, thẩm mỹ và tư vấn.',
+    7: 'Năng khiếu phân tích, nghiên cứu và trực giác.',
+    8: 'Năng khiếu kinh doanh, quản trị và đánh giá giá trị.',
+    9: 'Năng khiếu thấu cảm, nghệ thuật và hoạt động xã hội.',
+    10: 'Năng khiếu xoay xở và bắt đầu lại sau vấp ngã.',
+    11: 'Năng khiếu trực giác mạnh và truyền cảm hứng.',
+    22: 'Năng khiếu biến ý tưởng lớn thành kế hoạch thực tế.',
+    33: 'Năng khiếu nâng đỡ, chữa lành tinh thần người khác.',
+  },
+};
