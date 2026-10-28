@@ -7,7 +7,7 @@
  * Number method: upper = n1 mod 8, lower = n2 mod 8, moving = (n1 + n2 [+ hour]) mod 6
  */
 
-import { solarToLunar } from './lunar.js';
+import { solarToLunar } from '../shared/lunar.js';
 import { TRIGRAMS, findHexagram, EARTHLY_BRANCHES, RELATIONS } from './data.js';
 
 const GENERATES = { Mộc: 'Hỏa', Hỏa: 'Thổ', Thổ: 'Kim', Kim: 'Thủy', Thủy: 'Mộc' };

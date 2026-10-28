@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Khám Phá Bản Thân · Inner Code</title>
+  <meta name="description" content="Trắc nghiệm 9 nhóm tính cách, bánh xe cuộc sống, bài thở có hướng dẫn và câu hỏi viết nhật ký.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">✦ INNER CODE</p>
+        <h1>Khám Phá Bản Thân</h1>
+        <p class="tagline">Tâm lý · Thiền · Nhật ký</p>
+        <p class="hero-desc">Huyền học cho bạn tấm bản đồ; tâm lý học và thực hành giúp bạn bước đi. Bốn công cụ nhỏ để hiểu và chăm sóc chính mình.</p>
+        <a class="cta" href="#start">Bắt đầu <svg class="cta-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8.3 6.6 13.3 10l-5 3.4z" fill="currentColor"/></svg></a>
+      </div>
+      <div class="faces single">
+        <figure class="face-item"><div class="face" aria-hidden="true"><span class="face-label">BẢN THÂN</span><span class="face-time">10:09</span><div class="s-breath" aria-hidden="true"></div><span class="face-foot">Hít vào · 4 giây</span></div></figure>
+      </div>
+    </div>
+  </header>
+
+  <nav class="subnav" aria-label="Điều hướng">
+    <div class="subnav-inner">
+      <a href="index.html">Tổng quan</a>
+      <a href="profile.html">Hồ sơ nội tâm</a>
+      <a href="numerology.html">Thần số học</a>
+      <a href="tarot.html">Tarot</a>
+      <a href="matrix.html">Matrix</a>
+      <a href="meihua.html">Mai Hoa</a>
+      <a href="bazi.html">Bát Tự</a>
+      <a href="self.html" aria-current="page">Bản thân</a>
+    </div>
+  </nav>
+
+  <main class="section" id="start">
+    <div class="container">
+      <nav class="local-nav" aria-label="Công cụ">
+        <a href="#quiz">Trắc nghiệm tính cách</a>
+        <a href="#wheel">Bánh xe cuộc sống</a>
+        <a href="#breath">Bài thở</a>
+        <a href="#journal">Nhật ký</a>
+      </nav>
+
+      <form id="quiz-form" class="tool" novalidate>
+        <h2 id="quiz">Trắc nghiệm 9 nhóm tính cách</h2>
+        <p>36 câu, khoảng 5 phút. Chọn mức độ đúng với bạn trong phần lớn thời gian, không phải điều bạn mong muốn.</p>
+        <div class="scale-legend" aria-hidden="true"><span>1 = Hoàn toàn không đúng</span><span>5 = Rất đúng</span></div>
+        <div id="quiz-list" class="quiz-list"></div>
+        <p id="quiz-progress" class="sticky-progress" aria-live="polite"></p>
+        <button type="submit" class="btn">Xem kết quả</button>
+      </form>
+      <section id="quiz-result" class="results" aria-live="polite"></section>
+
+      <section class="tool" aria-labelledby="wheel">
+        <h2 id="wheel">Bánh xe cuộc sống</h2>
+        <p>Chấm mức hài lòng hiện tại của bạn cho từng lĩnh vực, từ 1 đến 10.</p>
+        <div class="wheel-layout">
+          <div id="wheel-inputs" class="bars"></div>
+          <svg id="wheel-chart" class="radar" viewBox="-90 0 540 360" role="img" aria-label="Biểu đồ bánh xe cuộc sống"></svg>
+        </div>
+        <div id="wheel-summary" aria-live="polite"></div>
+      </section>
+
+      <section class="tool" aria-labelledby="breath">
+        <h2 id="breath">Bài thở có hướng dẫn</h2>
+        <p>Ngồi thẳng lưng, thả lỏng vai và thở theo vòng tròn.</p>
+        <div class="field-row">
+          <div>
+            <label for="breath-pattern">Kiểu thở</label>
+            <select id="breath-pattern"></select>
+          </div>
+          <div>
+            <label for="breath-minutes">Thời lượng</label>
+            <select id="breath-minutes">
+              <option value="1">1 phút</option>
+              <option value="3" selected>3 phút</option>
+              <option value="5">5 phút</option>
+            </select>
+          </div>
+        </div>
+        <p id="breath-info" class="hint"></p>
+        <div class="breath-stage">
+          <div id="breath-circle" class="breath-circle" data-phase="rest" aria-hidden="true"></div>
+          <p id="breath-label" class="breath-label" aria-live="polite">Sẵn sàng</p>
+          <p id="breath-count" class="breath-count"></p>
+          <button id="breath-toggle" type="button" class="btn">Bắt đầu</button>
+        </div>
+      </section>
+
+      <section class="tool" aria-labelledby="journal">
+        <h2 id="journal">Câu hỏi nhật ký</h2>
+        <p>Viết tự do 5–10 phút. Không ai đọc ngoài bạn.</p>
+        <label for="journal-topic">Chủ đề</label>
+        <select id="journal-topic"></select>
+        <p id="journal-prompt" class="journal-prompt" aria-live="polite"></p>
+        <div class="row-actions"><button id="journal-next" type="button" class="btn secondary">Câu hỏi khác</button></div>
+        <label for="journal-text">Bài viết của bạn</label>
+        <textarea id="journal-text" placeholder="Bắt đầu viết ở đây..."></textarea>
+        <div class="row-actions">
+          <button id="journal-clear" type="button" class="btn secondary">Xóa nháp</button>
+          <span id="journal-status" class="hint" aria-live="polite">Nháp chỉ được lưu trên trình duyệt này.</span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">INNER CODE – Mật mã nội tâm. Các công cụ hỗ trợ tự chiêm nghiệm, không thay thế cho tư vấn tâm lý chuyên môn.</footer>
+  <script type="module" src="js/self/page.js"></script>
+</body>
+</html>

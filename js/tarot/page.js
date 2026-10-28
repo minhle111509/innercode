@@ -1,5 +1,5 @@
 import { el, setChildren, showError } from '../shared/dom.js';
-import { DECK } from './deck.js';
+import { DECK, SUITS } from './deck.js';
 import { SPREADS, readSpread, summarizeReading } from './tarot.js';
 
 const form = document.getElementById('tarot-form');
@@ -35,6 +35,8 @@ function cardView({ card, reversed, position }, index) {
     el('h3', { text: `${card.nameVi} ${reversed ? '(Ngược)' : '(Xuôi)'}` }),
     el('p', { class: 'muted', text: card.nameEn }),
     el('p', { text: meaning }),
+    card.advice ? el('p', { class: 'advice' }, [el('strong', { text: 'Lời khuyên: ' }), card.advice]) : null,
+    card.suit ? el('p', { class: 'muted', text: `Bộ ${SUITS[card.suit].vi}: ${SUITS[card.suit].domain}` }) : el('p', { class: 'muted', text: 'Ẩn Chính: bài học lớn của giai đoạn này' }),
   ]);
 
   flipCard.addEventListener('click', () => {

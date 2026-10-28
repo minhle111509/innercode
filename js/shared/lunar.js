@@ -104,3 +104,15 @@ export function solarToLunar(dd, mm, yy, timeZone = VIETNAM_TZ) {
   if (month >= 11 && diff < 4) year -= 1;
   return { day, month, year, leap };
 }
+
+/** Apparent solar longitude in degrees [0, 360) at Julian Day `jd` (UT, fractional). */
+export function sunLongitudeDegrees(jd) {
+  const T = (jd - 2451545.0) / 36525;
+  const T2 = T * T;
+  const dr = Math.PI / 180;
+  const M = 357.52910 + 35999.05030 * T - 0.0001559 * T2 - 0.00000048 * T * T2;
+  const L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2;
+  const DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.sin(dr * M)
+    + (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
+  return (((L0 + DL) % 360) + 360) % 360;
+}

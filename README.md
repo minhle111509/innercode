@@ -1,48 +1,41 @@
 # ✦ INNER CODE – Mật mã nội tâm
 
-Website tĩnh (HTML/CSS/JavaScript thuần, không cần build) với **4 tính năng độc lập**: Thần số học, Tarot, Matrix Destiny và Kinh Dịch Mai Hoa. Giao diện phong cách trang sản phẩm: nền tối, tiêu đề lớn, mỗi tính năng là một "mặt đồng hồ" vẽ bằng CSS, thanh điều hướng con dính trên cùng.
+Website tĩnh (HTML/CSS/JavaScript thuần, không cần build, không cần máy chủ) kết hợp **huyền học chuyên sâu** và **khám phá bản thân**. Giao diện kiểu trang sản phẩm: nền tối, tiêu đề lớn, mỗi công cụ là một "mặt đồng hồ" vẽ bằng CSS.
 
-| Tính năng | Trang | Mã nguồn |
+| Trang | Nội dung | Mã nguồn |
 |---|---|---|
-| 🔢 Đọc bài Thần số học | `numerology.html` | `js/numerology/` |
-| 🃏 Đọc bài Tarot | `tarot.html` | `js/tarot/` |
-| ✴️ Matrix Destiny | `matrix.html` | `js/matrix/` |
-| ☯️ Kinh Dịch Mai Hoa | `meihua.html` | `js/meihua/` |
+| `profile.html` | **Hồ sơ nội tâm**: đối chiếu Thần số học, Matrix Destiny, Bát Tự; điểm hội tụ; gợi ý thực hành | `js/profile/` |
+| `numerology.html` | **Thần số học** Pythagoras | `js/numerology/` |
+| `matrix.html` | **Matrix Destiny** 22 năng lượng | `js/matrix/` |
+| `bazi.html` | **Bát Tự – Ngũ Hành** (tứ trụ Can Chi) | `js/bazi/` |
+| `meihua.html` | **Kinh Dịch Mai Hoa** | `js/meihua/` |
+| `tarot.html` | **Tarot** 78 lá | `js/tarot/` |
+| `self.html` | **Khám phá bản thân**: trắc nghiệm tính cách, bánh xe cuộc sống, bài thở, nhật ký | `js/self/` |
 
-Các tính năng không phụ thuộc nhau; chỉ dùng chung `css/style.css` và các helper nhỏ trong `js/shared/` (dựng DOM, đọc ngày sinh, cộng chữ số).
+Mỗi tính năng có module logic thuần (không đụng DOM, có unit test) và một file `page.js` cho giao diện. Phần dùng chung nằm trong `js/shared/` (DOM an toàn XSS, đọc ngày sinh, cộng chữ số, lịch âm).
 
-## Thần số học
-- **Số chủ đạo** theo cách tính phổ biến ở Việt Nam: cộng tất cả chữ số của ngày sinh, rút gọn đến khi nằm trong 2–11 hoặc là 22/33 (vì vậy có số chủ đạo 10).
-- **Số ngày sinh**, **Năm cá nhân** (của năm hiện tại).
-- Từ họ tên (không bắt buộc, tự bỏ dấu tiếng Việt): **Số sứ mệnh**, **Số linh hồn** (nguyên âm A E I O U Y), **Số nhân cách** (phụ âm) theo bảng Pythagoras.
-- **Biểu đồ ngày sinh** 3×3 và các số còn thiếu.
+## Chi tiết từng hệ thống
+**Thần số học.** Số chủ đạo (cách tính Việt Nam: giữ 2–11, 22, 33), số ngày sinh, thái độ, sứ mệnh, linh hồn, nhân cách, trưởng thành; 4 đỉnh cao kèm độ tuổi (đỉnh 1 = 36 − số chủ đạo) và 4 thử thách; chu kỳ năm cá nhân; biểu đồ ngày sinh với 8 mũi tên (trọn/trống); luận giải sự nghiệp và tình yêu.
 
-## Tarot
-- Bộ 78 lá Rider–Waite (22 Ẩn Chính + 56 Ẩn Phụ) với nghĩa xuôi/ngược tiếng Việt.
-- 4 kiểu trải bài: 1 lá, Quá khứ–Hiện tại–Tương lai, Tình yêu, Ra quyết định.
-- Xáo bài Fisher–Yates dùng `crypto.getRandomValues` (không thiên lệch modulo).
-- Lật bài có hiệu ứng, tổng quan trải bài hiện ra khi đã lật hết.
+**Matrix Destiny.** A = ngày, B = tháng, C = tổng chữ số năm, D = A+B+C, E = A+B+C+D, rút gọn về 1–22; góc dòng tộc, điểm phụ, kênh tài chính và tình yêu, đuôi nghiệp, 4 mục đích sống; nghề nghiệp và lời khuyên cho từng năng lượng.
 
-## Matrix Destiny (Ma trận vận mệnh)
-- Hệ 22 năng lượng Arcana: số > 22 được rút gọn bằng cách cộng các chữ số.
-- A = ngày, B = tháng, C = tổng chữ số năm, D = A+B+C, E (trung tâm) = A+B+C+D; F/G/H/I = các góc dòng tộc.
-- Điểm phụ trên từng trục (X1 = X+E, X2 = X+X1), kênh tài chính & tình yêu, đuôi nghiệp (D · D2 · D1), tài năng (B · B2 · B1).
-- Mục đích sống: cá nhân, xã hội, tâm linh, toàn cầu.
-- Sơ đồ ma trận vẽ bằng SVG.
+**Bát Tự.** Trụ năm và tháng đổi theo tiết khí (Lập Xuân, Kinh Trập…) tính từ kinh độ mặt trời; trụ ngày từ số ngày Julius; trụ giờ theo Ngũ Thử Độn, từ 23h tính sang ngày hôm sau. Tuổi và mệnh nạp âm theo năm âm lịch. Cân bằng ngũ hành, thân vượng/nhược (cách tính giản lược) và hành nên bồi đắp.
 
-> Lưu ý: có nhiều trường phái Matrix Destiny với khác biệt nhỏ về công thức điểm phụ; dự án dùng một cách tính phổ biến, có test kiểm chứng bằng ví dụ tính tay.
+**Kinh Dịch Mai Hoa.** Lập quẻ theo thời điểm (tự đổi âm lịch) hoặc theo số; quẻ chủ, hỗ, biến; ý nghĩa vị trí hào động; Thể – Dụng theo ngũ hành; thuộc tính 8 quẻ đơn; lời khuyên cho 64 quẻ.
 
-## Kinh Dịch Mai Hoa (Mai Hoa Dịch Số)
-- **Theo thời điểm:** tự đổi dương lịch sang âm lịch (thuật toán thiên văn của Hồ Ngọc Đức, múi giờ Việt Nam). Quẻ trên = (số năm địa chi + tháng âm + ngày âm) mod 8; quẻ dưới và hào động cộng thêm số giờ địa chi (mod 8 / mod 6, dư 0 tính là 8 / 6). Từ 23h tính là giờ Tý ngày hôm sau.
-- **Theo số:** quẻ trên từ số thứ nhất, quẻ dưới từ số thứ hai, hào động từ tổng (tùy chọn cộng giờ hiện tại).
-- Kết quả: quẻ chủ, quẻ hỗ, quẻ biến (đủ 64 quẻ), phân tích Thể – Dụng theo ngũ hành sinh khắc và kết cục sau biến.
+**Tarot.** 78 lá Rider–Waite, xáo bằng `crypto.getRandomValues`; 5 kiểu trải bài gồm Celtic Cross 10 lá; lời khuyên cho 22 lá Ẩn Chính.
+
+**Khám phá bản thân.** Trắc nghiệm 36 câu dựa trên 9 nhóm Enneagram (nhóm chính, cánh, hướng phát triển/căng thẳng); bánh xe cuộc sống 8 lĩnh vực với biểu đồ radar; 3 bài thở có hẹn giờ; câu hỏi nhật ký theo chủ đề (nháp lưu trên trình duyệt của người dùng).
+
+**Hồ sơ nội tâm.** Mỗi kết quả chính được gắn vào 8 chủ đề sống; chủ đề được nhiều hệ thống cùng nhắc đến xếp cao hơn, có ghi nguồn. Bảng đối chiếu 6 khía cạnh; ảnh hưởng của năm hiện tại tới nhật chủ (Thập Thần rút gọn). Toàn bộ chạy theo quy tắc trên trình duyệt, không dùng AI.
+
+> Các trường phái huyền học có nhiều biến thể công thức; dự án chọn cách tính phổ biến và có test với ví dụ tính tay, lịch vạn niên. Nội dung luận giải mang tính tham khảo.
 
 ## Chạy thử
-Trang dùng ES modules nên **cần chạy qua web server** (mở trực tiếp file `index.html` bằng `file://` sẽ không chạy JavaScript):
+Trang dùng ES modules nên **cần chạy qua web server** (mở trực tiếp file bằng `file://` sẽ không chạy JavaScript):
 
 ```bash
 python3 -m http.server 8080
-# hoặc: npx serve .
 ```
 
 Mở http://localhost:8080
@@ -55,7 +48,7 @@ npm test
 ```
 
 ## Triển khai GitHub Pages
-Repo → **Settings → Pages** → Source: *Deploy from a branch* → chọn nhánh `main`, thư mục `/ (root)` → Save.
+Repo → **Settings → Pages** → Source: *Deploy from a branch* → nhánh `main`, thư mục `/ (root)` → Save.
 
-## Lưu ý
-Nội dung mang tính tham khảo, giải trí và chiêm nghiệm bản thân.
+## Hướng phát triển (giai đoạn 2)
+Tài khoản thành viên, lưu hồ sơ, báo cáo AI và thanh toán cần thêm máy chủ (backend) để giữ khóa API và dữ liệu người dùng an toàn; không thể làm an toàn trên web tĩnh.

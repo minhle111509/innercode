@@ -1,5 +1,6 @@
 import { el, setChildren, showError } from '../shared/dom.js';
 import { castByTime, castByNumbers, parseDateTime } from './meihua.js';
+import { LINE_POSITIONS, HEXAGRAM_ADVICE } from './data.js';
 
 const form = document.getElementById('meihua-form');
 const result = document.getElementById('meihua-result');
@@ -41,13 +42,18 @@ function hexagramFigure(hexagram, { label, movingLine = null }) {
     el('h3', { text: hexagram.name }),
     el('p', { class: 'muted', text: `Quẻ số ${hexagram.number} · ${up.symbol} ${up.name} trên, ${low.symbol} ${low.name} dưới` }),
     el('p', { text: hexagram.meaning }),
+    el('p', { class: 'advice' }, [el('strong', { text: 'Lời khuyên: ' }), HEXAGRAM_ADVICE[hexagram.number]]),
   ]);
 }
 
 function trigramChip(role, trigram) {
   return el('div', { class: 'trigram-chip' }, [
     el('span', { class: 'trigram-symbol', text: trigram.symbol }),
-    el('span', {}, [el('strong', { text: `${role}: ${trigram.name}` }), el('br'), `${trigram.image} · hành ${trigram.element}`]),
+    el('span', {}, [
+      el('strong', { text: `${role}: ${trigram.name}` }), el('br'),
+      `${trigram.image} · hành ${trigram.element} · ${trigram.quality}`, el('br'),
+      el('span', { class: 'muted', text: `${trigram.family} · ${trigram.body} · hướng ${trigram.direction}` }),
+    ]),
   ]);
 }
 
@@ -75,6 +81,7 @@ function render(reading, question) {
     ]),
     el('section', { class: 'reading-card column' }, [
       el('h3', { text: `Hào ${reading.movingLine} động · Phân tích Thể – Dụng` }),
+      el('p', { class: 'muted', text: LINE_POSITIONS[reading.movingLine] }),
       el('div', { class: 'trigram-row' }, [
         trigramChip('Thể (bạn)', reading.ti),
         trigramChip('Dụng (sự việc)', reading.yong),

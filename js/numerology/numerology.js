@@ -58,7 +58,7 @@ export function birthChart({ day, month, year }) {
 export function normalizeName(name) {
   return String(name ?? '')
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
     .replace(/Đ/g, 'D')
     .toUpperCase()
@@ -99,15 +99,84 @@ export function nameNumbers(name) {
   };
 }
 
+const singleDigit = (n) => reduceNumber(n, { keepMaster: false });
+
+/** Số thái độ: day + month. */
+export function attitudeNumber({ day, month }) {
+  return reduceNumber(sumDigits(day) + sumDigits(month));
+}
+
+/** Số trưởng thành: life path + expression. */
+export function maturityNumber(lifePath, expression) {
+  return reduceNumber(lifePath + expression);
+}
+
+/**
+ * Bốn đỉnh cao (pinnacles) and the age each one starts.
+ * Vietnamese convention: the first peak is at 36 − life path (master numbers reduced: 11→2, 22→4, 33→6; 10→1).
+ */
+export function pinnacles({ day, month, year }, lifePath) {
+  const m = singleDigit(month);
+  const d = singleDigit(sumDigits(day));
+  const y = singleDigit(sumDigits(year));
+  const p1 = reduceNumber(m + d);
+  const p2 = reduceNumber(d + y);
+  const p3 = reduceNumber(p1 + p2);
+  const p4 = reduceNumber(m + y);
+  const firstAge = 36 - singleDigit(lifePath);
+  return [p1, p2, p3, p4].map((value, i) => ({ value, age: firstAge + 9 * i }));
+}
+
+/** Bốn thử thách (challenges), values 0–8. */
+export function challenges({ day, month, year }) {
+  const m = singleDigit(month);
+  const d = singleDigit(sumDigits(day));
+  const y = singleDigit(sumDigits(year));
+  const c1 = Math.abs(m - d);
+  const c2 = Math.abs(d - y);
+  return [c1, c2, Math.abs(c1 - c2), Math.abs(m - y)];
+}
+
+export const ARROW_LINES = ['123', '456', '789', '147', '258', '369', '159', '357'];
+
+/** Mũi tên: a line is "full" when all its digits appear, "empty" when none do. */
+export function birthArrows(chart) {
+  const arrows = [];
+  for (const line of ARROW_LINES) {
+    const present = [...line].filter((d) => chart[d] > 0).length;
+    if (present === 3) arrows.push({ line, type: 'full' });
+    else if (present === 0) arrows.push({ line, type: 'empty' });
+  }
+  return arrows;
+}
+
+export function personalYearCycle(date, fromYear, count = 4) {
+  return Array.from({ length: count }, (_, i) => ({
+    year: fromYear + i,
+    number: personalYearNumber(date, fromYear + i),
+  }));
+}
+
 export function calculateReport({ fullName, birthDate, today = new Date() }) {
   const date = parseBirthDate(birthDate, today);
+  const lifePath = lifePathNumber(date);
+  const name = nameNumbers(fullName);
+  const chart = birthChart(date);
+  const currentYear = today.getFullYear();
   return {
     date,
-    lifePath: lifePathNumber(date),
+    lifePath,
     birthDay: birthDayNumber(date),
-    personalYear: personalYearNumber(date, today.getFullYear()),
-    currentYear: today.getFullYear(),
-    chart: birthChart(date),
-    name: nameNumbers(fullName),
+    attitude: attitudeNumber(date),
+    maturity: name ? maturityNumber(lifePath, name.expression) : null,
+    personalYear: personalYearNumber(date, currentYear),
+    yearCycle: personalYearCycle(date, currentYear),
+    currentYear,
+    age: currentYear - date.year,
+    chart,
+    arrows: birthArrows(chart),
+    pinnacles: pinnacles(date, lifePath),
+    challenges: challenges(date),
+    name,
   };
 }

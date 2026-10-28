@@ -2,14 +2,14 @@
 
 // lines are listed bottom → top; 1 = yang (liền), 0 = yin (đứt)
 export const TRIGRAMS = Object.freeze({
-  1: { number: 1, name: 'Càn', symbol: '☰', image: 'Trời', hanViet: 'Thiên', element: 'Kim', lines: [1, 1, 1] },
-  2: { number: 2, name: 'Đoài', symbol: '☱', image: 'Đầm', hanViet: 'Trạch', element: 'Kim', lines: [1, 1, 0] },
-  3: { number: 3, name: 'Ly', symbol: '☲', image: 'Lửa', hanViet: 'Hỏa', element: 'Hỏa', lines: [1, 0, 1] },
-  4: { number: 4, name: 'Chấn', symbol: '☳', image: 'Sấm', hanViet: 'Lôi', element: 'Mộc', lines: [1, 0, 0] },
-  5: { number: 5, name: 'Tốn', symbol: '☴', image: 'Gió', hanViet: 'Phong', element: 'Mộc', lines: [0, 1, 1] },
-  6: { number: 6, name: 'Khảm', symbol: '☵', image: 'Nước', hanViet: 'Thủy', element: 'Thủy', lines: [0, 1, 0] },
-  7: { number: 7, name: 'Cấn', symbol: '☶', image: 'Núi', hanViet: 'Sơn', element: 'Thổ', lines: [0, 0, 1] },
-  8: { number: 8, name: 'Khôn', symbol: '☷', image: 'Đất', hanViet: 'Địa', element: 'Thổ', lines: [0, 0, 0] },
+  1: { number: 1, name: 'Càn', symbol: '☰', image: 'Trời', hanViet: 'Thiên', element: 'Kim', quality: 'Cương kiện, mạnh mẽ', family: 'Cha', body: 'Đầu', direction: 'Tây Bắc', lines: [1, 1, 1] },
+  2: { number: 2, name: 'Đoài', symbol: '☱', image: 'Đầm', hanViet: 'Trạch', element: 'Kim', quality: 'Vui vẻ, đẹp lòng', family: 'Con gái út', body: 'Miệng', direction: 'Tây', lines: [1, 1, 0] },
+  3: { number: 3, name: 'Ly', symbol: '☲', image: 'Lửa', hanViet: 'Hỏa', element: 'Hỏa', quality: 'Sáng sủa, bám dính', family: 'Con gái giữa', body: 'Mắt', direction: 'Nam', lines: [1, 0, 1] },
+  4: { number: 4, name: 'Chấn', symbol: '☳', image: 'Sấm', hanViet: 'Lôi', element: 'Mộc', quality: 'Chuyển động, khởi phát', family: 'Con trai cả', body: 'Chân', direction: 'Đông', lines: [1, 0, 0] },
+  5: { number: 5, name: 'Tốn', symbol: '☴', image: 'Gió', hanViet: 'Phong', element: 'Mộc', quality: 'Thâm nhập, mềm mỏng', family: 'Con gái cả', body: 'Đùi', direction: 'Đông Nam', lines: [0, 1, 1] },
+  6: { number: 6, name: 'Khảm', symbol: '☵', image: 'Nước', hanViet: 'Thủy', element: 'Thủy', quality: 'Hiểm trở, chìm sâu', family: 'Con trai giữa', body: 'Tai', direction: 'Bắc', lines: [0, 1, 0] },
+  7: { number: 7, name: 'Cấn', symbol: '☶', image: 'Núi', hanViet: 'Sơn', element: 'Thổ', quality: 'Dừng lại, tĩnh tại', family: 'Con trai út', body: 'Tay', direction: 'Đông Bắc', lines: [0, 0, 1] },
+  8: { number: 8, name: 'Khôn', symbol: '☷', image: 'Đất', hanViet: 'Địa', element: 'Thổ', quality: 'Nhu thuận, bao dung', family: 'Mẹ', body: 'Bụng', direction: 'Tây Nam', lines: [0, 0, 0] },
 });
 
 const T = { Q: 1, D: 2, L: 3, C: 4, T: 5, K: 6, N: 7, O: 8 };
@@ -101,4 +101,50 @@ export const RELATIONS = {
   tiControlsYong: { label: 'Thể khắc Dụng', verdict: 'Cát', text: 'Bạn làm chủ tình thế: việc thành, nhưng cần chủ động và bỏ công.' },
   tiGeneratesYong: { label: 'Thể sinh Dụng', verdict: 'Tiểu hung', text: 'Bạn phải bỏ nhiều công sức, tiền bạc: dễ hao tổn, nên cân nhắc.' },
   yongControlsTi: { label: 'Dụng khắc Thể', verdict: 'Hung', text: 'Hoàn cảnh gây bất lợi cho bạn: dễ gặp trở ngại, nên thận trọng.' },
+};
+
+/** Meaning of each line position, bottom (1) to top (6). */
+export const LINE_POSITIONS = {
+  1: 'Hào sơ: giai đoạn khởi đầu, việc còn ẩn, chưa nên vội vàng.',
+  2: 'Hào nhị: vị trí trung chính bên dưới, được lòng người, thuận cho hợp tác.',
+  3: 'Hào tam: điểm chuyển tiếp nhiều rủi ro, cần thận trọng khi quyết.',
+  4: 'Hào tứ: gần người có quyền, cơ hội tiến lên nhưng phải khiêm tốn.',
+  5: 'Hào ngũ: ngôi chủ, vị trí tốt nhất của quẻ, nắm thế chủ động.',
+  6: 'Hào thượng: cực điểm của sự việc, vật cực tất phản, biết dừng là khôn.',
+};
+
+/** One practical piece of advice per hexagram, keyed by King Wen number. */
+export const HEXAGRAM_ADVICE = {
+  1: 'Chủ động dẫn dắt, giữ chính trực; tránh kiêu ngạo khi đang thuận.', 2: 'Kiên nhẫn hỗ trợ, đi theo người có tầm nhìn; đừng tranh vị trí dẫn đầu.',
+  3: 'Chia việc lớn thành bước nhỏ, tìm đồng minh; đừng bỏ cuộc vì khó khăn ban đầu.', 4: 'Khiêm tốn học hỏi, hỏi người có kinh nghiệm trước khi làm.',
+  5: 'Chuẩn bị nguồn lực và chờ đúng thời điểm; đừng hành động khi chưa đủ điều kiện.', 6: 'Nhường một bước để giữ hòa khí; tìm người trung gian công bằng.',
+  7: 'Lập kế hoạch rõ, phân công cụ thể, giữ kỷ luật cho cả nhóm.', 8: 'Chủ động kết nối, chọn đúng người đồng hành và giữ chữ tín.',
+  9: 'Tích góp từng chút, hoàn thiện chi tiết; chưa phải lúc làm lớn.', 10: 'Cư xử đúng mực, thận trọng với người có quyền thế.',
+  11: 'Tận dụng thời thuận để mở rộng, nhưng chuẩn bị cho lúc chuyển vận.', 12: 'Giữ mình, tránh đầu tư lớn; dùng thời gian này để tu dưỡng.',
+  13: 'Mở rộng hợp tác dựa trên mục tiêu chung, minh bạch với mọi người.', 14: 'Chia sẻ thành quả, giữ khiêm tốn để thịnh vượng bền lâu.',
+  15: 'Nhún nhường, lắng nghe; khiêm tốn mang lại sự ủng hộ.', 16: 'Truyền cảm hứng cho người khác nhưng chuẩn bị kỹ trước khi hành động.',
+  17: 'Linh hoạt theo hoàn cảnh, học từ người giỏi hơn mình.', 18: 'Mạnh dạn sửa sai và đổi mới những gì đã lỗi thời.',
+  19: 'Hành động khi thời cơ đang đến, nhưng đừng chủ quan.', 20: 'Quan sát toàn cảnh, làm gương cho người khác.',
+  21: 'Giải quyết dứt điểm vướng mắc, rõ ràng về nguyên tắc.', 22: 'Chú trọng nội dung hơn hình thức; làm đẹp vừa đủ.',
+  23: 'Tạm dừng, bảo toàn những gì quan trọng nhất; không nên mạo hiểm.', 24: 'Bắt đầu lại từ những bước nhỏ, kiên trì với thói quen tốt.',
+  25: 'Hành động chân thành, không toan tính; để mọi việc diễn ra tự nhiên.', 26: 'Học hỏi và dự trữ, chuẩn bị cho bước nhảy lớn.',
+  27: 'Cẩn trọng lời nói và ăn uống; nuôi dưỡng điều tốt cho thân và tâm.', 28: 'Giảm bớt gánh nặng, tìm sự trợ giúp; đừng cố quá sức.',
+  29: 'Giữ bình tĩnh, đi từng bước qua khó khăn; lòng tin sẽ dẫn đường.', 30: 'Nương tựa người và điều đúng đắn, giữ đầu óc sáng suốt.',
+  31: 'Mở lòng đón nhận cảm xúc và kết nối chân thành.', 32: 'Kiên định với cam kết, duy trì đều đặn.',
+  33: 'Biết rút lui đúng lúc để giữ sức, chờ thời cơ mới.', 34: 'Dùng sức mạnh đúng chỗ, không ép buộc người khác.',
+  35: 'Thể hiện năng lực, nắm cơ hội thăng tiến một cách chính đáng.', 36: 'Giấu bớt tài năng, giữ mình an toàn qua giai đoạn khó.',
+  37: 'Vun đắp gia đình và nội bộ; trật tự bên trong tạo sức mạnh bên ngoài.', 38: 'Tôn trọng khác biệt, tìm điểm chung nhỏ để bắt đầu.',
+  39: 'Dừng lại tự xét, tìm người giúp thay vì cố vượt một mình.', 40: 'Tha thứ, buông bỏ và hành động nhanh khi khó khăn vừa tan.',
+  41: 'Cắt giảm điều thừa, đầu tư vào điều thực sự quan trọng.', 42: 'Giúp người và mở rộng, cơ hội tăng trưởng đang đến.',
+  43: 'Quyết đoán loại bỏ điều xấu, nhưng làm một cách công khai và ôn hòa.', 44: 'Cẩn trọng với mối quan hệ mới và lời mời hấp dẫn.',
+  45: 'Tập hợp mọi người quanh mục tiêu chung, chuẩn bị cho bất trắc.', 46: 'Tiến từng bước vững chắc, tìm người nâng đỡ.',
+  47: 'Giữ vững tinh thần, nói ít làm nhiều, chờ thời điểm chuyển biến.', 48: 'Duy trì nguồn lực cốt lõi, đầu tư vào nền tảng lâu dài.',
+  49: 'Đổi mới khi thời điểm đã chín, chuẩn bị kỹ và minh bạch.', 50: 'Xây dựng cái mới, trọng dụng người tài.',
+  51: 'Bình tĩnh trước biến động, rút ra bài học và tiếp tục.', 52: 'Tĩnh lặng, dừng suy nghĩ thừa; thiền định sẽ giúp ích.',
+  53: 'Đi theo trình tự, không đốt cháy giai đoạn.', 54: 'Thận trọng với cam kết vội vàng, biết rõ vị trí của mình.',
+  55: 'Tận hưởng thành công nhưng chuẩn bị cho giai đoạn sau đỉnh cao.', 56: 'Khiêm tốn, cẩn trọng khi ở nơi xa lạ hoặc môi trường mới.',
+  57: 'Mềm mỏng mà kiên trì, thuyết phục bằng sự nhẹ nhàng.', 58: 'Giao tiếp cởi mở, chia sẻ niềm vui với lòng chân thành.',
+  59: 'Hàn gắn chia rẽ, xóa bỏ hiềm khích, đoàn kết lại.', 60: 'Đặt giới hạn hợp lý cho thời gian, tiền bạc và cảm xúc.',
+  61: 'Giữ chữ tín và lòng thành, cảm hóa người bằng sự chân thật.', 62: 'Làm tốt việc nhỏ, tránh dự định quá sức.',
+  63: 'Giữ gìn thành quả, cảnh giác những sơ suất nhỏ.', 64: 'Kiên nhẫn đến bước cuối, kiểm tra kỹ trước khi hoàn tất.',
 };

@@ -29,9 +29,9 @@ export const ARCANA = {
 export const POSITIONS = [
   { key: 'E', title: 'Năng lượng cốt lõi', hint: 'Vùng thoải mái — nơi bạn cảm thấy là chính mình nhất.', highlight: true },
   { key: 'A', title: 'Chân dung bản thân', hint: 'Cách bạn thể hiện ra bên ngoài và ấn tượng đầu tiên với người khác.' },
-  { key: 'B', title: 'Tài năng bẩm sinh', hint: 'Món quà trời phú, phát huy tốt nhất khi bạn tin vào chính mình.', trio: ['B', 'B2', 'B1'] },
-  { key: 'C', title: 'Năng lượng vật chất', hint: 'Bài học về công việc, tiền bạc và cách bạn tạo dựng giá trị.' },
-  { key: 'money', title: 'Kênh tài chính', hint: 'Năng lượng giúp dòng tiền chảy về với bạn khi được kích hoạt.' },
+  { key: 'B', title: 'Tài năng bẩm sinh', hint: 'Món quà trời phú, phát huy tốt nhất khi bạn tin vào chính mình.', trio: ['B', 'B2', 'B1'], career: true },
+  { key: 'C', title: 'Năng lượng vật chất', hint: 'Bài học về công việc, tiền bạc và cách bạn tạo dựng giá trị.', career: true },
+  { key: 'money', title: 'Kênh tài chính', hint: 'Năng lượng giúp dòng tiền chảy về với bạn khi được kích hoạt.', career: true },
   { key: 'love', title: 'Tình yêu', hint: 'Cách bạn yêu và kiểu kết nối giúp bạn hạnh phúc.' },
   { key: 'D', title: 'Đuôi nghiệp', hint: 'Bài học mang từ quá khứ cần được nhận diện và hóa giải.', trio: ['D', 'D2', 'D1'] },
 ];
@@ -42,3 +42,29 @@ export const PURPOSES = [
   { key: 'spiritual', title: 'Mục đích tâm linh', hint: 'Sau 60 tuổi: sự hài hòa giữa vật chất và tinh thần.' },
   { key: 'planetary', title: 'Mục đích toàn cầu', hint: 'Thông điệp lớn bạn để lại cho thế giới.' },
 ];
+
+/** Career direction and practical advice for each arcana energy. */
+export const ARCANA_DETAILS = {
+  1: { career: 'Bán hàng, thuyết trình, khởi nghiệp, truyền thông, mọi việc cần khởi xướng.', advice: 'Hoàn thành điều đã bắt đầu; mỗi tuần chốt một việc đến cùng.' },
+  2: { career: 'Nghiên cứu, tư vấn, giáo dục, tâm lý, lưu trữ tri thức.', advice: 'Dành thời gian tĩnh lặng mỗi ngày và ghi lại trực giác của bạn.' },
+  3: { career: 'Làm đẹp, thời trang, ẩm thực, thiết kế, chăm sóc trẻ em.', advice: 'Chăm sóc cơ thể và không gian sống; tận hưởng nhưng giữ chừng mực chi tiêu.' },
+  4: { career: 'Quản lý, điều hành, hành chính, quân đội, xây dựng hệ thống.', advice: 'Lãnh đạo bằng sự gương mẫu thay vì kiểm soát; lắng nghe trước khi quyết.' },
+  5: { career: 'Giảng dạy, đào tạo, cố vấn, luật, tổ chức truyền thống.', advice: 'Chia sẻ kiến thức một cách cởi mở, tôn trọng quan điểm khác mình.' },
+  6: { career: 'Dịch vụ khách hàng, hôn nhân gia đình, nghệ thuật, hòa giải.', advice: 'Tự đưa ra lựa chọn của mình và chịu trách nhiệm với nó.' },
+  7: { career: 'Kinh doanh, vận tải, thể thao, dự án cần tốc độ và mục tiêu rõ.', advice: 'Đặt mục tiêu cụ thể theo quý; kiểm soát tốc độ để không kiệt sức.' },
+  8: { career: 'Luật, kiểm toán, hành chính công, quản lý chất lượng, tài chính.', advice: 'Sống công bằng với chính mình; giữ lời hứa, kể cả việc nhỏ.' },
+  9: { career: 'Chuyên gia, nghiên cứu sâu, tư vấn, viết lách, công việc độc lập.', advice: 'Chia sẻ hiểu biết thay vì giữ cho riêng mình; cân bằng ở một mình và kết nối.' },
+  10: { career: 'Du lịch, sự kiện, đầu tư, công việc nhiều cơ hội và thay đổi.', advice: 'Đi theo dòng chảy nhưng có kế hoạch dự phòng; nắm cơ hội khi nó đến.' },
+  11: { career: 'Thể thao, huấn luyện, công việc cường độ cao, lãnh đạo dự án.', advice: 'Vận động đều đặn để giải tỏa năng lượng; học cách nghỉ ngơi.' },
+  12: { career: 'Chữa lành, nghệ thuật, thiện nguyện, nghề sáng tạo độc đáo.', advice: 'Giúp người nhưng không quên bản thân; nhìn vấn đề từ một góc khác.' },
+  13: { career: 'Tái cấu trúc, cải cách, y tế, quản trị khủng hoảng, công việc chuyển đổi.', advice: 'Chủ động dọn bỏ điều cũ không còn phù hợp: thói quen, đồ đạc, mối quan hệ.' },
+  14: { career: 'Y tế, trị liệu, ẩm thực, nghệ thuật pha trộn, điều phối.', advice: 'Giữ nhịp sống điều độ: ngủ, ăn, làm việc cân bằng.' },
+  15: { career: 'Kinh doanh, marketing, giải trí, tài chính, thương lượng.', advice: 'Dùng sức hút để tạo giá trị; tỉnh táo trước cám dỗ và nghiện ngập.' },
+  16: { career: 'Xây dựng, kỹ thuật, khởi nghiệp đột phá, cải tổ tổ chức.', advice: 'Xây chậm mà chắc; khi đổ vỡ đến, coi đó là cơ hội làm lại tốt hơn.' },
+  17: { career: 'Nghệ thuật, truyền thông, người nổi tiếng, thiết kế, sáng tạo nội dung.', advice: 'Dám xuất hiện và chia sẻ tài năng; đừng chờ đến khi hoàn hảo.' },
+  18: { career: 'Nghệ thuật, điện ảnh, tâm lý, tâm linh, nghề cần trí tưởng tượng.', advice: 'Đối diện nỗi sợ thay vì né tránh; ghi nhật ký giấc mơ và cảm xúc.' },
+  19: { career: 'Giáo dục trẻ em, giải trí, lãnh đạo, kinh doanh hướng tới cộng đồng.', advice: 'Lan tỏa niềm vui một cách khiêm tốn; công nhận thành công của người khác.' },
+  20: { career: 'Kinh doanh gia đình, giáo dục, lịch sử, phả hệ, tư vấn gia đình.', advice: 'Hàn gắn với gia đình và cội nguồn; tha thứ để được nhẹ lòng.' },
+  21: { career: 'Ngoại giao, du lịch, thương mại quốc tế, ngôn ngữ, tổ chức toàn cầu.', advice: 'Mở rộng thế giới của bạn: học ngoại ngữ, đi xa, gặp người mới.' },
+  22: { career: 'Công việc tự do, sáng tạo, khám phá, khởi nghiệp nhỏ, nghề không khuôn mẫu.', advice: 'Giữ tinh thần tự do nhưng có trách nhiệm với lời hứa của mình.' },
+};

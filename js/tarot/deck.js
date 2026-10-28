@@ -25,6 +25,31 @@ const MAJOR_ARCANA = [
   ['The World', 'Thế Giới', 'Hoàn thành, viên mãn, hội nhập', 'Chưa trọn vẹn, thiếu kết thúc'],
 ];
 
+const MAJOR_ADVICE = [
+  'Dám bước đi dù chưa biết hết con đường; giữ tâm thế học hỏi.',
+  'Bạn đã có đủ công cụ, hãy tập trung và bắt tay vào làm.',
+  'Lắng nghe trực giác, chưa cần nói ra mọi điều bạn biết.',
+  'Nuôi dưỡng bản thân và dự định của bạn bằng sự kiên nhẫn.',
+  'Đặt cấu trúc, kế hoạch và ranh giới rõ ràng.',
+  'Tìm người dẫn dắt hoặc quay về những giá trị cốt lõi.',
+  'Chọn theo giá trị của bạn, không theo áp lực bên ngoài.',
+  'Xác định đích đến và giữ vững tay lái.',
+  'Mềm mỏng mà kiên định; kiểm soát cảm xúc là sức mạnh thật.',
+  'Lùi lại một bước, dành thời gian một mình để nhìn rõ.',
+  'Chấp nhận thay đổi, nắm cơ hội khi bánh xe quay.',
+  'Hành động trung thực, mọi lựa chọn đều có hệ quả.',
+  'Tạm dừng và nhìn vấn đề từ góc khác trước khi quyết.',
+  'Buông bỏ điều đã kết thúc để chỗ cho điều mới.',
+  'Tìm điểm giữa, tránh cực đoan.',
+  'Nhận diện điều đang trói buộc bạn và dũng cảm cởi bỏ.',
+  'Để cái cũ sụp đổ; nền móng mới sẽ vững hơn.',
+  'Giữ hy vọng và chăm sóc bản thân.',
+  'Đừng quyết định khi còn mơ hồ; chờ mọi việc sáng tỏ.',
+  'Tự tin tỏa sáng và tận hưởng niềm vui hiện tại.',
+  'Nhìn lại, tha thứ và trả lời tiếng gọi bên trong.',
+  'Ghi nhận thành quả, khép lại một chu kỳ trọn vẹn.',
+];
+
 const SUITS = {
   wands: { en: 'Wands', vi: 'Gậy', symbol: '🔥', domain: 'hành động, đam mê, sự nghiệp' },
   cups: { en: 'Cups', vi: 'Cốc', symbol: '💧', domain: 'cảm xúc, tình yêu, các mối quan hệ' },
@@ -120,6 +145,7 @@ function buildDeck() {
     nameVi: vi,
     upright,
     reversed,
+    advice: MAJOR_ADVICE[i],
   }));
 
   const minors = Object.entries(SUITS).flatMap(([suitKey, suit]) =>

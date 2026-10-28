@@ -19,6 +19,13 @@ export const SPREADS = {
     name: 'Ra quyết định (3 lá)',
     positions: ['Tình huống', 'Hành động nên làm', 'Kết quả có thể xảy ra'],
   },
+  celticCross: {
+    name: 'Celtic Cross (10 lá, chuyên sâu)',
+    positions: [
+      'Hiện tại', 'Thử thách', 'Gốc rễ', 'Quá khứ gần', 'Điều có thể đạt được',
+      'Tương lai gần', 'Bản thân bạn', 'Môi trường xung quanh', 'Hy vọng & nỗi sợ', 'Kết quả',
+    ],
+  },
 };
 
 /** Uniform random integer in [0, max) using Web Crypto with rejection sampling (no modulo bias). */

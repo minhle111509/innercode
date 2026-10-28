@@ -5,6 +5,10 @@ import {
   personalYearNumber, birthChart, normalizeName, letterValue, nameNumbers, calculateReport,
 } from '../js/numerology/numerology.js';
 import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS } from '../js/numerology/meanings.js';
+import {
+  attitudeNumber, maturityNumber, pinnacles, challenges, birthArrows, personalYearCycle,
+} from '../js/numerology/numerology.js';
+import { NUMBER_DETAILS, CHALLENGE_MEANINGS, ARROW_MEANINGS } from '../js/numerology/meanings.js';
 
 const TODAY = new Date(2026, 9, 28);
 
@@ -97,4 +101,49 @@ test('every reachable life path has a meaning', () => {
   for (let total = 1; total <= 60; total += 1) {
     assert.ok(NUMBER_MEANINGS[reduceLifePath(total)], `missing meaning for total ${total}`);
   }
+});
+
+test('attitude and maturity numbers', () => {
+  assert.equal(attitudeNumber({ day: 15, month: 8 }), 5); // 1+5+8 = 14 → 5
+  assert.equal(attitudeNumber({ day: 29, month: 9 }), 2); // 2+9+9 = 20 → 2
+  assert.equal(attitudeNumber({ day: 2, month: 9 }), 11); // master number kept
+  assert.equal(maturityNumber(33, 3), 9);
+});
+
+test('pinnacles and challenges for 15/08/1990 (hand-computed)', () => {
+  const date = { day: 15, month: 8, year: 1990 };
+  assert.deepEqual(pinnacles(date, 33), [
+    { value: 5, age: 30 }, { value: 7, age: 39 }, { value: 3, age: 48 }, { value: 9, age: 57 },
+  ]);
+  assert.deepEqual(challenges(date), [2, 5, 3, 7]);
+  assert.equal(pinnacles(date, 10)[0].age, 35); // life path 10 counts as 1
+});
+
+test('birth arrows detect full and empty lines', () => {
+  const full = { 1: 1, 2: 0, 3: 0, 4: 0, 5: 1, 6: 0, 7: 0, 8: 1, 9: 2 };
+  assert.deepEqual(birthArrows(full), [{ line: '159', type: 'full' }]);
+  const sparse = { 1: 2, 2: 2, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 1 };
+  assert.deepEqual(birthArrows(sparse).map((a) => `${a.line}:${a.type}`), ['456:empty', '357:empty']);
+});
+
+test('personal year cycle and meaning tables are complete', () => {
+  const cycle = personalYearCycle({ day: 15, month: 8 }, 2026, 4);
+  assert.deepEqual(cycle.map((c) => c.year), [2026, 2027, 2028, 2029]);
+  assert.equal(cycle[0].number, 6);
+  assert.equal(cycle[1].number, 7);
+  for (const n of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22, 33]) assert.ok(NUMBER_DETAILS[n].career && NUMBER_DETAILS[n].love);
+  for (let n = 0; n <= 8; n += 1) assert.ok(CHALLENGE_MEANINGS[n]);
+  for (const line of ['123', '456', '789', '147', '258', '369', '159', '357']) {
+    assert.ok(ARROW_MEANINGS[line].full && ARROW_MEANINGS[line].empty);
+  }
+});
+
+test('calculateReport includes the deeper sections', () => {
+  const report = calculateReport({ fullName: 'An', birthDate: '1990-08-15', today: TODAY });
+  assert.equal(report.attitude, 5);
+  assert.equal(report.maturity, maturityNumber(33, 6));
+  assert.equal(report.pinnacles.length, 4);
+  assert.equal(report.age, 36);
+  assert.ok(NUMBER_MEANINGS[report.maturity]);
+  for (const p of report.pinnacles) assert.ok(NUMBER_MEANINGS[p.value]);
 });

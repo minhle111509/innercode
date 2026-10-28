@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { solarToLunar } from '../js/meihua/lunar.js';
+import { solarToLunar } from '../js/shared/lunar.js';
 import { TRIGRAMS, HEXAGRAMS, findHexagram } from '../js/meihua/data.js';
 import {
   toTrigramNumber, toMovingLine, yearBranch, hourBranch, elementRelation,
@@ -102,4 +102,14 @@ test('castByNumbers uses remainders and optional hour', () => {
   assert.throws(() => castByNumbers(0, 3), /Số thứ nhất/);
   assert.throws(() => castByNumbers(4, 'abc'), /Số thứ hai/);
   assert.throws(() => castByNumbers(1.5, 2), /Số thứ nhất/);
+});
+
+import { LINE_POSITIONS, HEXAGRAM_ADVICE } from '../js/meihua/data.js';
+
+test('trigram details, line positions and advice are complete', () => {
+  for (let n = 1; n <= 8; n += 1) {
+    for (const field of ['quality', 'family', 'body', 'direction']) assert.ok(TRIGRAMS[n][field], `${n} ${field}`);
+  }
+  for (let n = 1; n <= 6; n += 1) assert.ok(LINE_POSITIONS[n]);
+  for (let n = 1; n <= 64; n += 1) assert.ok(HEXAGRAM_ADVICE[n], `advice ${n}`);
 });

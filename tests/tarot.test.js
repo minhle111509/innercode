@@ -81,3 +81,9 @@ test('summarizeReading detects majors, dominant suit and reversals', () => {
   const balanced = summarizeReading([{ card: minor('wands', 5), reversed: false }]);
   assert.equal(balanced.length, 1);
 });
+
+test('major arcana carry advice and Celtic Cross has 10 positions', () => {
+  for (const card of DECK.filter((c) => c.arcana === 'major')) assert.ok(card.advice, card.id);
+  assert.equal(SPREADS.celticCross.positions.length, 10);
+  assert.equal(new Set(readSpread(DECK, 'celticCross').map((r) => r.card.id)).size, 10);
+});

@@ -1,7 +1,7 @@
-import { el, svgEl, showError } from '../shared/dom.js';
+import { el, svgEl, setChildren, showError } from '../shared/dom.js';
 import { formatDate } from '../shared/date.js';
 import { calculateMatrixReport } from './matrix.js';
-import { ARCANA, POSITIONS, PURPOSES } from './meanings.js';
+import { ARCANA, ARCANA_DETAILS, POSITIONS, PURPOSES } from './meanings.js';
 
 const form = document.getElementById('matrix-form');
 const result = document.getElementById('matrix-result');
@@ -96,6 +96,8 @@ function arcanaCard(position, points) {
       el('p', { class: 'keywords', text: arcana.keywords }),
       el('p', {}, [el('strong', { text: 'Khi tích cực: ' }), arcana.plus]),
       el('p', {}, [el('strong', { text: 'Khi tiêu cực: ' }), arcana.minus]),
+      position.career ? el('p', {}, [el('strong', { text: 'Nghề nghiệp phù hợp: ' }), ARCANA_DETAILS[number].career]) : null,
+      el('p', {}, [el('strong', { text: 'Lời khuyên: ' }), ARCANA_DETAILS[number].advice]),
     ]),
   ]);
 }
@@ -117,7 +119,7 @@ function purposeGrid(purposes) {
 }
 
 function render(report, fullName) {
-  result.replaceChildren(
+  setChildren(result,
     el('h2', { text: fullName ? `Ma trận của ${fullName}` : 'Ma trận của bạn' }),
     el('p', { class: 'muted', text: `Ngày sinh: ${formatDate(report.date)}` }),
     matrixChart(report.points),
