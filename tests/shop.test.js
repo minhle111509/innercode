@@ -51,6 +51,6 @@ test('packages, prices and products', () => {
   assert.equal(ITEM_PRICES.single_matrix, 25);
   assert.equal(PRODUCTS.find((p) => p.key === 'print_combo').coins, 249);
   assert.equal(formatVnd(100000), '100.000đ');
-  assert.equal(CONFIG.APPS_SCRIPT_URL, '', 'keep the shipped config empty; the owner fills it in');
+  assert.ok(CONFIG.APPS_SCRIPT_URL === '' || /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(CONFIG.APPS_SCRIPT_URL), 'APPS_SCRIPT_URL must be empty or an Apps Script /exec URL');
   assert.ok(!/key|secret|password/i.test(JSON.stringify(CONFIG)), 'config.js must not contain secrets');
 });

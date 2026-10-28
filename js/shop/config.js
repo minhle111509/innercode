@@ -7,7 +7,7 @@
  * secret: the script itself validates every request. See docs/HUONG-DAN-GOOGLE-SHEETS.md.
  */
 export const CONFIG = {
-  APPS_SCRIPT_URL: '',
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwFJkmOReKuDo9GrWkA92fjTgc_AsX74dMx4GP5pyyUqwfMcRDeJzytCNfznzS2BWUG/exec',
 
   BRAND: 'INNER CODE – Mật mã nội tâm',
   EXPERT: 'Sarah Nguyen',
