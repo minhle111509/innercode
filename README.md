@@ -32,7 +32,7 @@ Mỗi tính năng có module logic thuần (không đụng DOM, có unit test) v
 > Lời hào, luận giải và lời khuyên là bản diễn giải ngắn gọn, nên được người am hiểu duyệt lại trước khi dùng cho mục đích thương mại. Các trường phái huyền học có nhiều biến thể công thức; dự án chọn cách tính phổ biến và có test với ví dụ tính tay, lịch vạn niên. Nội dung luận giải mang tính tham khảo.
 
 ## Thương hiệu & liên hệ
-- Logo, favicon và ảnh chia sẻ mạng xã hội nằm trong `assets/` (`logo-innercode.webp`, `emblem-*.webp`, `favicon-*.png`, `apple-touch-icon.png`, `og-image.jpg`).
+- Logo và ảnh thương hiệu nằm trong `assets/`: biểu tượng IC (`emblem-*.webp`, `favicon-*.png`, `apple-touch-icon.png`), poster (`poster-innercode.webp`), tranh nền đầu trang chủ (`hero-art.webp`) và ảnh chia sẻ mạng xã hội (`og-image.jpg`).
 - Mục **Liên hệ & thanh toán** ở cuối trang chủ (`index.html#lien-he`): điện thoại/Zalo 0909 799 695, chuyển khoản Vietcombank 0071001151943 kèm mã VietQR (`assets/vietqr-vietcombank.jpg`). Muốn đổi thông tin, sửa trong `index.html` và chân trang của từng file `*.html`.
 
 ## Chạy thử
