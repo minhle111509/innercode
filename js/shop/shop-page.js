@@ -8,7 +8,7 @@ const packs = document.getElementById('pack-list');
 grid.append(...PRODUCTS.map((product) => el('article', { class: 'product', id: product.key }, [
   el('div', { class: `product-art art-${product.art}`, 'aria-hidden': 'true' }, el('span')),
   el('h3', { text: product.name }),
-  el('p', { class: 'offer-price', text: Number.isFinite(product.coins) ? `${product.coins} Xu` : 'Liên hệ báo giá' }),
+  el('p', { class: Number.isFinite(product.coins) ? 'offer-price' : 'offer-price quote', text: Number.isFinite(product.coins) ? `${product.coins} Xu` : 'Liên hệ báo giá' }),
   el('p', { class: 'muted', text: product.text }),
   el('button', {
     type: 'button',
