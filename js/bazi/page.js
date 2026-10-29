@@ -1,7 +1,8 @@
 import { el, setChildren, showError } from '../shared/dom.js';
 import { calculateBazi, parseBirthDateTime, ELEMENT_ORDER } from './bazi.js';
 import { analyzeAdvanced } from './advanced.js';
-import { mountReportOffers } from '../report/offers.js';
+import { mountReportOffers, profileHref } from '../report/offers.js';
+import { lockedSection } from '../report/paywall.js';
 
 const form = document.getElementById('bazi-form');
 const result = document.getElementById('bazi-result');
@@ -111,7 +112,7 @@ function annualList(years, info) {
   ]);
 }
 
-function render(report, adv) {
+function render(report, adv, readingInput, onUnlock) {
   const { input, lunar, pillars, zodiac, napAm, dayMaster, elements } = report;
   const { strength } = adv;
   const timeText = input.hour === null ? 'không rõ giờ' : `${pad(input.hour)}:${pad(input.minute)}`;
@@ -133,59 +134,82 @@ function render(report, adv) {
       el('div', {}, [
         el('h3', { text: `Nhật chủ ${dayMaster.name} ${dayMaster.element}: ${dayMaster.image}` }),
         el('p', { text: dayMaster.text }),
-        el('p', {}, [
-          el('strong', { text: `${strength.level} (${strength.score}/100). ` }),
-          `Lệnh tháng ${pillars.month.branch.name}: nhật chủ ở trạng thái ${strength.state}, ${strength.stateText}. `,
-          `Lực hỗ trợ (cùng hành và hành sinh) chiếm ${strength.support}/${strength.total} điểm.`,
+      ]),
+    ]),
+
+    lockedSection({
+      item: 'single_bazi',
+      input: readingInput,
+      title: 'Luận giải Bát Tự chuyên sâu',
+      includes: [
+        'Nhật chủ vượng hay nhược, lệnh tháng và dụng thần (hành có lợi)',
+        'Tuổi, mệnh nạp âm và cân bằng ngũ hành có tính tàng can',
+        'Thập Thần nổi bật trong lá số',
+        'Hợp, xung, hại và thần sát (Quý Nhân, Văn Xương, Đào Hoa, Dịch Mã)',
+        'Đại vận 10 năm: vận nào thuận, vận nào thử thách',
+        'Lưu niên 5 năm tới và cách bồi đắp hành có lợi',
+      ],
+      upsellHref: profileHref(() => readingInput),
+      onUnlock,
+      build: () => [
+        el('article', { class: 'reading-card highlight' }, [
+          el('div', { class: 'number-badge small', text: strength.score }),
+          el('div', {}, [
+            el('h3', { text: `Nhật chủ ${strength.level.toLowerCase()} · dụng thần ${strength.favorable.join(', ')}` }),
+            el('p', {}, [
+              el('strong', { text: `${strength.level} (${strength.score}/100). ` }),
+              `Lệnh tháng ${pillars.month.branch.name}: nhật chủ ở trạng thái ${strength.state}, ${strength.stateText}. `,
+              `Lực hỗ trợ (cùng hành và hành sinh) chiếm ${strength.support}/${strength.total} điểm.`,
+            ]),
+            el('p', {}, [el('strong', { text: 'Dụng thần (hành có lợi): ' }), strength.favorable.join(', ')]),
+          ]),
         ]),
-        el('p', {}, [el('strong', { text: 'Dụng thần (hành có lợi): ' }), strength.favorable.join(', ')]),
-      ]),
-    ]),
 
-    el('article', { class: 'reading-card' }, [
-      el('div', { class: 'number-badge small', text: zodiac.branch.name }),
-      el('div', {}, [
-        el('h3', { text: `Tuổi ${zodiac.name} (${zodiac.animal}) · Mệnh ${napAm.name}` }),
-        el('p', { class: 'muted', text: `${napAm.image}. Tính theo năm âm lịch như cách gọi tuổi thông thường.` }),
-        el('p', { class: 'keywords', text: elements[napAm.element].nature }),
-      ]),
-    ]),
+        el('article', { class: 'reading-card' }, [
+          el('div', { class: 'number-badge small', text: zodiac.branch.name }),
+          el('div', {}, [
+            el('h3', { text: `Tuổi ${zodiac.name} (${zodiac.animal}) · Mệnh ${napAm.name}` }),
+            el('p', { class: 'muted', text: `${napAm.image}. Tính theo năm âm lịch như cách gọi tuổi thông thường.` }),
+            el('p', { class: 'keywords', text: elements[napAm.element].nature }),
+          ]),
+        ]),
 
-    el('section', { class: 'reading-card column' }, [
-      el('h3', { text: 'Cân bằng Ngũ Hành (có tính tàng can)' }),
-      el('p', { class: 'muted', text: 'Mỗi thiên can tính 1 điểm; mỗi địa chi 1 điểm chia cho các can ẩn bên trong.' }),
-      balanceBars(adv.weighted),
-      missing.length
-        ? el('p', {}, [el('strong', { text: 'Hoàn toàn vắng: ' }), missing.join(', ')])
-        : el('p', { class: 'muted', text: 'Lá số có mặt đủ cả năm hành.' }),
-    ]),
+        el('section', { class: 'reading-card column' }, [
+          el('h3', { text: 'Cân bằng Ngũ Hành (có tính tàng can)' }),
+          el('p', { class: 'muted', text: 'Mỗi thiên can tính 1 điểm; mỗi địa chi 1 điểm chia cho các can ẩn bên trong.' }),
+          balanceBars(adv.weighted),
+          missing.length
+            ? el('p', {}, [el('strong', { text: 'Hoàn toàn vắng: ' }), missing.join(', ')])
+            : el('p', { class: 'muted', text: 'Lá số có mặt đủ cả năm hành.' }),
+        ]),
 
-    tenGodSummary(adv.tenGods, adv.tenGodInfo),
+        tenGodSummary(adv.tenGods, adv.tenGodInfo),
 
-    el('section', { class: 'reading-card column' }, [
-      el('h3', { text: 'Hợp, xung, hại & thần sát' }),
-      adv.interactions.length
-        ? el('ul', { class: 'arrow-list' }, adv.interactions.map((x) => el('li', {}, [
-          el('span', { class: `verdict ${x.good ? 'good' : 'bad'}`, text: x.type }), ` ${x.text}`,
-        ])))
-        : el('p', { class: 'muted', text: 'Không có hợp, xung, hại đáng kể giữa các trụ.' }),
-      adv.shenSha.length
-        ? el('ul', { class: 'arrow-list' }, adv.shenSha.map((s) => el('li', {}, [
-          el('span', { class: 'verdict neutral', text: s.name }), ` Ở trụ ${s.places.join(', ')}. ${s.text}`,
-        ])))
-        : null,
-    ]),
+        el('section', { class: 'reading-card column' }, [
+          el('h3', { text: 'Hợp, xung, hại & thần sát' }),
+          adv.interactions.length
+            ? el('ul', { class: 'arrow-list' }, adv.interactions.map((x) => el('li', {}, [
+              el('span', { class: `verdict ${x.good ? 'good' : 'bad'}`, text: x.type }), ` ${x.text}`,
+            ])))
+            : el('p', { class: 'muted', text: 'Không có hợp, xung, hại đáng kể giữa các trụ.' }),
+          adv.shenSha.length
+            ? el('ul', { class: 'arrow-list' }, adv.shenSha.map((s) => el('li', {}, [
+              el('span', { class: 'verdict neutral', text: s.name }), ` Ở trụ ${s.places.join(', ')}. ${s.text}`,
+            ])))
+            : null,
+        ]),
 
-    luckTable(adv.luck, strength.favorable),
-    annualList(adv.years, adv.tenGodInfo),
+        luckTable(adv.luck, strength.favorable),
+        annualList(adv.years, adv.tenGodInfo),
 
-    el('section', { class: 'reading-card column' }, [
-      el('h3', { text: 'Bồi đắp hành có lợi' }),
-      el('p', { class: 'muted', text: 'Theo phương pháp phù – ức (nâng đỡ khi nhược, tiết chế khi vượng). Các trường phái có thể chọn dụng thần khác nhau.' }),
-      el('div', { class: 'purpose-grid' }, strength.favorable.map((name) => elementAdvice(name, elements[name], 'có lợi cho bạn'))),
-    ]),
+        el('section', { class: 'reading-card column' }, [
+          el('h3', { text: 'Bồi đắp hành có lợi' }),
+          el('p', { class: 'muted', text: 'Theo phương pháp phù – ức (nâng đỡ khi nhược, tiết chế khi vượng). Các trường phái có thể chọn dụng thần khác nhau.' }),
+          el('div', { class: 'purpose-grid' }, strength.favorable.map((name) => elementAdvice(name, elements[name], 'có lợi cho bạn'))),
+        ]),
+      ],
+    }),
   );
-  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 form.addEventListener('submit', (event) => {
@@ -197,8 +221,14 @@ form.addEventListener('submit', (event) => {
       throw new Error('Ngày sinh không được ở tương lai.');
     }
     const report = calculateBazi(input);
-    render(report, analyzeAdvanced(input, genderInput.value, report.pillars, today));
-    mountReportOffers(document.getElementById('report-offers'), () => ({ birthDate: birthInput.value, birthTime: timeInput.value, gender: genderInput.value }), { single: 'bazi' });
+    const adv = analyzeAdvanced(input, genderInput.value, report.pillars, today);
+    const readingInput = { birthDate: birthInput.value, birthTime: timeInput.value, gender: genderInput.value };
+    const show = (scroll) => {
+      render(report, adv, readingInput, () => show(false));
+      mountReportOffers(document.getElementById('report-offers'), () => readingInput, { single: 'bazi', onUnlock: () => show(false) });
+      if (scroll) result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    show(true);
   } catch (error) {
     showError(result, error.message);
   }

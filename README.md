@@ -39,14 +39,14 @@ Mỗi tính năng có module logic thuần (không đụng DOM, có unit test) v
 
 ## Ví xu, báo cáo PDF, đơn hàng, đặt lịch 1-1
 - **Ví xu** (chip "N Xu" góc phải mọi trang): số điện thoại là định danh, mã PIN 4–6 số bảo vệ ví. Gói 50/100/200 Xu (1 Xu = 1.000đ). Chuyển khoản Vietcombank bằng **mã VietQR tạo động** (đã điền sẵn số tiền và nội dung `NAP <SĐT>`) hoặc mã MoMo tĩnh.
-- **Mở khóa báo cáo PDF** dưới kết quả Thần số học, Matrix, Bát Tự và Hồ sơ nội tâm: bài lẻ 25 Xu, **trọn bộ Hồ sơ nội tâm 99 Xu** (khuyên dùng), combo sách in 249 Xu. Báo cáo dàn trang A4, khách chọn "Lưu thành PDF" trong hộp thoại in.
+- **Xem thử miễn phí, mở khóa phần chuyên sâu**: Thần số học (số chủ đạo), Matrix (ma trận + năng lượng cốt lõi), Bát Tự (tứ trụ + nhật chủ) và Hồ sơ nội tâm (chỉ số cốt lõi + thông điệp tổng hợp) cho xem miễn phí; phần còn lại chỉ được dựng ra sau khi mở khóa (`js/report/paywall.js`). Bài lẻ 25 Xu, **trọn bộ Hồ sơ nội tâm 99 Xu** (mở luôn 3 bài lẻ của cùng hồ sơ), combo sách in 249 Xu. Đã mở khóa thì xem lại và tải PDF (dàn trang A4, "Lưu thành PDF" trong hộp thoại in) không mất thêm xu: máy chủ ghi trang `MoKhoa` theo số điện thoại + hồ sơ (quy tắc trong `unlockKey` của `js/shop/catalog.js`, bản sao `unlockKey_` trong `Code.gs`).
 - **Đặt hàng vật phẩm** và **"Kết nối chuyên gia"** (nút nổi góc phải dưới): gọi/Zalo trực tiếp hoặc để lại form, chuyên gia gọi lại.
 - **Máy chủ = Google Sheets + Apps Script** (`apps-script/Code.gs`): lưu ví, yêu cầu nạp, giao dịch, đơn hàng, lịch tư vấn. Giá xu nằm ở máy chủ; xu chỉ được cộng khi chủ shop đổi trạng thái dòng nạp thành "Đã nhận". Cài đặt: **[docs/HUONG-DAN-GOOGLE-SHEETS.md](docs/HUONG-DAN-GOOGLE-SHEETS.md)**.
 - Cấu hình công khai nằm ở `js/shop/config.js` (URL Apps Script, ngân hàng, Zalo). Khi `APPS_SCRIPT_URL` còn trống, các nút trả phí hướng khách liên hệ Zalo.
 
 **Bảo mật khóa API:** dự án hiện **không dùng AI và không có khóa API nào**. `config.js` là file công khai, tuyệt đối không đặt khóa Gemini/Claude vào đó. Nếu thêm AI, gọi qua hàm máy chủ (ví dụ Vercel `api/*.js` đọc `process.env.GEMINI_API_KEY`, hoặc Apps Script `PropertiesService`).
 
-**Giới hạn đã biết:** PDF được tạo trên trình duyệt nên người rành kỹ thuật có thể tự in trang luận giải; mã MoMo là mã tĩnh nên khách tự nhập số tiền và nội dung; số trang PDF phụ thuộc nội dung (trọn bộ khoảng 12 trang, bài lẻ khoảng 5 trang); giá chuông, con lắc, vòng tay đang để "Liên hệ báo giá".
+**Giới hạn đã biết:** luận giải được tính và tạo PDF ngay trên trình duyệt, nên người rành kỹ thuật vẫn có thể đọc mã nguồn để xem phần bị khóa; mã MoMo là mã tĩnh nên khách tự nhập số tiền và nội dung; số trang PDF phụ thuộc nội dung (trọn bộ khoảng 12 trang, bài lẻ khoảng 5 trang); giá chuông, con lắc, vòng tay đang để "Liên hệ báo giá".
 
 ## Chạy thử
 Trang dùng ES modules nên **cần chạy qua web server** (mở trực tiếp file bằng `file://` sẽ không chạy JavaScript):

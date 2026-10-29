@@ -8,6 +8,7 @@
  *   GiaoDich  – every credit and spend
  *   DonHang   – physical orders and quote requests
  *   TuVan     – 1-1 consultation requests
+ *   MoKhoa    – paid readings (phone + reading), so a reading is never charged twice
  *
  * Deploy: Extensions → Apps Script → paste this file → run setup() once →
  * Deploy → New deployment → Web app → Execute as: Me, Who has access: Anyone.
@@ -49,6 +50,7 @@ var SHEETS = {
   GiaoDich: ['Thời gian', 'Số điện thoại', 'Loại', 'Xu', 'Mục', 'Số dư sau', 'Mã'],
   DonHang: ['Mã', 'Thời gian', 'Số điện thoại', 'Họ tên', 'Địa chỉ', 'Sản phẩm', 'Xu', 'Ghi chú', 'Trạng thái'],
   TuVan: ['Thời gian', 'Họ tên', 'Số điện thoại', 'Vấn đề', 'Trạng thái'],
+  MoKhoa: ['Thời gian', 'Số điện thoại', 'Mục', 'Hồ sơ', 'Mã GD'],
 };
 
 /* ---------------------------------------------------------------- helpers */
@@ -83,10 +85,22 @@ function newId_(prefix) {
   return prefix + '-' + Utilities.getUuid().slice(0, 8).toUpperCase();
 }
 
+/** The named sheet; created with its header row if it is missing (e.g. added in a later version). */
 function sheet_(name) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
-  if (!sheet) throw new Error('Chưa chạy setup(): thiếu trang tính ' + name + '.');
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = book.getSheetByName(name);
+  if (!sheet) {
+    sheet = book.insertSheet(name);
+    sheet.getRange(1, 1, 1, SHEETS[name].length).setValues([SHEETS[name]]).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
   return sheet;
+}
+
+/** Phone stored in a sheet cell, with the leading zero restored if Sheets dropped it. */
+function storedPhone_(cell) {
+  var digits = String(cell).replace(/\D/g, '');
+  return digits.length === 9 ? '0' + digits : digits;
 }
 
 function rows_(name) {
@@ -99,9 +113,7 @@ function rows_(name) {
 function findWallet_(phone) {
   var data = rows_('Vi');
   for (var i = 0; i < data.length; i += 1) {
-    var stored = String(data[i][0]).replace(/\D/g, '');
-    if (stored.length === 9) stored = '0' + stored;
-    if (stored === phone) {
+    if (storedPhone_(data[i][0]) === phone) {
       return {
         row: i + 2,
         phone: phone,
@@ -161,9 +173,7 @@ function logTransaction_(phone, type, coins, item, balanceAfter, ref) {
 
 function pendingCoins_(phone) {
   return rows_('NapXu').reduce(function (sum, r) {
-    var stored = String(r[2]).replace(/\D/g, '');
-    if (stored.length === 9) stored = '0' + stored;
-    return stored === phone && r[7] === STATUS_PENDING ? sum + (Number(r[4]) || 0) : sum;
+    return storedPhone_(r[2]) === phone && r[7] === STATUS_PENDING ? sum + (Number(r[4]) || 0) : sum;
   }, 0);
 }
 
@@ -178,6 +188,59 @@ function spendFrom_(wallet, item) {
   var ref = newId_('GD');
   logTransaction_(wallet.phone, 'Trừ', -price, ITEM_NAMES[item], balance, ref);
   return { ref: ref, price: price, balance: balance };
+}
+
+/* ------------------------------------------- unlocks (same rules as js/shop/catalog.js) */
+
+function normalizeName_(name) {
+  return String(name == null ? '' : name).normalize('NFC').toLowerCase().trim().replace(/\s+/g, ' ');
+}
+
+/** The birth data a reading was computed from, validated. */
+function readingInput_(raw) {
+  raw = raw || {};
+  var birthDate = String(raw.birthDate || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) throw new Error('Thiếu ngày sinh của hồ sơ cần mở khóa.');
+  var birthTime = String(raw.birthTime || '');
+  if (birthTime && !/^\d{2}:\d{2}$/.test(birthTime)) throw new Error('Giờ sinh không hợp lệ.');
+  return {
+    fullName: String(raw.fullName || '').slice(0, 120),
+    birthDate: birthDate,
+    birthTime: birthTime,
+    gender: raw.gender === 'male' || raw.gender === 'female' ? raw.gender : '',
+  };
+}
+
+function unlockKey_(item, input) {
+  var name = normalizeName_(input.fullName);
+  switch (item) {
+    case 'single_numerology': return name + '|' + input.birthDate;
+    case 'single_matrix': return input.birthDate;
+    case 'single_bazi': return input.birthDate + '|' + input.birthTime + '|' + input.gender;
+    case 'full_report':
+    case 'print_combo': return name + '|' + input.birthDate + '|' + input.birthTime + '|' + input.gender;
+    default: throw new Error('Sản phẩm không hợp lệ.');
+  }
+}
+
+function coveredItems_(item) {
+  return item === 'full_report' || item === 'print_combo'
+    ? ['full_report', 'single_numerology', 'single_matrix', 'single_bazi']
+    : [item];
+}
+
+function hasUnlock_(phone, item, key) {
+  return rows_('MoKhoa').some(function (r) {
+    return storedPhone_(r[1]) === phone && r[2] === item && String(r[3]) === key;
+  });
+}
+
+function recordUnlocks_(phone, item, input, ref) {
+  var sheet = sheet_('MoKhoa');
+  coveredItems_(item).forEach(function (covered) {
+    // The leading apostrophe keeps keys such as 1990-08-15 as text instead of a date.
+    sheet.appendRow([new Date(), "'" + phone, covered, "'" + unlockKey_(covered, input), ref]);
+  });
 }
 
 /* ---------------------------------------------------------------- actions */
@@ -205,9 +268,17 @@ var ACTIONS = {
 
   spend: function (p) {
     if (p.item === 'print_combo') throw new Error('Combo sách in cần địa chỉ giao hàng, vui lòng đặt qua mục Đặt in.');
+    if (!ITEM_PRICES[p.item]) throw new Error('Sản phẩm không hợp lệ.');
     var phone = normalizePhone_(p.phone);
     var wallet = requireWallet_(phone, validatePin_(p.pin));
-    return spendFrom_(wallet, p.item);
+    // Pages from before unlock tracking send no birth data: charge as before.
+    if (!p.input) return spendFrom_(wallet, p.item);
+    var input = readingInput_(p.input);
+    // A reading this phone already paid for (directly or through the full report) is free to reopen.
+    if (hasUnlock_(phone, p.item, unlockKey_(p.item, input))) return { already: true, price: 0, balance: wallet.balance };
+    var spent = spendFrom_(wallet, p.item);
+    recordUnlocks_(phone, p.item, input, spent.ref);
+    return spent;
   },
 
   order: function (p) {
@@ -220,7 +291,9 @@ var ACTIONS = {
     var code = newId_('DH');
     if (p.item === 'print_combo') {
       var wallet = requireWallet_(phone, validatePin_(p.pin));
+      var input = p.input ? readingInput_(p.input) : null;
       var spent = spendFrom_(wallet, 'print_combo');
+      if (input) recordUnlocks_(phone, 'print_combo', input, spent.ref);
       sheet_('DonHang').appendRow([code, new Date(), "'" + phone, name, address, ITEM_NAMES.print_combo, spent.price, note, 'Đã thanh toán – chờ in']);
       return { code: code, balance: spent.balance, price: spent.price };
     }

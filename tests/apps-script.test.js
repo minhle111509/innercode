@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash, randomUUID } from 'node:crypto';
 import vm from 'node:vm';
-import { ITEM_PRICES, PACKAGES } from '../js/shop/catalog.js';
+import { ITEM_PRICES, PACKAGES, unlockKey, coveredItems } from '../js/shop/catalog.js';
 
 const SOURCE = readFileSync(new URL('../apps-script/Code.gs', import.meta.url), 'utf8');
 
@@ -92,8 +92,10 @@ const approve = (row) => {
 
 beforeEach(() => { ({ context: ctx, sheets } = makeContext()); });
 
+const HOA = { fullName: 'Nguyễn Thị  Hoa', birthDate: '1990-08-15', birthTime: '07:30', gender: 'female' };
+
 test('setup creates every sheet with headers', () => {
-  for (const name of ['Vi', 'NapXu', 'GiaoDich', 'DonHang', 'TuVan']) {
+  for (const name of ['Vi', 'NapXu', 'GiaoDich', 'DonHang', 'TuVan', 'MoKhoa']) {
     assert.ok(sheets.get(name).grid[0].length >= 5, name);
   }
 });
@@ -131,15 +133,49 @@ test('approving a top-up credits once, then spending uses server prices', () => 
   assert.equal(b.balance, 100);
   assert.equal(b.pending, 0);
 
-  const spend = call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'full_report', coins: 1 });
+  const spend = call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'full_report', coins: 1, input: HOA });
   assert.equal(spend.price, 99, 'price comes from the server, not the request');
   assert.equal(spend.balance, 1);
-  assert.match(call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'single_matrix' }).error, /cần 25 xu/);
-  assert.match(call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'free_stuff' }).error, /không hợp lệ/);
+  assert.match(call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'single_matrix', input: { birthDate: '2000-01-13' } }).error, /cần 25 xu/);
+  assert.match(call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'free_stuff', input: HOA }).error, /không hợp lệ/);
+  assert.match(call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'single_matrix', input: { fullName: 'Hoa' } }).error, /ngày sinh/);
   b = call({ action: 'balance', phone: '0987654321', pin: '2468' });
   assert.equal(b.balance, 1);
   const log = sheets.get('GiaoDich').grid.slice(1).map((r) => [r[2], r[3]]);
   assert.deepEqual(log, [['Nạp', 100], ['Trừ', -99]]);
+});
+
+test('a paid reading is never charged twice, and the full report opens the singles', () => {
+  call({ action: 'topup', phone: '0987654321', pin: '2468', amount: 200000 });
+  approve(2);
+  const single = { fullName: 'Lan', birthDate: '2000-01-13' };
+  assert.equal(call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'single_numerology', input: single }).balance, 175);
+  const again = call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'single_numerology', input: { ...single, fullName: ' LAN ' } });
+  assert.equal(again.already, true, 'same person (name normalised) reopens for free');
+  assert.equal(again.balance, 175);
+  assert.equal(call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'single_numerology', input: { fullName: 'Lan', birthDate: '2000-01-14' } }).balance, 150, 'another birth date is a new reading');
+
+  assert.equal(call({ action: 'spend', phone: '0987654321', pin: '2468', item: 'full_report', input: HOA }).balance, 51);
+  for (const item of ['single_numerology', 'single_matrix', 'single_bazi', 'full_report']) {
+    const r = call({ action: 'spend', phone: '0987654321', pin: '2468', item, input: HOA });
+    assert.equal(r.already, true, item);
+  }
+  // Another phone does not inherit the unlock.
+  call({ action: 'topup', phone: '0911222333', pin: '1111', amount: 50000 });
+  approve(3);
+  assert.equal(call({ action: 'spend', phone: '0911222333', pin: '1111', item: 'single_matrix', input: HOA }).price, 25);
+  assert.equal(sheets.get('MoKhoa').grid[0][3], 'Hồ sơ', 'MoKhoa is created on demand with headers');
+  assert.equal(sheets.get('GiaoDich').grid.filter((r) => r[2] === 'Trừ').length, 4);
+});
+
+test('unlock keys match between the website and the server', () => {
+  const inputs = [HOA, { fullName: 'Lê  Văn A', birthDate: '1985-12-01' }, { birthDate: '2001-02-03', birthTime: '23:15', gender: 'male' }];
+  for (const input of inputs) {
+    for (const item of ['single_numerology', 'single_matrix', 'single_bazi', 'full_report', 'print_combo']) {
+      assert.equal(ctx.unlockKey_(item, ctx.readingInput_(input)), unlockKey(item, input), `${item} ${JSON.stringify(input)}`);
+      assert.deepEqual([...ctx.coveredItems_(item)], coveredItems(item));
+    }
+  }
 });
 
 test('wrong PIN is counted and locks the wallet after 5 tries', () => {
@@ -164,9 +200,10 @@ test('print combo order deducts 249 coins and records the address', () => {
   approve(2);
   approve(3);
   assert.match(call({ action: 'order', phone: '0912345678', pin: '1357', item: 'print_combo', name: 'Lan', address: 'ngắn' }).error, /địa chỉ/);
-  const r = call({ action: 'order', phone: '0912345678', pin: '1357', item: 'print_combo', name: 'Trần Lan', address: '12 Lê Lợi, Quận 1, TP.HCM' });
+  const r = call({ action: 'order', phone: '0912345678', pin: '1357', item: 'print_combo', name: 'Trần Lan', address: '12 Lê Lợi, Quận 1, TP.HCM', input: HOA });
   assert.equal(r.ok, true);
   assert.equal(r.balance, 51);
+  assert.equal(call({ action: 'spend', phone: '0912345678', pin: '1357', item: 'full_report', input: HOA }).already, true, 'the printed book also opens the reading');
   const order = sheets.get('DonHang').grid[1];
   assert.equal(order[5], 'Combo sách in Hồ sơ nội tâm');
   assert.equal(order[8], 'Đã thanh toán – chờ in');

@@ -7,7 +7,7 @@ Website là trang tĩnh. Phần ví xu, đơn hàng và yêu cầu tư vấn đ�
 2. Menu **Tiện ích mở rộng → Apps Script**.
 3. Xóa nội dung mẫu trong `Code.gs`, dán toàn bộ nội dung file [`apps-script/Code.gs`](../apps-script/Code.gs) của repo vào, bấm **Lưu**.
 4. Ở thanh chọn hàm phía trên, chọn **`setup`**, bấm **Chạy**. Google hỏi quyền truy cập: chọn tài khoản của bạn → *Nâng cao* → *Đi tới dự án (không an toàn)* → *Cho phép*. (Cảnh báo này xuất hiện vì đây là mã của chính bạn, chưa qua Google xét duyệt.)
-5. Quay lại Sheet: sẽ có 5 trang tính **Vi, NapXu, GiaoDich, DonHang, TuVan**.
+5. Quay lại Sheet: sẽ có các trang tính **Vi, NapXu, GiaoDich, DonHang, TuVan, MoKhoa**. (Trang MoKhoa cũng tự được tạo ở lần mở khóa đầu tiên nếu chưa có.)
 
 ## 2. Triển khai thành Web app
 1. Trong Apps Script: **Triển khai → Tùy chọn triển khai mới**.
@@ -37,6 +37,8 @@ Bấm **Commit changes**. Khoảng 1–2 phút sau GitHub Pages cập nhật, ch
 **Đơn hàng (DonHang)**
 - *Combo sách in*: đã trừ 249 xu, trạng thái "Đã thanh toán – chờ in". In, gửi hàng, rồi đổi trạng thái tùy ý.
 - *Chuông xoay, con lắc, vòng tay*: trạng thái "Chờ báo giá". Gọi khách để báo giá và chốt đơn.
+
+**Mở khóa luận giải (MoKhoa)**: mỗi dòng là một hồ sơ khách đã trả xu (số điện thoại, mục, họ tên + ngày giờ sinh). Khách xem lại, tải lại PDF cùng hồ sơ thì hệ thống tra trang này và không trừ thêm xu. Mua trọn bộ 99 Xu sẽ ghi 4 dòng (trọn bộ + 3 bài lẻ). Đừng xóa dòng ở đây, nếu không khách sẽ bị trừ lại.
 
 **Đặt lịch tư vấn (TuVan)**: tên, số điện thoại, vấn đề. Gọi lại khách và ghi chú trạng thái.
 

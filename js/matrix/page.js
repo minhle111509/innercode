@@ -3,7 +3,8 @@ import { formatDate } from '../shared/date.js';
 import { calculateMatrixReport } from './matrix.js';
 import { ARCANA, ARCANA_DETAILS, POSITIONS, PURPOSES } from './meanings.js';
 import { healthChart, ageForecast, currentPeriod, ancestralLines, karmicTail } from './advanced.js';
-import { mountReportOffers } from '../report/offers.js';
+import { mountReportOffers, profileHref } from '../report/offers.js';
+import { lockedSection } from '../report/paywall.js';
 
 const ageText = (n) => String(Math.round(n * 100) / 100).replace('.', ',');
 
@@ -195,27 +196,63 @@ function purposeGrid(purposes) {
   ]);
 }
 
-function render(report, fullName) {
+/** Free preview: the core energy with a few lines; the full reading is in the locked block. */
+function previewCard(points) {
+  const arcana = ARCANA[points.E];
+  return el('article', { class: 'reading-card highlight' }, [
+    el('div', { class: 'number-badge', text: points.E }),
+    el('div', {}, [
+      el('h3', { text: `Năng lượng cốt lõi: ${arcana.name}` }),
+      el('p', { class: 'muted', text: POSITIONS.find((p) => p.key === 'E').hint }),
+      el('p', { class: 'keywords', text: arcana.keywords }),
+      el('p', {}, [el('strong', { text: 'Khi tích cực: ' }), arcana.plus]),
+    ]),
+  ]);
+}
+
+function render(report, input, onUnlock) {
+  const { fullName } = input;
   setChildren(result,
     el('h2', { text: fullName ? `Ma trận của ${fullName}` : 'Ma trận của bạn' }),
     el('p', { class: 'muted', text: `Ngày sinh: ${formatDate(report.date)}` }),
     matrixChart(report.points),
-    ...POSITIONS.map((position) => arcanaCard(position, report.points)),
-    purposeGrid(report.purposes),
-    tailView(report.points),
-    healthView(report.points),
-    forecastView(report.points, new Date().getFullYear() - report.date.year),
-    ancestryView(report.points),
+    previewCard(report.points),
+    lockedSection({
+      item: 'single_matrix',
+      input,
+      title: 'Luận giải Matrix Destiny chuyên sâu',
+      includes: [
+        'Luận giải đầy đủ 7 vị trí: chân dung, tài năng, vật chất, tài chính, tình yêu, đuôi nghiệp',
+        '4 mục đích sống theo từng giai đoạn tuổi',
+        'Giải mã đuôi nghiệp 3 bước',
+        'Bảng sức khỏe 7 luân xa',
+        'Vòng dự báo theo tuổi 0–80 và giai đoạn bạn đang ở',
+        'Dòng nghiệp tổ tiên bên nội và bên ngoại',
+      ],
+      build: () => [
+        ...POSITIONS.map((position) => arcanaCard(position, report.points)),
+        purposeGrid(report.purposes),
+        tailView(report.points),
+        healthView(report.points),
+        forecastView(report.points, new Date().getFullYear() - report.date.year),
+        ancestryView(report.points),
+      ],
+      upsellHref: profileHref(() => input),
+      onUnlock,
+    }),
   );
-  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function show(input, scroll) {
+  render(calculateMatrixReport({ birthDate: input.birthDate }), input, () => show(input, false));
+  mountReportOffers(document.getElementById('report-offers'), () => input, { single: 'matrix', onUnlock: () => show(input, false) });
+  if (scroll) result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const fullName = form.elements.fullName.value.trim();
   try {
-    render(calculateMatrixReport({ birthDate: birthInput.value }), fullName);
-    mountReportOffers(document.getElementById('report-offers'), () => ({ fullName: form.elements.fullName.value.trim(), birthDate: birthInput.value }), { single: 'matrix' });
+    show({ fullName: form.elements.fullName.value.trim(), birthDate: birthInput.value }, true);
   } catch (error) {
     showError(result, error.message);
   }

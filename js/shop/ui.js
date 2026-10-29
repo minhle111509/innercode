@@ -249,9 +249,10 @@ export function openWallet() {
 /* ---------- spend coins ---------- */
 
 /**
- * Ask for phone + PIN and spend coins for `item`. Resolves true when the server confirmed the spend.
+ * Ask for phone + PIN and spend coins for `item` (a reading identified by `input`).
+ * Resolves true when the server confirmed the spend, or found that this reading was already paid for.
  */
-export function purchase(item, { title, description } = {}) {
+export function purchase(item, { title, description, input } = {}) {
   const price = ITEM_PRICES[item];
   return new Promise((resolve) => {
     if (!isConfigured()) {
@@ -272,6 +273,7 @@ export function purchase(item, { title, description } = {}) {
       description ? el('p', { class: 'muted', text: description }) : null,
       el('p', { class: 'price-line' }, [el('strong', { text: `${price} Xu` }), el('span', { class: 'muted', text: ` ≈ ${formatVnd(price * 1000)}` })]),
       el('div', { class: 'field-row' }, [field('Số điện thoại (ví)', phone), field('Mã PIN', pin)]),
+      el('p', { class: 'hint', text: 'Đã mở khóa hồ sơ này trước đây bằng số điện thoại này? Hệ thống nhận ra và không trừ thêm xu.' }),
       el('div', { class: 'row-actions' }, [confirm, el('button', { type: 'button', class: 'btn secondary', 'data-open-wallet': '', text: 'Nạp thêm xu' })]),
       status,
     );
@@ -281,11 +283,13 @@ export function purchase(item, { title, description } = {}) {
       setStatus(status, 'Đang xác nhận…');
       try {
         const p = normalizePhone(phone.value);
-        const data = await callBackend('spend', { phone: p, pin: validatePin(pin.value), item });
+        const data = await callBackend('spend', { phone: p, pin: validatePin(pin.value), item, input });
         saveCache({ phone: p, balance: data.balance });
         renderChip();
         done = true;
-        setStatus(status, `Đã trừ ${data.price} xu. Số dư còn ${data.balance} xu.`, 'good');
+        setStatus(status, data.already
+          ? `Hồ sơ này đã được mở khóa trước đó, không trừ xu. Số dư ${data.balance} xu.`
+          : `Đã trừ ${data.price} xu. Số dư còn ${data.balance} xu.`, 'good');
         // Only close if this purchase is still on screen; another modal may have replaced it.
         setTimeout(() => { if (d.contains(status)) d.close(); resolve(true); }, 700);
       } catch (error) {
@@ -298,7 +302,8 @@ export function purchase(item, { title, description } = {}) {
 
 /* ---------- physical orders ---------- */
 
-export function orderProduct(key, { prefillNote = '' } = {}) {
+/** `input` (optional) is the reading the printed book is for; paying for the book also opens it online. */
+export function orderProduct(key, { prefillNote = '', input = null, onPaid = null } = {}) {
   const product = PRODUCTS.find((p) => p.key === key);
   if (!product) return;
   const paid = Number.isFinite(product.coins);
@@ -335,8 +340,9 @@ export function orderProduct(key, { prefillNote = '' } = {}) {
       const p = normalizePhone(phone.value);
       const payload = { item: key, phone: p, name: name.value, address: address.value, note: note.value };
       if (paid) payload.pin = validatePin(pin.value);
+      if (paid && input) payload.input = input;
       const data = await callBackend('order', payload);
-      if (paid) { saveCache({ phone: p, balance: data.balance }); renderChip(); }
+      if (paid) { saveCache({ phone: p, balance: data.balance }); renderChip(); onPaid?.(); }
       setStatus(status, paid
         ? `Đặt in thành công, mã đơn ${data.code}. Số dư còn ${data.balance} xu. INNER CODE sẽ gọi xác nhận trước khi in.`
         : `Đã gửi yêu cầu ${data.code}. Sarah Nguyen sẽ liên hệ báo giá sớm.`, 'good');

@@ -5,7 +5,8 @@ import {
   NUMBER_MEANINGS, NUMBER_DETAILS, PERSONAL_YEAR_MEANINGS, CHART_DIGIT_MEANINGS,
   CHALLENGE_MEANINGS, ARROW_MEANINGS, KARMIC_DEBT_MEANINGS, LESSON_MEANINGS, POSITION_TEXTS,
 } from './meanings.js';
-import { mountReportOffers } from '../report/offers.js';
+import { mountReportOffers, profileHref } from '../report/offers.js';
+import { lockedSection } from '../report/paywall.js';
 
 const form = document.getElementById('numerology-form');
 const result = document.getElementById('numerology-result');
@@ -151,12 +152,24 @@ function monthsView(months, day) {
   ]);
 }
 
-function render(report, fullName) {
+/** Free preview: the life path number with a few lines; everything else is in the locked block. */
+function previewCard(number) {
+  const meaning = NUMBER_MEANINGS[number];
+  return el('article', { class: 'reading-card highlight' }, [
+    el('div', { class: 'number-badge', text: number }),
+    el('div', {}, [
+      el('h3', { text: `Số chủ đạo: ${meaning.title}` }),
+      el('p', { class: 'muted', text: 'Con số quan trọng nhất, cho biết bài học và con đường chính của cuộc đời.' }),
+      el('p', { class: 'keywords', text: meaning.keywords }),
+      el('p', {}, [el('strong', { text: 'Điểm mạnh: ' }), meaning.strengths]),
+    ]),
+  ]);
+}
+
+function deepReading(report) {
   const nodes = [
-    el('h2', { text: fullName ? `Kết quả của ${fullName}` : 'Kết quả của bạn' }),
-    el('p', { class: 'muted', text: `Ngày sinh: ${formatDate(report.date)}` }),
     meaningCard('Số chủ đạo', report.lifePath, {
-      highlight: true, details: true, hint: 'Con số quan trọng nhất, cho biết bài học và con đường chính của cuộc đời.',
+      highlight: true, details: true, hint: 'Luận giải đầy đủ: thử thách, sự nghiệp, tình yêu và lời khuyên.',
     }),
     meaningCard('Số ngày sinh', report.birthDay, { hint: 'Năng khiếu tự nhiên bạn mang theo từ khi sinh ra.', position: 'birthday' }),
     meaningCard('Số thái độ', report.attitude, { hint: 'Ấn tượng đầu tiên và cách bạn phản ứng với hoàn cảnh.' }),
@@ -180,16 +193,44 @@ function render(report, fullName) {
     monthsView(report.personalMonths, report.personalDay),
     birthChartView(report.chart, report.arrows),
   );
-  setChildren(result, ...nodes);
-  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  return nodes;
+}
+
+function render(report, input, onUnlock) {
+  const { fullName } = input;
+  setChildren(result,
+    el('h2', { text: fullName ? `Kết quả của ${fullName}` : 'Kết quả của bạn' }),
+    el('p', { class: 'muted', text: `Ngày sinh: ${formatDate(report.date)}` }),
+    previewCard(report.lifePath),
+    lockedSection({
+      item: 'single_numerology',
+      input,
+      title: 'Luận giải Thần số học chuyên sâu',
+      includes: [
+        'Luận giải đầy đủ số chủ đạo: thử thách, sự nghiệp, tình yêu, lời khuyên',
+        report.name ? 'Số ngày sinh, thái độ, sứ mệnh, linh hồn, nhân cách, trưởng thành' : 'Số ngày sinh, thái độ (nhập họ tên để có thêm 4 chỉ số tên)',
+        'Số nợ nghiệp và bài học nghiệp từ họ tên',
+        '3 chu kỳ đường đời, 4 đỉnh cao và thử thách theo độ tuổi',
+        'Năm, tháng, ngày cá nhân: điều nên làm lúc này',
+        'Biểu đồ ngày sinh và 8 mũi tên tính cách',
+      ],
+      build: () => deepReading(report),
+      upsellHref: profileHref(() => input),
+      onUnlock,
+    }),
+  );
+}
+
+function show(input, scroll) {
+  render(calculateReport(input), input, () => show(input, false));
+  mountReportOffers(document.getElementById('report-offers'), () => input, { single: 'numerology', onUnlock: () => show(input, false) });
+  if (scroll) result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const fullName = form.elements.fullName.value.trim();
   try {
-    render(calculateReport({ fullName, birthDate: birthInput.value }), fullName);
-    mountReportOffers(document.getElementById('report-offers'), () => ({ fullName: form.elements.fullName.value.trim(), birthDate: birthInput.value }), { single: 'numerology' });
+    show({ fullName: form.elements.fullName.value.trim(), birthDate: birthInput.value }, true);
   } catch (error) {
     showError(result, error.message);
   }

@@ -4,6 +4,7 @@ import { buildProfile } from './profile.js';
 import { NUMBER_MEANINGS } from '../numerology/meanings.js';
 import { ARCANA } from '../matrix/meanings.js';
 import { mountReportOffers } from '../report/offers.js';
+import { lockedSection } from '../report/paywall.js';
 
 const form = document.getElementById('profile-form');
 const result = document.getElementById('profile-result');
@@ -19,7 +20,8 @@ function coreTile(label, value, caption, href) {
   ]);
 }
 
-function render(p, fullName) {
+function render(p, input, onUnlock) {
+  const { fullName } = input;
   const { numerology, matrix, bazi, themes, rows, summary, practices } = p;
   const maxScore = themes[0].score;
 
@@ -40,62 +42,86 @@ function render(p, fullName) {
       el('p', { text: summary }),
     ]),
 
-    el('section', { class: 'reading-card column' }, [
-      el('h3', { text: 'Điểm hội tụ giữa các hệ thống' }),
-      el('p', { class: 'muted', text: 'Chủ đề càng được nhiều hệ thống cùng nhắc đến, điểm càng cao.' }),
-      el('div', { class: 'theme-list' }, themes.slice(0, 4).map((t, i) => el('div', { class: 'theme' }, [
-        el('div', { class: 'bar-row' }, [
-          el('span', { class: 'bar-label', text: t.name }),
-          el('span', { class: 'bar-track' }, el('span', { class: `bar-fill${i === 0 ? ' main' : ''}`, style: `width:${(t.score / maxScore) * 100}%` })),
-          el('span', { class: 'bar-value', text: t.score }),
+    lockedSection({
+      item: 'full_report',
+      input,
+      title: 'Hồ sơ nội tâm trọn bộ',
+      includes: [
+        'Điểm hội tụ: chủ đề sống được nhiều hệ thống cùng nhắc đến',
+        'Bảng đối chiếu Thần số học, Matrix Destiny, Bát Tự theo 6 khía cạnh',
+        'Thực hành và thiền gợi ý riêng cho bạn',
+        'Mở luôn luận giải chuyên sâu ở trang Thần số học, Matrix và Bát Tự cho hồ sơ này',
+        'PDF trọn bộ nhiều trang để lưu và in',
+      ],
+      onUnlock,
+      build: () => [
+        el('section', { class: 'reading-card column' }, [
+          el('h3', { text: 'Điểm hội tụ giữa các hệ thống' }),
+          el('p', { class: 'muted', text: 'Chủ đề càng được nhiều hệ thống cùng nhắc đến, điểm càng cao.' }),
+          el('div', { class: 'theme-list' }, themes.slice(0, 4).map((t, i) => el('div', { class: 'theme' }, [
+            el('div', { class: 'bar-row' }, [
+              el('span', { class: 'bar-label', text: t.name }),
+              el('span', { class: 'bar-track' }, el('span', { class: `bar-fill${i === 0 ? ' main' : ''}`, style: `width:${(t.score / maxScore) * 100}%` })),
+              el('span', { class: 'bar-value', text: t.score }),
+            ]),
+            el('p', { class: 'chips' }, t.sources.map((s) => el('span', { class: 'chip', text: s }))),
+          ]))),
         ]),
-        el('p', { class: 'chips' }, t.sources.map((s) => el('span', { class: 'chip', text: s }))),
-      ]))),
-    ]),
 
-    el('section', { class: 'compare' }, [
-      el('h3', { text: 'Đối chiếu ba trường phái' }),
-      el('div', { class: 'compare-head', 'aria-hidden': 'true' }, [
-        el('span'), el('span', { text: 'Thần số học' }), el('span', { text: 'Matrix Destiny' }), el('span', { text: 'Bát Tự' }),
-      ]),
-      ...rows.map((row) => el('div', { class: 'compare-row' }, [
-        el('h4', { text: row.topic }),
-        el('p', {}, [el('span', { class: 'compare-src', text: 'Thần số học' }), row.numerology]),
-        el('p', {}, [el('span', { class: 'compare-src', text: 'Matrix Destiny' }), row.matrix]),
-        el('p', {}, [el('span', { class: 'compare-src', text: 'Bát Tự' }), row.bazi]),
-      ])),
-    ]),
+        el('section', { class: 'compare' }, [
+          el('h3', { text: 'Đối chiếu ba trường phái' }),
+          el('div', { class: 'compare-head', 'aria-hidden': 'true' }, [
+            el('span'), el('span', { text: 'Thần số học' }), el('span', { text: 'Matrix Destiny' }), el('span', { text: 'Bát Tự' }),
+          ]),
+          ...rows.map((row) => el('div', { class: 'compare-row' }, [
+            el('h4', { text: row.topic }),
+            el('p', {}, [el('span', { class: 'compare-src', text: 'Thần số học' }), row.numerology]),
+            el('p', {}, [el('span', { class: 'compare-src', text: 'Matrix Destiny' }), row.matrix]),
+            el('p', {}, [el('span', { class: 'compare-src', text: 'Bát Tự' }), row.bazi]),
+          ])),
+        ]),
 
-    el('section', { class: 'reading-card column' }, [
-      el('h3', { text: 'Thực hành cho bạn' }),
-      el('p', { class: 'muted', text: 'Gợi ý từ những chủ đề nổi bật và hành cần bồi đắp. Xem thêm bài thở, nhật ký ở trang Khám phá bản thân.' }),
-      el('div', { class: 'purpose-grid' }, practices.map((x) => el('div', { class: 'purpose' }, [
-        el('strong', { text: x.title }),
-        el('span', { text: x.practice }),
-        el('span', { class: 'muted', text: x.meditation }),
-      ]))),
-      el('a', { class: 'btn secondary', href: 'self.html', text: 'Mở trang Khám phá bản thân' }),
-    ]),
+        el('section', { class: 'reading-card column' }, [
+          el('h3', { text: 'Thực hành cho bạn' }),
+          el('p', { class: 'muted', text: 'Gợi ý từ những chủ đề nổi bật và hành cần bồi đắp. Xem thêm bài thở, nhật ký ở trang Khám phá bản thân.' }),
+          el('div', { class: 'purpose-grid' }, practices.map((x) => el('div', { class: 'purpose' }, [
+            el('strong', { text: x.title }),
+            el('span', { text: x.practice }),
+            el('span', { class: 'muted', text: x.meditation }),
+          ]))),
+          el('a', { class: 'btn secondary', href: 'self.html', text: 'Mở trang Khám phá bản thân' }),
+        ]),
+      ],
+    }),
   );
-  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function show(input, scroll) {
+  render(buildProfile(input), input, () => show(input, false));
+  mountReportOffers(document.getElementById('report-offers'), () => input, { onUnlock: () => show(input, false) });
+  if (scroll) result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const fullName = form.elements.fullName.value.trim();
   try {
-    render(buildProfile({
-      fullName,
-      birthDate: birthInput.value,
-      birthTime: form.elements.birthTime.value,
-    }), fullName);
-    mountReportOffers(document.getElementById('report-offers'), () => ({
+    show({
       fullName: form.elements.fullName.value.trim(),
       birthDate: birthInput.value,
       birthTime: form.elements.birthTime.value,
       gender: form.elements.gender.value,
-    }));
+    }, true);
   } catch (error) {
     showError(result, error.message);
   }
 });
+
+// Birth data handed over from a single reading page (profile.html#fullName=…&birthDate=…).
+const handed = new URLSearchParams(location.hash.slice(1));
+if (handed.get('birthDate')) {
+  for (const key of ['fullName', 'birthDate', 'birthTime', 'gender']) {
+    if (handed.get(key) && form.elements[key]) form.elements[key].value = handed.get(key);
+  }
+  history.replaceState(null, '', location.pathname);
+  form.elements.fullName.focus();
+}

@@ -78,3 +78,25 @@ export function packageFor(vnd) {
 }
 
 export const formatVnd = (n) => `${n.toLocaleString('vi-VN')}đ`;
+
+/* Which reading a paid unlock belongs to. Mirrored by unlockKey_ / coveredItems_ in apps-script/Code.gs. */
+export const normalizeName = (name = '') => String(name).normalize('NFC').toLowerCase().trim().replace(/\s+/g, ' ');
+
+/** Identity of the reading an item unlocks: only the inputs that system actually uses. */
+export function unlockKey(item, { fullName = '', birthDate = '', birthTime = '', gender = '' } = {}) {
+  switch (item) {
+    case 'single_numerology': return `${normalizeName(fullName)}|${birthDate}`;
+    case 'single_matrix': return birthDate;
+    case 'single_bazi': return `${birthDate}|${birthTime}|${gender}`;
+    case 'full_report':
+    case 'print_combo': return `${normalizeName(fullName)}|${birthDate}|${birthTime}|${gender}`;
+    default: throw new Error('Sản phẩm không hợp lệ.');
+  }
+}
+
+/** The full report (and the printed book) also opens the three single readings of the same person. */
+export function coveredItems(item) {
+  return item === 'full_report' || item === 'print_combo'
+    ? ['full_report', 'single_numerology', 'single_matrix', 'single_bazi']
+    : [item];
+}
