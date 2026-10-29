@@ -64,8 +64,10 @@ Yêu cầu Node.js ≥ 20, không cần cài thư viện:
 npm test
 ```
 
-## Triển khai GitHub Pages
-Repo → **Settings → Pages** → Source: *Deploy from a branch* → nhánh `main`, thư mục `/ (root)` → Save.
+## Triển khai
+- **Cloudflare Pages (chính):** https://innercode.pages.dev. Dự án kết nối repo này, nhánh `main`, Framework *None*, không có build command, thư mục xuất là gốc. Mỗi commit lên `main` tự triển khai. Cloudflare cho phép dùng gói miễn phí cho mục đích kinh doanh.
+- **GitHub Pages (phụ):** Repo → **Settings → Pages** → *Deploy from a branch* → `main`, `/ (root)`.
+- Địa chỉ chính thức dùng cho thẻ chia sẻ (`og:url`, `og:image`) nằm ở đầu mỗi file `.html`.
 
 ## Hướng phát triển
 Đối soát chuyển khoản tự động (webhook ngân hàng/cổng thanh toán), tạo PDF phía máy chủ để chống sao chép, và luận giải AI đều cần một hàm máy chủ giữ khóa bí mật trong biến môi trường; không làm an toàn được trên web tĩnh.

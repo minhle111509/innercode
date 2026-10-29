@@ -1,12 +1,12 @@
 # INNER CODE – Tài liệu bàn giao
 
-Bản lưu ngày 29/10/2026, khớp với GitHub `minhle111509/innercode` nhánh `main`, commit `85b0795`.
+Cập nhật 29/10/2026. Bản chính luôn là GitHub `minhle111509/innercode`, nhánh `main`.
 
 ## 1. Mọi thứ đang nằm ở đâu
 | Thứ | Ở đâu |
 |---|---|
 | Mã nguồn website (bản chính) | GitHub: https://github.com/minhle111509/innercode |
-| Website đang chạy | GitHub Pages của repo trên (Settings → Pages) |
+| Website đang chạy | **Chính:** Cloudflare Pages https://innercode.pages.dev (dự án `innercode` trong dash.cloudflare.com → Workers & Pages). **Phụ:** GitHub Pages https://minhle111509.github.io/innercode/. Cả hai tự cập nhật mỗi khi GitHub có bản mới |
 | Dữ liệu ví xu, nạp xu, đơn hàng, lịch tư vấn, mở khóa | Google Sheet **INNER CODE – Dữ liệu** trong tài khoản Google của chị |
 | Mã máy chủ (Apps Script) | Trong Sheet: Tiện ích mở rộng → Apps Script. Bản gốc: `apps-script/Code.gs` |
 | Đường link máy chủ (`/exec`) | `js/shop/config.js`, dòng `APPS_SCRIPT_URL` |
@@ -61,7 +61,8 @@ Sửa trên GitHub: mở file → biểu tượng bút chì → sửa → **Comm
 - Muốn dùng AI sau này: khóa đặt trong Apps Script → Cài đặt dự án → Thuộc tính tập lệnh.
 
 ## 7. Khôi phục nếu mất
-- **Mất web / repo**: tạo repo mới trên GitHub → **Add file → Upload files** → kéo toàn bộ thư mục giải nén vào → Commit → bật **Settings → Pages** (nhánh `main`, thư mục `/ (root)`).
+- **Mất web / repo**: tạo repo mới trên GitHub → **Add file → Upload files** → kéo toàn bộ thư mục giải nén vào → Commit → trên Cloudflare: **Workers & Pages → Create → Continue to Pages → Connect to Git** → chọn repo, Framework **None**, Build command và output **để trống** → Save and Deploy.
+- **Đổi địa chỉ web** (ví dụ gắn tên miền riêng): sửa 2 dòng `og:image` và `og:url` ở đầu mỗi file `.html` sang địa chỉ mới để link chia sẻ Facebook/Zalo hiện đúng.
 - **Mất Apps Script**: làm lại theo `docs/HUONG-DAN-GOOGLE-SHEETS.md` (mục 1–3). Nếu link `/exec` mới khác link cũ thì dán link mới vào `js/shop/config.js`.
 - **Dữ liệu khách** chỉ nằm trong Google Sheet, không có trong gói zip này. Thỉnh thoảng chị nên tải bản sao: **Tệp → Tải xuống → Microsoft Excel (.xlsx)**.
 
