@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   sumDigits, reduceNumber, reduceLifePath, parseBirthDate, lifePathNumber,
-  personalYearNumber, birthChart, normalizeName, letterValue, nameNumbers, calculateReport,
+  personalYearNumber, birthChart, normalizeName, letterValue, nameNumbers, isVowelAt, calculateReport,
 } from '../js/numerology/numerology.js';
 import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS } from '../js/numerology/meanings.js';
 import {
@@ -81,6 +81,19 @@ test('letterValue follows Pythagorean table', () => {
   assert.equal(letterValue('J'), 1);
   assert.equal(letterValue('Z'), 8);
   assert.throws(() => letterValue('1'), RangeError);
+});
+
+test('Y is a vowel only when it stands alone in its word', () => {
+  // Nguyen: U3 + E5, Y sits in the vowel cluster -> consonant. Thi I9, Kim I9, Ngan A1 -> 27 -> 9.
+  assert.deepEqual(nameNumbers('Nguyễn Thị Kim Ngân'), { expression: 3, soulUrge: 9, personality: 3 });
+  // Vy: Y alone -> vowel. A1 + I9 + Y7 = 17 -> 8.
+  assert.equal(nameNumbers('Trần Thị Vy').soulUrge, 8);
+  // Huy, Thuy, Uyen: Y next to U -> consonant.
+  assert.equal(nameNumbers('Huy').soulUrge, 3);
+  assert.equal(nameNumbers('Uyen').soulUrge, 8);
+  assert.equal(isVowelAt('MY', 1), true);
+  assert.equal(isVowelAt('HUY', 2), false);
+  assert.equal(isVowelAt('YEN', 0), false);
 });
 
 test('nameNumbers computes expression, soul urge and personality', () => {

@@ -9,7 +9,7 @@ import { sumDigits } from '../shared/digits.js';
 export { parseBirthDate, sumDigits };
 
 const MASTER_NUMBERS = new Set([11, 22, 33]);
-const VOWELS = new Set(['A', 'E', 'I', 'O', 'U', 'Y']);
+const VOWELS = new Set(['A', 'E', 'I', 'O', 'U']);
 
 /** Reduce to 1–9, optionally keeping master numbers 11/22/33. */
 export function reduceNumber(n, { keepMaster = true } = {}) {
@@ -80,23 +80,24 @@ export function letterValue(letter) {
  * - personality (Số nhân cách): consonants
  */
 export function nameNumbers(name) {
-  const letters = normalizeName(name).replace(/ /g, '');
+  const { letters, all, vowels, consonants } = nameSums(name);
   if (!letters) return null;
-
-  let all = 0;
-  let vowels = 0;
-  let consonants = 0;
-  for (const letter of letters) {
-    const value = letterValue(letter);
-    all += value;
-    if (VOWELS.has(letter)) vowels += value;
-    else consonants += value;
-  }
   return {
     expression: reduceNumber(all),
     soulUrge: vowels ? reduceNumber(vowels) : null,
     personality: consonants ? reduceNumber(consonants) : null,
   };
+}
+
+/**
+ * Y is a vowel only when it stands alone in its word (Vy, My, Thy); next to A/E/I/O/U
+ * (Nguyen, Huy, Thuy, Uyen) it belongs to that vowel cluster and counts as a consonant.
+ */
+export function isVowelAt(word, i) {
+  const letter = word[i];
+  if (VOWELS.has(letter)) return true;
+  if (letter !== 'Y') return false;
+  return !VOWELS.has(word[i - 1]) && !VOWELS.has(word[i + 1]);
 }
 
 const singleDigit = (n) => reduceNumber(n, { keepMaster: false });
@@ -171,17 +172,19 @@ function reductionChain(n, reducer) {
 }
 
 function nameSums(name) {
-  const letters = normalizeName(name).replace(/ /g, '');
+  const words = normalizeName(name).split(' ').filter(Boolean);
   let all = 0;
   let vowels = 0;
   let consonants = 0;
-  for (const letter of letters) {
-    const value = letterValue(letter);
-    all += value;
-    if (VOWELS.has(letter)) vowels += value;
-    else consonants += value;
+  for (const word of words) {
+    for (let i = 0; i < word.length; i += 1) {
+      const value = letterValue(word[i]);
+      all += value;
+      if (isVowelAt(word, i)) vowels += value;
+      else consonants += value;
+    }
   }
-  return { letters, all, vowels, consonants };
+  return { letters: words.join(''), all, vowels, consonants };
 }
 
 /** Số nợ nghiệp 13/14/16/19 found in the day of birth or on the way to a core number. */
