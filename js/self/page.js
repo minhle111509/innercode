@@ -10,8 +10,9 @@ const quizList = document.getElementById('quiz-list');
 const quizProgress = document.getElementById('quiz-progress');
 const quizResult = document.getElementById('quiz-result');
 
-quizList.append(...STATEMENTS.map((s, i) => el('fieldset', { class: 'quiz-item' }, [
-  el('legend', { text: `${i + 1}. ${s.text}` }),
+// A labelled radiogroup instead of fieldset/legend: Safari lays legends out unreliably on narrow screens.
+quizList.append(...STATEMENTS.map((s, i) => el('div', { class: 'quiz-item', role: 'radiogroup', 'aria-labelledby': `${s.id}-q` }, [
+  el('p', { class: 'quiz-q', id: `${s.id}-q`, text: `${i + 1}. ${s.text}` }),
   el('div', { class: 'scale' }, SCALE.map(({ value, label }) => el('label', { title: label }, [
     el('input', { type: 'radio', name: s.id, value, id: `${s.id}-${value}` }),
     el('span', { text: value }),

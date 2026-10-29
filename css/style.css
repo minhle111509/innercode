@@ -201,7 +201,7 @@ a.face:hover {
 /* Centre the links when they fit, but keep the first one reachable when the row scrolls. */
 .subnav a:first-child { margin-left: auto; }
 .subnav a:last-child { margin-right: auto; }
-@media (max-width: 820px) { .subnav-inner { padding-right: 96px; } }
+@media (max-width: 820px) { .subnav-inner { margin-right: 96px; padding-right: 8px; } }
 .subnav a[aria-current="page"] { color: var(--muted); pointer-events: none; }
 
 /* ---------- Content ---------- */
@@ -402,7 +402,7 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--button);
 .purpose-name { font-weight: 600; }
 
 /* ---------- Mai Hoa ---------- */
-fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+fieldset { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: 0; }
 legend { font-weight: 600; font-size: 15px; padding: 0; margin-top: 8px; }
 .segmented { display: inline-flex; gap: 4px; padding: 4px; border-radius: 12px; background: #000; justify-self: start; }
 .segmented label { margin: 0; padding: 8px 16px; border-radius: 9px; font-weight: 500; cursor: pointer; }
@@ -531,7 +531,7 @@ input[type="number"]:focus, input[type="datetime-local"]:focus, input[type="time
 .tool > p { margin: 0; color: var(--muted); }
 .quiz-list { display: grid; gap: 10px; }
 .quiz-item { padding: 14px 16px; border-radius: 14px; background: #000; }
-.quiz-item legend { float: left; width: 100%; margin: 0 0 10px; font-weight: 500; font-size: 16px; }
+.quiz-q { margin: 0 0 10px; font-weight: 500; font-size: 16px; overflow-wrap: break-word; }
 .scale { display: flex; gap: 8px; flex-wrap: wrap; clear: both; }
 .scale label { margin: 0; cursor: pointer; }
 .scale input { position: absolute; opacity: 0; pointer-events: none; }
@@ -863,6 +863,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   .offer-grid { grid-template-columns: 1fr; }
   .offer.featured { transform: none; }
   .expert-cta { padding: 11px 16px; font-size: 14px; }
+  /* Keep the quiz counter above the floating expert button. */
+  .sticky-progress { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
 }
 @media (max-width: 480px) {
   .pack-grid { gap: 6px; }
