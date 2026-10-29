@@ -317,6 +317,7 @@ export function orderProduct(key, { prefillNote = '', input = null, onPaid = nul
   const submit = el('button', { type: 'button', class: 'btn', text: paid ? `Trừ ${product.coins} Xu & đặt in` : 'Gửi yêu cầu báo giá' });
 
   openModal(product.name,
+    product.photos?.length ? el('img', { class: 'modal-photo', src: product.photos[0].src, alt: product.photos[0].alt }) : null,
     el('p', { class: 'muted', text: product.text }),
     paid
       ? el('p', { class: 'price-line' }, [el('strong', { text: `${product.coins} Xu` }), el('span', { class: 'muted', text: ' · trừ trong ví, phí giao hàng INNER CODE báo khi xác nhận' })])

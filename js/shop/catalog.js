@@ -39,7 +39,11 @@ export const PRODUCTS = [
     name: 'Chuông Xoay Himalaya',
     coins: null,
     art: 'bowl',
-    text: 'Chuông xoay thủ công dùng cho thiền và thư giãn. Sarah Nguyen tư vấn kích cỡ và âm phù hợp với bạn.',
+    photos: [
+      { src: 'assets/chuong-xoay-1.webp', alt: 'Chuông xoay Himalaya bằng đồng đặt trên đệm lót, nhìn từ trên xuống' },
+      { src: 'assets/chuong-xoay-2.webp', alt: 'Chuông xoay Himalaya khắc chân ngôn Om Mani Padme Hum' },
+    ],
+    text: 'Chuông xoay Himalaya gò thủ công, khắc chân ngôn Om Mani Padme Hum. Dùng cho thiền, thư giãn và chữa lành âm thanh. Sarah Nguyen tư vấn kích cỡ và âm phù hợp với bạn.',
   },
   {
     key: 'pendulum',
