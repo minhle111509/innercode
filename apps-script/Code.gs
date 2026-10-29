@@ -379,7 +379,52 @@ function onEdit(e) {
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('INNER CODE')
     .addItem('Cộng xu cho các dòng "Đã nhận"', 'creditAllApproved')
+    .addItem('Cộng / trừ xu cho khách (ghi lý do)', 'adjustCoins')
     .addToUi();
+}
+
+/** Menu: change a wallet by hand (gift, refund, correction) and log it in GiaoDich. */
+function adjustCoins() {
+  var ui = SpreadsheetApp.getUi();
+  var ask = function (text) {
+    var res = ui.prompt('Cộng / trừ xu', text, ui.ButtonSet.OK_CANCEL);
+    return res.getSelectedButton() === ui.Button.OK ? res.getResponseText() : null;
+  };
+  var phone = ask('Số điện thoại của khách:');
+  if (phone === null) return;
+  var amount = ask('Số xu: số dương để cộng (vd 50), số âm để trừ (vd -25):');
+  if (amount === null) return;
+  var reason = ask('Lý do (ghi vào trang GiaoDich), vd: Tặng khách quen, Hoàn xu do lỗi:');
+  if (reason === null) return;
+  try {
+    var result = adjustCoins_(phone, amount, reason);
+    ui.alert('Đã cập nhật ví ' + result.phone + '. Số dư mới: ' + result.balance + ' xu.');
+  } catch (error) {
+    ui.alert('Chưa cập nhật: ' + error.message);
+  }
+}
+
+function adjustCoins_(rawPhone, rawAmount, rawReason) {
+  var phone = normalizePhone_(rawPhone);
+  var amount = Number(String(rawAmount).replace(/\s/g, ''));
+  if (!Number.isInteger(amount) || amount === 0 || Math.abs(amount) > 100000) {
+    throw new Error('Số xu phải là số nguyên khác 0, ví dụ 50 hoặc -25.');
+  }
+  var reason = cleanText_(rawReason, 200);
+  if (reason.length < 2) throw new Error('Vui lòng ghi lý do để sau này đối soát.');
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var wallet = findWallet_(phone);
+    if (!wallet) throw new Error('Số này chưa có ví. Khách cần tạo yêu cầu nạp xu lần đầu trên web để tạo ví.');
+    var balance = wallet.balance + amount;
+    if (balance < 0) throw new Error('Ví chỉ còn ' + wallet.balance + ' xu, không trừ được ' + (-amount) + ' xu.');
+    setBalance_(wallet, balance);
+    logTransaction_(phone, amount > 0 ? 'Cộng tay' : 'Trừ tay', amount, reason, balance, newId_('DC'));
+    return { phone: phone, balance: balance };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 /** Menu backup in case an edit did not trigger onEdit (e.g. pasted values). */

@@ -42,6 +42,8 @@ Bấm **Commit changes**. Khoảng 1–2 phút sau GitHub Pages cập nhật, ch
 
 **Đặt lịch tư vấn (TuVan)**: tên, số điện thoại, vấn đề. Gọi lại khách và ghi chú trạng thái.
 
+**Cộng / trừ xu bằng tay** (tặng xu, hoàn xu, sửa chỗ duyệt nhầm): menu **INNER CODE → Cộng / trừ xu cho khách (ghi lý do)**, nhập số điện thoại, số xu (số âm để trừ) và lý do. Số dư được cập nhật và trang **GiaoDich** ghi một dòng "Cộng tay" hoặc "Trừ tay" kèm lý do. Nên dùng menu này thay vì sửa trực tiếp cột *Số dư (xu)*.
+
 **Khách quên PIN**: xác minh khách qua Zalo, rồi xóa dòng ví của khách ở trang **Vi** *chỉ khi số dư bằng 0*; nếu còn xu, ghi lại số dư, xóa dòng, và nhờ khách nạp lại với PIN mới rồi cộng bù trong cột *Số dư (xu)*. Sai PIN 5 lần, ví tự khóa 15 phút.
 
 ## 5. Khi sửa `Code.gs`

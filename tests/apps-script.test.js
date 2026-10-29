@@ -239,3 +239,17 @@ test('menu backup credits approved rows that onEdit missed', () => {
   assert.equal(ctx.creditAllApproved(), 0);
   assert.equal(call({ action: 'balance', phone: '0987654321', pin: '2468' }).balance, 50);
 });
+
+test('manual adjustments from the menu are validated and logged', () => {
+  call({ action: 'topup', phone: '0987654321', pin: '2468', amount: 50000 });
+  approve(2);
+  assert.equal(ctx.adjustCoins_('0987 654 321', ' 30 ', 'Tặng khách quen').balance, 80);
+  assert.equal(ctx.adjustCoins_('0987654321', '-25', 'Hoàn tác').balance, 55);
+  assert.throws(() => ctx.adjustCoins_('0987654321', '-100', 'Trừ quá'), /chỉ còn 55/);
+  assert.throws(() => ctx.adjustCoins_('0987654321', '2.5', 'Lẻ'), /số nguyên/);
+  assert.throws(() => ctx.adjustCoins_('0987654321', '10', ''), /lý do/);
+  assert.throws(() => ctx.adjustCoins_('0911222333', '10', 'Không có ví'), /chưa có ví/);
+  const log = sheets.get('GiaoDich').grid.slice(1).map((r) => [r[2], r[3], r[4], r[5]]);
+  assert.deepEqual(log.slice(-2), [['Cộng tay', 30, 'Tặng khách quen', 80], ['Trừ tay', -25, 'Hoàn tác', 55]]);
+  assert.equal(call({ action: 'balance', phone: '0987654321', pin: '2468' }).balance, 55);
+});
