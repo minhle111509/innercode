@@ -1,8 +1,8 @@
 import { el, setChildren, showError } from '../shared/dom.js';
 import { formatDate } from '../shared/date.js';
-import { calculateReport } from './numerology.js';
+import { calculateReport, sumDigits } from './numerology.js';
 import {
-  NUMBER_MEANINGS, NUMBER_DETAILS, PERSONAL_YEAR_MEANINGS, CHART_DIGIT_MEANINGS,
+  NUMBER_MEANINGS, NUMBER_DETAILS, PERSONAL_YEAR_MEANINGS, UNIVERSAL_YEAR_MEANINGS, CHART_DIGIT_MEANINGS,
   CHALLENGE_MEANINGS, ARROW_MEANINGS, KARMIC_DEBT_MEANINGS, LESSON_MEANINGS, POSITION_TEXTS,
 } from './meanings.js';
 import { mountReportOffers, profileHref } from '../report/offers.js';
@@ -152,6 +152,23 @@ function monthsView(months, day) {
   ]);
 }
 
+function universalYearView(report) {
+  const { universalYear: number, currentYear: year, universalCycle } = report;
+  const meaning = UNIVERSAL_YEAR_MEANINGS[number];
+  const sum = sumDigits(year);
+  return el('section', { class: 'reading-card column' }, [
+    el('h3', { text: `Năm thế giới ${year}: số ${number} · ${meaning.title}` }),
+    el('p', { class: 'muted', text: `Năng lượng chung của cả thế giới trong năm, ai cũng như nhau: ${String(year).split('').join(' + ')} = ${sum}${sum === number ? '' : ` → ${number}`}. Năm cá nhân của bạn là năm thế giới cộng thêm ngày và tháng sinh.` }),
+    el('p', { text: meaning.theme }),
+    el('p', {}, [el('strong', { text: 'Nên làm: ' }), meaning.advice]),
+    el('div', { class: 'purpose-grid years' }, universalCycle.map((y, i) => el('div', { class: `purpose${i === 0 ? ' current' : ''}` }, [
+      el('span', { class: 'purpose-number', text: y.number }),
+      el('strong', { text: `Năm ${y.year}` }),
+      el('span', { class: 'purpose-name', text: UNIVERSAL_YEAR_MEANINGS[y.number].title }),
+    ]))),
+  ]);
+}
+
 /** Free preview: the life path number with a few lines; everything else is in the locked block. */
 function previewCard(number) {
   const meaning = NUMBER_MEANINGS[number];
@@ -202,6 +219,7 @@ function render(report, input, onUnlock) {
     el('h2', { text: fullName ? `Kết quả của ${fullName}` : 'Kết quả của bạn' }),
     el('p', { class: 'muted', text: `Ngày sinh: ${formatDate(report.date)}` }),
     previewCard(report.lifePath),
+    universalYearView(report),
     lockedSection({
       item: 'single_numerology',
       input,

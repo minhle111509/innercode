@@ -94,6 +94,21 @@ export const NUMBER_MEANINGS = {
   },
 };
 
+/** Năm thế giới: the collective theme of a calendar year. */
+export const UNIVERSAL_YEAR_MEANINGS = {
+  1: { title: 'Khởi đầu chu kỳ mới', theme: 'Thế giới bước vào chu kỳ 9 năm mới: ý tưởng, công nghệ và xu hướng mới xuất hiện, năng lượng chung thôi thúc con người dám bắt đầu và tự chủ.', advice: 'Gieo hạt cho những dự định dài hạn, đừng ngại làm người đi đầu.' },
+  2: { title: 'Hợp tác & cân bằng', theme: 'Năm của kết nối, đàm phán và kiên nhẫn: các mối quan hệ, liên minh và sự thấu hiểu được đặt lên hàng đầu.', advice: 'Lắng nghe nhiều hơn, vun đắp quan hệ và chọn hợp tác thay vì đối đầu.' },
+  3: { title: 'Sáng tạo & giao tiếp', theme: 'Năng lượng lan tỏa, truyền thông, nghệ thuật và niềm vui lên ngôi; ý tưởng được chia sẻ nhanh và rộng.', advice: 'Thể hiện bản thân, kể câu chuyện của mình, nhưng cẩn trọng lời nói.' },
+  4: { title: 'Nền tảng & kỷ luật', theme: 'Năm xây móng: làm việc chăm chỉ, sắp xếp lại hệ thống, quy định và trật tự được chú trọng.', advice: 'Chăm lo nền tảng tài chính, sức khỏe và kế hoạch, kiên trì từng bước.' },
+  5: { title: 'Thay đổi & tự do', theme: 'Biến động, di chuyển và đổi mới diễn ra nhanh; cái cũ bị thử thách, cơ hội mới mở ra bất ngờ.', advice: 'Linh hoạt đón thay đổi, thử điều mới nhưng tránh liều lĩnh.' },
+  6: { title: 'Gia đình & trách nhiệm', theme: 'Tâm điểm là gia đình, cộng đồng, sự chăm sóc và chữa lành; trách nhiệm với người khác được nhắc đến nhiều.', advice: 'Vun vén tổ ấm, phụng sự và cân bằng giữa cho đi với chăm sóc bản thân.' },
+  7: { title: 'Chiêm nghiệm & tri thức', theme: 'Năm hướng vào bên trong: nghiên cứu, học hỏi, tâm linh và câu hỏi về ý nghĩa sống được quan tâm.', advice: 'Chậm lại, học sâu một lĩnh vực, dành thời gian tĩnh lặng.' },
+  8: { title: 'Thành tựu & tài chính', theme: 'Năng lượng của kinh tế, quyền lực và gặt hái: nỗ lực những năm trước bắt đầu cho kết quả.', advice: 'Quản trị tiền bạc cẩn thận, dùng sức ảnh hưởng một cách chính trực.' },
+  9: { title: 'Khép lại & buông bỏ', theme: 'Thế giới kết thúc chu kỳ 9 năm: dọn dẹp, tổng kết, lòng nhân ái và sự bao dung được đề cao.', advice: 'Hoàn tất việc dở dang, buông điều không còn phù hợp để sẵn sàng cho chu kỳ mới.' },
+  11: { title: 'Thức tỉnh & trực giác (số Master)', theme: 'Năm Master 11 mang năng lượng của số 2 ở tầng cao hơn: trực giác, cảm hứng tinh thần và sự thức tỉnh tập thể; cảm xúc chung dễ dâng cao, nhạy cảm.', advice: 'Tin vào trực giác, nuôi dưỡng đời sống tinh thần và hợp tác bằng sự thấu cảm.' },
+  22: { title: 'Kiến tạo lớn (số Master)', theme: 'Năm Master 22 mang năng lượng của số 4 ở tầng cao hơn: những công trình, dự án và hệ thống lớn được xây dựng, ước mơ được biến thành hiện thực bằng kỷ luật.', advice: 'Nghĩ lớn nhưng làm chắc, đặt nền móng cho mục tiêu dài hạn mang lại giá trị cho nhiều người.' },
+};
+
 export const PERSONAL_YEAR_MEANINGS = {
   1: 'Năm khởi đầu: gieo hạt, bắt đầu dự án mới, chủ động tạo cơ hội.',
   2: 'Năm kiên nhẫn: vun đắp các mối quan hệ, hợp tác, chậm mà chắc.',
@@ -104,6 +119,8 @@ export const PERSONAL_YEAR_MEANINGS = {
   7: 'Năm chiêm nghiệm: học hỏi, nhìn lại bản thân, phát triển nội tâm.',
   8: 'Năm thu hoạch: sự nghiệp, tài chính, gặt hái thành quả.',
   9: 'Năm kết thúc chu kỳ: buông bỏ điều cũ, tổng kết, chuẩn bị cho chu kỳ mới.',
+  11: 'Năm thức tỉnh (Master 11): trực giác mạnh, cảm hứng tinh thần, mối quan hệ sâu sắc; dễ nhạy cảm, cần giữ cân bằng cảm xúc.',
+  22: 'Năm kiến tạo lớn (Master 22): biến ước mơ thành công trình cụ thể, làm việc bền bỉ cho mục tiêu dài hạn và giá trị chung.',
 };
 
 export const CHART_DIGIT_MEANINGS = {

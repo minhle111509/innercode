@@ -7,7 +7,7 @@ import { el } from '../shared/dom.js';
 import { formatDate } from '../shared/date.js';
 import { calculateReport } from '../numerology/numerology.js';
 import {
-  NUMBER_MEANINGS, NUMBER_DETAILS, PERSONAL_YEAR_MEANINGS, CHART_DIGIT_MEANINGS, CHALLENGE_MEANINGS,
+  NUMBER_MEANINGS, NUMBER_DETAILS, PERSONAL_YEAR_MEANINGS, UNIVERSAL_YEAR_MEANINGS, CHART_DIGIT_MEANINGS, CHALLENGE_MEANINGS,
   ARROW_MEANINGS, KARMIC_DEBT_MEANINGS, LESSON_MEANINGS, POSITION_TEXTS,
 } from '../numerology/meanings.js';
 import { calculateMatrixReport } from '../matrix/matrix.js';
@@ -70,6 +70,10 @@ export function numerologySection(input) {
       r.lifeCycles.map((c) => [c.label, c.to === null ? `từ ${c.from}` : `${c.from}–${c.to}`, c.value, NUMBER_MEANINGS[c.value].keywords]))),
     block('Bốn đỉnh cao & thử thách', table(['Giai đoạn', 'Bắt đầu', 'Đỉnh cao', 'Thử thách'],
       r.pinnacles.map((pk, i) => [`Đỉnh ${i + 1}`, `${pk.age} tuổi`, `${pk.value} – ${NUMBER_MEANINGS[pk.value].title}`, `${r.challenges[i]}: ${CHALLENGE_MEANINGS[r.challenges[i]]}`]))),
+    block(`Năm thế giới ${r.currentYear}: số ${r.universalYear} – ${UNIVERSAL_YEAR_MEANINGS[r.universalYear].title}`,
+      p(UNIVERSAL_YEAR_MEANINGS[r.universalYear].theme),
+      kv('Nên làm', UNIVERSAL_YEAR_MEANINGS[r.universalYear].advice),
+      table(['Năm', 'Năm thế giới', 'Chủ đề'], r.universalCycle.map((y) => [y.year, y.number, UNIVERSAL_YEAR_MEANINGS[y.number].title]))),
     block('Năm & tháng cá nhân',
       table(['Năm', 'Số', 'Chủ đề'], r.yearCycle.map((y) => [y.year, y.number, PERSONAL_YEAR_MEANINGS[y.number]])),
       table(['Tháng', 'Số'], r.personalMonths.map((m) => [`${m.month}/${m.year}`, m.number]))),

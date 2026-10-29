@@ -40,8 +40,15 @@ export function birthDayNumber({ day }) {
   return reduceNumber(day);
 }
 
+/** Year numbers (personal and universal) reduce to 1–9 but keep the master numbers 11 and 22. */
+function reduceYearNumber(n) {
+  let result = n;
+  while (result > 9 && result !== 11 && result !== 22) result = sumDigits(result);
+  return result;
+}
+
 export function personalYearNumber({ day, month }, currentYear) {
-  return reduceNumber(sumDigits(day) + sumDigits(month) + sumDigits(currentYear), { keepMaster: false });
+  return reduceYearNumber(sumDigits(day) + sumDigits(month) + sumDigits(currentYear));
 }
 
 /** Count of each digit 1–9 in the birth date (zeros are ignored by convention). */
@@ -149,6 +156,15 @@ export function birthArrows(chart) {
     else if (present === 0) arrows.push({ line, type: 'empty' });
   }
   return arrows;
+}
+
+/** Năm thế giới: the energy every person shares in a calendar year (digits of the year; 11 and 22 are kept). */
+export function universalYearNumber(year) {
+  return reduceYearNumber(sumDigits(year));
+}
+
+export function universalYearCycle(fromYear, count = 4) {
+  return Array.from({ length: count }, (_, i) => ({ year: fromYear + i, number: universalYearNumber(fromYear + i) }));
 }
 
 export function personalYearCycle(date, fromYear, count = 4) {
@@ -262,6 +278,8 @@ export function calculateReport({ fullName, birthDate, today = new Date() }) {
     maturity: name ? maturityNumber(lifePath, name.expression) : null,
     personalYear: personalYearNumber(date, currentYear),
     yearCycle: personalYearCycle(date, currentYear),
+    universalYear: universalYearNumber(currentYear),
+    universalCycle: universalYearCycle(currentYear),
     currentYear,
     age: currentYear - date.year,
     chart,

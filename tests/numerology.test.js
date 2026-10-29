@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import {
   sumDigits, reduceNumber, reduceLifePath, parseBirthDate, lifePathNumber,
   personalYearNumber, birthChart, normalizeName, letterValue, nameNumbers, isVowelAt, calculateReport,
+  universalYearNumber, universalYearCycle,
 } from '../js/numerology/numerology.js';
-import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS } from '../js/numerology/meanings.js';
+import { NUMBER_MEANINGS, PERSONAL_YEAR_MEANINGS, UNIVERSAL_YEAR_MEANINGS } from '../js/numerology/meanings.js';
 import {
   karmicDebts, karmicLessons, hiddenPassion, balanceNumber, personalMonthNumber, personalDayNumber, lifeCycles,
 } from '../js/numerology/numerology.js';
@@ -58,7 +59,15 @@ test('parseBirthDate rejects invalid input', () => {
   assert.throws(() => parseBirthDate('2026-10-29', TODAY), /tương lai/);
 });
 
-test('personalYearNumber reduces to 1–9', () => {
+test('personal year keeps the master numbers 11 and 22', () => {
+  assert.equal(personalYearNumber({ day: 29, month: 8 }, 2026), 11); // 11 + 8 + 10 = 29 -> 11
+  assert.equal(personalYearNumber({ day: 3, month: 9 }, 2026), 22); // 3 + 9 + 10 = 22
+  // Months and days still reduce to 1–9 (11 behaves as 2 when added).
+  assert.equal(personalMonthNumber({ day: 29, month: 8 }, 2026, 1), 3);
+  for (const n of [11, 22]) assert.ok(PERSONAL_YEAR_MEANINGS[n].includes(':'), n);
+});
+
+test('personalYearNumber reduces other totals to 1–9', () => {
   // 15/08 in 2026: 1+5+8 + 2+0+2+6 = 24 → 6
   assert.equal(personalYearNumber({ day: 15, month: 8 }, 2026), 6);
   // 29/09 in 2026: 2+9+9+10 = 30 → 3
@@ -202,4 +211,18 @@ test('new meaning tables are complete', () => {
   for (const position of ['soul', 'personality', 'expression', 'birthday']) {
     for (const n of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22, 33]) assert.ok(POSITION_TEXTS[position][n], `${position} ${n}`);
   }
+});
+
+test('universal year sums the digits of the year, keeping 11 and 22', () => {
+  assert.equal(universalYearNumber(2026), 1); // 2+0+2+6 = 10 -> 1
+  assert.equal(universalYearNumber(2025), 9);
+  assert.equal(universalYearNumber(2029), 4); // 13 -> 4
+  assert.equal(universalYearNumber(2027), 11); // master number kept
+  assert.equal(universalYearNumber(2009), 11);
+  assert.equal(universalYearNumber(1984), 22); // 1+9+8+4 = 22, master number kept
+  assert.deepEqual(universalYearCycle(2026, 3), [{ year: 2026, number: 1 }, { year: 2027, number: 11 }, { year: 2028, number: 3 }]);
+  for (const n of [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22]) assert.ok(UNIVERSAL_YEAR_MEANINGS[n].title && UNIVERSAL_YEAR_MEANINGS[n].advice, n);
+  const report = calculateReport({ fullName: 'Lan', birthDate: '1990-08-15', today: TODAY });
+  assert.equal(report.universalYear, 1);
+  assert.equal(report.universalCycle.length, 4);
 });

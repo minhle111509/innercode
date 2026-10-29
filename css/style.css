@@ -397,6 +397,7 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--button);
 .chart-legend .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--pt); margin-right: -8px; }
 .trio { font-size: 24px; font-weight: 600; letter-spacing: 0.04em; }
 .purpose-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.purpose-grid.years { grid-template-columns: repeat(auto-fit, minmax(min(130px, 100%), 1fr)); }
 .purpose { display: flex; flex-direction: column; gap: 4px; padding: 18px; border-radius: 16px; background: #000; font-size: 15px; }
 .purpose-number { font-size: 40px; font-weight: 600; line-height: 1; color: var(--accent); }
 .purpose-name { font-weight: 600; }
