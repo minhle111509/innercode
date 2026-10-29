@@ -13,4 +13,5 @@ Repo `minhle111509/innercode` là web đang bán hàng tại https://innercode.p
 - Giá xu và gói nạp nằm ở **hai chỗ**: `js/shop/catalog.js` và `apps-script/Code.gs`. Sửa `Code.gs` thì nhắc chủ web dán lại vào Apps Script (và triển khai phiên bản mới nếu thay đổi ảnh hưởng tới web).
 - Quy tắc mở khóa (`unlockKey`) phải giống nhau giữa `js/shop/catalog.js` và `Code.gs`; có bài kiểm tra đối chiếu.
 - Thần số học: chữ Y chỉ là nguyên âm khi đứng riêng trong chữ (Vy, My); đứng sát A/E/I/O/U (Nguyen, Huy, Uyen) thì là phụ âm.
+- Thần số học: năm thế giới và năm cá nhân rút gọn về 1–9 nhưng **giữ số Master 11 và 22** (ví dụ năm 2027 = 11). Tháng và ngày cá nhân vẫn rút gọn về 1–9.
 - Các file `.html` sửa trực tiếp; `og:url`/`og:image` dùng địa chỉ https://innercode.pages.dev.
